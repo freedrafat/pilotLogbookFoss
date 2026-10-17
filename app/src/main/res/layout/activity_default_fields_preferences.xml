@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Toolbar -->
+    <include layout="@layout/view_app_toolbar" />
+
+    <!-- Header Section -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Default pre-fill Fields" />
+
+    </LinearLayout>
+
+    <!-- Middle Section -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- ==================== EXISTING SECTION ==================== -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Position:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <RadioGroup
+                android:id="@+id/rg_default_position"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rb_position_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PIC" />
+
+                <RadioButton
+                    android:id="@+id/rb_position_sic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SIC" />
+
+                <RadioButton
+                    android:id="@+id/rb_position_dual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dual" />
+
+                <RadioButton
+                    android:id="@+id/rb_position_instructor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Instructor" />
+
+                <RadioButton
+                    android:id="@+id/rb_position_custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom" />
+
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/et_custom_position"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Custom position"
+                android:inputType="text"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="6dp"
+                android:background="@color/colorPrimary" />
+
+
+            <!-- default is PF -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="default is PF : "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <Spinner
+                    android:id="@+id/sp_default_pilot_flying"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <!-- is IFR Checkbox -->
+            <CheckBox
+                android:id="@+id/cb_default_is_ifr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="default is IFR" />
+
+            <!-- set offblock to Now -->
+            <CheckBox
+                android:id="@+id/cb_default_offblock_now"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prefill Off-Block with current time" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="6dp"
+                android:background="@color/colorPrimary" />
+
+            <!-- is Simulator -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="default is Simulator : "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <Spinner
+                    android:id="@+id/sp_default_is_simulator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <!-- number of Simu IFR Approach -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="number of Simu IFR Approach: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                <EditText
+                    android:id="@+id/et_default_simu_ifr_approach"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="0 = clear" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="6dp"
+                android:background="@color/colorPrimary" />
+
+            <!-- PIC & SIC name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- PIC name -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PIC name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_pic_name"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <!-- SIC name -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SIC name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_sic_name"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Jumpseat1 & Jumpseat2 name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- Jumpseat1 name -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jumpseat 1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_jumpseat1"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <!-- Jumpseat2 name -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jumpseat 2"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_jumpseat2"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Cabin crew name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- Cabin crew name -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cabin crew"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_cabin_crew"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <!-- spacer -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
+
+            <!-- a/c Registration & Flight number prefix -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- Registration -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="a/c Registration"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_ac_registration"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <!-- Flight number prefix -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Flight number prefix"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_flight_number_prefix"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Departure (ICAO) & Destination (ICAO) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- Departure (ICAO) -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Departure (ICAO)"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_icao_departure"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <!-- Destination (ICAO) -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Destination (ICAO)"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_default_icao_destination"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Comment -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comment"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Label"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:id="@+id/et_default_comment"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:inputType="textMultiLine" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="6dp"
+                android:background="@color/colorPrimary" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Footer Section -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginBottom="30dp" >
+
+        <Button
+            android:id="@+id/btn_save_default_fields"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Save" />
+
+    </LinearLayout>
+
+</LinearLayout>

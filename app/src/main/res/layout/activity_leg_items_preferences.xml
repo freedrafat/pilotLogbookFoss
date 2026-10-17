@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Toolbar -->
+    <include layout="@layout/view_app_toolbar" />
+
+    <!-- Header Section -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Active profile selector -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile: "
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Button
+                android:id="@+id/btn_profile_selector"
+                style="@style/SecondaryButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Default" />
+        </LinearLayout>
+
+        <!-- Profile management actions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <Button
+                android:id="@+id/btn_new"
+                style="@style/SecondaryButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="New" />
+
+            <Button
+                android:id="@+id/btn_duplicate"
+                style="@style/SecondaryButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="Duplicate" />
+
+            <Button
+                android:id="@+id/btn_rename"
+                style="@style/SecondaryButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="Rename" />
+
+            <Button
+                android:id="@+id/btn_delete"
+                style="@style/SecondaryButtonWarningStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="Delete" />
+        </LinearLayout>
+
+        <!-- Header Section -->
+    </LinearLayout>
+
+    <!-- Middle Section -->
+    <ScrollView
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Unknown-fields warning banner (hidden by default) -->
+            <LinearLayout
+                android:id="@+id/warning_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:layout_marginTop="8dp"
+                android:background="#FFF3CD"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_warning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="This profile references fields that no longer exist."
+                    android:textColor="#856404"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            </LinearLayout>
+
+            <!-- Row 1..4 editors (each an instance of item_leg_row_editor.xml) -->
+            <include
+                layout="@layout/item_leg_row_editor"
+                android:id="@+id/row_editor_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/item_leg_row_editor"
+                android:id="@+id/row_editor_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/item_leg_row_editor"
+                android:id="@+id/row_editor_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/item_leg_row_editor"
+                android:id="@+id/row_editor_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Footer Section -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginBottom="30dp" >
+
+        <include
+            layout="@layout/item_leg"
+            android:id="@+id/preview_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Bottom actions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btn_restore_default"
+                style="@style/SecondaryButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Restore Default" />
+
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/PrimaryButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Apply/Save" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

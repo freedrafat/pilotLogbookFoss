@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">pilotLogbookFoss</string>
+    <string name="airports_json_url">https://cdn.jsdelivr.net/gh/mwgg/Airports@master/airports.json</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary colors -->
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+
+    <!-- Basic colors -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#8E24DB</color>
+
+    <!-- Surface colors (default light) -->
+    <color name="surface">#FFFFFFFF</color>
+    <color name="onSurface">#212121</color>
+    <color name="onSurfaceSecondary">#757575</color>
+    <color name="border">#E0E0E0</color>
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="info">#757575</color>
+
+    <!-- Text colors (default light) -->
+    <color name="text_primary">#DE000000</color>
+    <color name="text_secondary">#DE5A5959</color>
+
+    <!-- Label colors (default light) -->
+    <color name="text_label">#3F51B5</color>
+
+    <!-- edittext background -->
+    <color name="edittext_background_color">#F5F5F5</color>   <!-- light gray -->
+    <color name="edittext_stroke_color">#DDDDDD</color>
+
+    <!-- Dropdown background -->
+    <color name="dropdown_background">#FFFFFFFF</color>
+
+</resources>

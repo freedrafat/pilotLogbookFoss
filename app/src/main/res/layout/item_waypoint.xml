@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:weightSum="9">
+
+    <EditText
+        android:id="@+id/et_waypoint_lat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:hint="Lat."
+        android:inputType="numberDecimal|numberSigned" />
+
+    <EditText
+        android:id="@+id/et_waypoint_lon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:hint="Long."
+        android:inputType="numberDecimal|numberSigned" />
+
+    <EditText
+        android:id="@+id/et_waypoint_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:clickable="true"
+        android:focusable="true"
+        android:hint="UTC"
+        android:inputType="time" />
+
+    <ImageButton
+        android:id="@+id/btn_remove_waypoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Remove"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+</LinearLayout>

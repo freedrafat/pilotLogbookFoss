@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Toolbar -->
+    <include layout="@layout/view_app_toolbar" />
+
+    <!-- Header Section -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_save_state"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Save State" />
+
+        <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btn_load_state"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="Load State" />
+
+        <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btn_clear"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Clear" />
+
+    </LinearLayout>
+
+    <!-- Middle Section -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Elevation -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Altitude (ft)"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_elevation"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="Alt (ft)" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Row: OffBlock (display only) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OffBlock"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+
+                <TextView
+                    android:id="@+id/tv_offblock"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:text="N/A" />
+            </LinearLayout>
+
+            <!-- Departure -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Departure field"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/et_departure"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="4"
+                        android:popupBackground="@color/dropdown_background" />
+
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T/O time"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_departure_time"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="time"
+                        android:hint="HHmm" />
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="T/O date"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <TextView
+                        android:id="@+id/tv_departure_date"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:text="Select date" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Arrival -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Destination field"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <AutoCompleteTextView
+                        android:id="@+id/et_destination"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="4"
+                        android:popupBackground="@color/dropdown_background" />
+
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ldg time"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <EditText
+                        android:id="@+id/et_arrival_time"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="time"
+                        android:hint="HHmm" />
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ldg date"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <TextView
+                        android:id="@+id/tv_arrival_date"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"                        android:focusable="true"
+                        android:clickable="true"
+                        android:text="Select date" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Row: OnBlock (display only) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OnBlock"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+
+                <TextView
+                    android:id="@+id/tv_onblock"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:text="N/A" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_add_waypoint"
+                style="@style/SecondaryButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="Add Waypoint(s)" />
+
+            <LinearLayout
+                android:id="@+id/waypoint_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- Save / Load / Clear Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center">
+
+
+            </LinearLayout>
+
+
+
+            <!-- Compute Button -->
+            <Button
+                android:id="@+id/btn_compute"
+                style="@style/PrimaryButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Compute Sunrise / Sunset" />
+
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:indeterminate="true"
+                android:layout_marginTop="8dp" />
+
+            <!-- MovingSunriseCalculator Results === -->
+            <TextView
+                android:id="@+id/tv_results"
+                android:freezesText="true"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text=""
+                android:textSize="16sp"
+                android:layout_marginTop="16dp" />
+
+            <!-- Footer Section -->
+            <LinearLayout
+                style="@style/Card.Surface"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginBottom="30dp" >
+
+                <!-- Row: Departure Sun events -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Departure"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <!-- Departure Astronomical Dawn -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Astro Dawn"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_departure_astro_dawn"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                    <!-- Departure Sunrise -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sunrise"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_departure_sunrise_time"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                    <!-- Departure Sunset -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sunset"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_departure_sunset_time"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                    <!-- Departure Astronomical Dusk -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Astro Dusk"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_departure_astro_dusk"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="4dp" />
+
+                <!-- Row: Arrival Sun events -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Arrival"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <!-- Arrival Astronomical Dawn -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Astro Dawn"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_arrival_astro_dawn"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                    <!-- Arrival Sunrise -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sunrise"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_arrival_sunrise_time"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                    <!-- Arrival Sunset -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sunset"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_arrival_sunset_time"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                    <!-- Arrival Astronomical Dusk -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Astro Dusk"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                        <EditText
+                            android:id="@+id/et_arrival_astro_dusk"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:enabled="false" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="4dp" />
+
+                <Button
+                    android:id="@+id/btn_apply_to_leg"
+                    style="@style/PrimaryButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:text="Apply to Leg" />
+
+                <!-- Optional additional info (e.g., errors) -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:padding="8dp"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+
+            </LinearLayout>
+
+
+            <View android:layout_width="match_parent" android:layout_height="16dp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

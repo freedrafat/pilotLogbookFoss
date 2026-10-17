@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Toolbar -->
+    <include layout="@layout/view_app_toolbar" />
+
+    <!-- Middle Section -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="6dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ===== Section: Rows per page & PDF Font ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Rows per page" />
+                    <Spinner
+                        android:id="@+id/sp_rows_per_page"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="PDF font" />
+                    <Spinner
+                        android:id="@+id/sp_font_family"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                style="@style/PdfFieldLabel"
+                android:layout_gravity="center_horizontal"
+                android:text="-----------==========-----------" />
+
+
+            <!-- ========== Section: Owner & signature ========== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                style="@style/PdfFieldColumn"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    style="@style/PdfFieldLabel"
+                    android:text="Owner name" />
+
+                <EditText
+                    android:id="@+id/et_owner_name"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="e.g. John Doe"
+                    android:inputType="textPersonName" />
+
+            </LinearLayout>
+            <LinearLayout
+                style="@style/PdfFieldColumn">
+
+                <ImageView
+                    android:id="@+id/img_signature_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
+                <Button
+                    android:id="@+id/btn_set_signature"
+                    style="@style/SecondaryButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Set signature" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/cb_alternate_rows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Alternate row background (leg rows only)"
+                android:textSize="15sp" />
+
+            <!-- ========== Section: Page Height ========== -->
+            <TextView
+                style="@style/PdfFieldLabel"
+                android:layout_gravity="center_horizontal"
+                android:text="-----------==========-----------" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="----  Page Height (pt) ----"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+            <!-- ========== Margin Top/Bottom ========== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Margin top" />
+                    <EditText
+                        android:id="@+id/et_margin_top"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Margin bottom" />
+                    <EditText
+                        android:id="@+id/et_margin_bottom"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- ========== Height Sections ========== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Title height" />
+                    <EditText
+                        android:id="@+id/et_title_height"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Header row height" />
+                    <EditText
+                        android:id="@+id/et_header_row_height"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Page number area" />
+                    <EditText
+                        android:id="@+id/et_page_num_area"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <TextView
+                style="@style/PdfFieldLabel"
+                android:layout_gravity="center_horizontal"
+                android:text="-----------==========-----------" />
+
+
+            <!-- ========== Section: Page Height ========== -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="----  Page Width (pt) ----"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total page width: 842 pt"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary" />
+            <!-- ========== Margin Left/Right ========== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Margin left" />
+                    <EditText
+                        android:id="@+id/et_margin_left"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Margin right" />
+                    <EditText
+                        android:id="@+id/et_margin_right"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ========== Section: Column widths ========== -->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel"
+                        android:text="Date" />
+                    <EditText android:id="@+id/et_width_date"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Aircraft model" />
+                    <EditText android:id="@+id/et_width_aircraft_model" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel"
+                        android:text="Places (dep/arr)" />
+                    <EditText android:id="@+id/et_width_place" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Aircraft reg" />
+                    <EditText android:id="@+id/et_width_aircraft_reg" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Times (dep/arr)" />
+                    <EditText android:id="@+id/et_width_time" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Durations" />
+                    <EditText android:id="@+id/et_width_duration" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Name PIC" />
+                    <EditText android:id="@+id/et_width_name_pic" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Counts" />
+                    <EditText android:id="@+id/et_width_count" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Remarks" />
+                    <EditText android:id="@+id/et_width_remarks" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_width_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_secondary"
+                android:text="Sum: – / Content width: – (scale 1.000)" />
+
+            <!-- ========== Section: Text sizes ========== -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Text sizes (pt)"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Title" />
+                    <EditText android:id="@+id/et_ts_title" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Header" />
+                    <EditText android:id="@+id/et_ts_header" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Body" />
+                    <EditText
+                        android:id="@+id/et_ts_body" style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Remarks" />
+                    <EditText android:id="@+id/et_ts_remarks" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+                <LinearLayout
+                    style="@style/PdfFieldColumn">
+                    <TextView
+                        style="@style/PdfFieldLabel"
+                        android:text="Certification" />
+                    <EditText
+                        android:id="@+id/et_ts_cert"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+                <View android:layout_width="8dp" android:layout_height="1dp" />
+                <LinearLayout style="@style/PdfFieldColumn">
+                    <TextView style="@style/PdfFieldLabel" android:text="Owner" />
+                    <EditText android:id="@+id/et_ts_owner" style="@style/EditTextStyle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+            <!-- ========== Buttons ========== -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <Button
+                android:id="@+id/btn_set_defaults"
+                style="@style/SecondaryButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set defaults" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Footer Section -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_save_format"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+
+</LinearLayout>

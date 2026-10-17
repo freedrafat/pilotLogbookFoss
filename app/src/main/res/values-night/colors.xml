@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Surface colors (dark) -->
+    <color name="surface">#121212</color>
+
+    <!-- Text colors (dark) -->
+    <color name="text_primary">#DEFFFFFF</color>
+    <color name="text_secondary">#DEA6A4A4</color>
+
+    <!-- Label colors (dark) -->
+    <color name="text_label">#FFBB86FC</color>
+
+    <!-- edittext background -->
+    <color name="edittext_background_color">#2A2A2A</color>   <!-- dark gray -->
+    <color name="edittext_stroke_color">#555555</color>
+
+    <!-- Dropdown background (dark) -->
+    <color name="dropdown_background">#333333</color>
+
+    <!-- Warning (dark) -->
+    <color name="warning">#FF4444</color>
+
+</resources>

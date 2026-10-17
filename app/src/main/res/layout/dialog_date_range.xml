@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <RadioGroup
+        android:id="@+id/rg_range"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rb_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All" />
+
+        <RadioButton
+            android:id="@+id/rb_custom_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From – To" />
+
+        <RadioButton
+            android:id="@+id/rb_last_pages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last N pages" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/layout_dates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_from_date"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="From" />
+
+        <Button
+            android:id="@+id/btn_to_date"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="To" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_last_pages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/et_last_pages_count"
+            style="@style/EditTextStyle"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="pages (most recent)"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

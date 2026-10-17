@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="4dp">
+
+    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/btn_move_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Move up"
+        android:padding="6dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@android:drawable/arrow_up_float" />
+
+    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+
+    <ImageButton
+        android:id="@+id/btn_move_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="6dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@android:drawable/arrow_down_float"
+        android:contentDescription="Move down" />
+
+    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tv_item_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="4dp"
+        android:paddingVertical="6dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="item" />
+
+    <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Delete"
+        android:padding="6dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+</LinearLayout>
