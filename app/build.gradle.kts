@@ -36,6 +36,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            vcsInfo {
+                include = false
+            }
         }
     }
 
@@ -43,20 +46,34 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
 }
 
 
 androidComponents {
-    onVariants { variant ->
+    onVariants(selector().withBuildType("release")) { variant ->
         variant.outputs.forEach { output ->
-            output.outputFileName.set(
-                project.provider {
-                        "pilotLogbookFoss_${timestamp}.apk"
-                }
-            )
+            // versionName is a Property<String> on the output
+            val versionName = output.versionName.get()
+
+            if (output is com.android.build.api.variant.impl.VariantOutputImpl) {
+                output.outputFileName.set("pilotLogbookFoss-${versionName}.apk")
+            }
         }
     }
 }
+
+//androidComponents {
+//    onVariants { variant ->
+//        variant.outputs.forEach { output ->
+//            output.outputFileName.set(
+//                project.provider {
+//                        "pilotLogbookFoss_${timestamp}.apk"
+//                }
+//            )
+//        }
+//    }
+//}
 
 
 dependencies {
@@ -87,6 +104,7 @@ dependencies {
 
     // Testing
     testImplementation(libs.junit)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.monitor)
     androidTestRuntimeOnly(libs.androidx.runner)
     androidTestRuntimeOnly(libs.kotlinx.coroutines.test)
