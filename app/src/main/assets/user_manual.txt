@@ -157,8 +157,8 @@ The editor contains many fields. Below is an explanation of each:
     Type and fills in the Category field automatically. You can
     overwrite the Category afterwards.
 
-  • Departure – departure airport (IATA or ICAO code).
-  • Destination – arrival airport (IATA or ICAO code).
+  • Departure – departure airport.
+  • Destination – arrival airport.
 
   • Off-Block – time when you left the parking position (UTC).
   • Takeoff – time of takeoff (UTC).
