@@ -1,6 +1,7 @@
-# Pilot Flight Logbook & some Flight Tools FOSS
+# Pilot Flight Logbook
 
-A privacy-focused, fully local Android application designed for professional and private pilots.
+A privacy-focused, FOSS & fully local Android application designed for professional and private
+pilots.
 *   Record flight legs.
 *   Calculate precise day/night times along your route using the Flight Sun Calculator.
 *   Export PDF logbooks according to ICAO / EASA AMC1 FCL.050 standards.
