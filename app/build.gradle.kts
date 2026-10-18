@@ -9,7 +9,7 @@ plugins {
 }
 
 val timestamp = ZonedDateTime.now(ZoneOffset.UTC)
-    .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmm"))
+    .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmm"))!!
 
 android {
     namespace = "com.my.striptologbook"
@@ -87,7 +87,6 @@ dependencies {
 
     // Testing
     testImplementation(libs.junit)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.monitor)
     androidTestRuntimeOnly(libs.androidx.runner)
     androidTestRuntimeOnly(libs.kotlinx.coroutines.test)
