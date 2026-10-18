@@ -25,7 +25,7 @@ You can download the latest version of the application directly from the [Releas
 
 ## 📖 User Manual
 
-For detailed instructions on how to use every feature of the app, please refer to the **[User Manual](USER_MANUAL.txt)** included in this repository.
+For detailed instructions on how to use every feature of the app, please refer to the **[User Manual](app/src/main/assets/user_manual.txt)** included in this repository.
 
 ## 🛡️ Privacy Policy
 
