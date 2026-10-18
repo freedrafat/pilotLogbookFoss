@@ -50,6 +50,17 @@
         android:layout_width="match_parent"
         android:layout_height="16dp" />
 
+    <Button
+        android:id="@+id/btn_user_manual"
+        style="@style/PrimaryButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Manual" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
     <TextView
         android:id="@+id/txtAppVersion"
         android:layout_width="match_parent"

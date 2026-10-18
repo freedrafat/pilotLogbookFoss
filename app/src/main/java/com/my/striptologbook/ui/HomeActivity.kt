@@ -45,6 +45,7 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
         val btnViewLogbook: Button = findViewById(R.id.btn_view_logbook)
         val btnAddLeg: Button = findViewById(R.id.btn_add_leg)
+        val btnUserManual: Button = findViewById(R.id.btn_user_manual)
 
         btnViewLogbook.setOnClickListener {
             startActivity(Intent(this, LegListActivity::class.java))
@@ -62,6 +63,10 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
         val btnSettings: Button = findViewById(R.id.btn_settings)
         btnSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        btnUserManual.setOnClickListener {
+            startActivity(Intent(this, ManualActivity::class.java))
         }
 
         // Observe ViewModel result
