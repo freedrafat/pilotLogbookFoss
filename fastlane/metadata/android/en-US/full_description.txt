@@ -1,0 +1,10 @@
+Pilot Logbook is designed for professional and private pilots who need to record flight legs with all relevant details.
+
+Key Features:
+- Logbook Legs: Record block time, flight time, IFR, simulator time, and crew details.
+- Auto-Calculations: Automatically calculates night/day times, block totals, and takeoff/landing counts based on sunrise/sunset and Pilot Flying status.
+- Flight Sun Calculator: Computes moving sunrise and sunset events along your route, factoring in changing aircraft position and cruise altitude.
+- PDF Export: Generate printable EASA-compliant logbook pages (ICAO/EASA AMC1 FCL.050) with customizable layouts and signatures.
+- Backup & Restore: Built-in JSON backup system that verifies data integrity before saving.
+- Opening Balance: Input your prior flight experience to see accurate career totals.
+- All data is stored locally on your device. Nothing is sent to any server.
