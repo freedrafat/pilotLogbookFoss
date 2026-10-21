@@ -20,15 +20,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Backup"
+            android:text="Logbook Backup"
             android:textSize="24sp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <LinearLayout
         style="@style/Card.Surface"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -44,7 +44,7 @@
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Backup (JSON)" />
+                android:text="Backup Logbook (JSON)" />
 
             <Space
                 android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Restore from Backup" />
+                android:text="Restore from Backup (JSON)" />
 
             <Space
                 android:layout_width="match_parent"
@@ -70,7 +70,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="16dp" />
+                android:layout_height="8dp" />
 
             <TextView
                 android:id="@+id/txt_backup_folder_path"
@@ -78,12 +78,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="No backup folder selected"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray" />
+                android:text="No backup folder selected" />
 
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
     <!-- Footer Section -->
     <LinearLayout
@@ -97,10 +95,9 @@
         <Button
             android:id="@+id/btn_delete_all"
             style="@style/SecondaryButtonWarningStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:text="Delete All Datas" />
+            android:text="Delete All Logbook Datas" />
 
     </LinearLayout>
 

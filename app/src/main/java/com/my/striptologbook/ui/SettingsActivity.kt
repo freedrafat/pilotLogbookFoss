@@ -1,36 +1,25 @@
 package com.my.striptologbook.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
-import android.content.Intent
-import android.view.View
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.my.striptologbook.R
+import com.my.striptologbook.utils.InsetsHelper
 
 class SettingsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        // --- Spacer ---
-        val spacer = findViewById<View>(R.id.status_bar_spacer)
-        ViewCompat.setOnApplyWindowInsetsListener(spacer) { view, insets ->
-            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-            if (statusBarHeight > 0) {
-                val params = view.layoutParams
-                params.height = statusBarHeight
-                view.requestLayout()
-            }
-            insets
-        }
+        // -------- Status bar spacer ------------------------------
+        InsetsHelper.applyStatusBarSpacer(findViewById(R.id.status_bar_spacer))
 
-        // --- Toolbar ---
+        // -------- Toolbar -----------------------------------------
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Settings"
+        supportActionBar?.title = "Setting"              //change title
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // --- Button listeners ---

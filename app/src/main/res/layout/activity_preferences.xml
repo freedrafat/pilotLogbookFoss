@@ -5,38 +5,15 @@
     android:orientation="vertical">
 
     <!-- Toolbar -->
+    <include layout="@layout/view_app_toolbar" />
+
+    <!-- Header Section -->
     <LinearLayout
+        style="@style/Card.Surface"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
         android:orientation="vertical"
-        android:background="@color/colorPrimary">
-
-        <View
-            android:id="@+id/status_bar_spacer"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/colorPrimary" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/surface" />
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            style="@style/ToolbarStyle" />
-    </LinearLayout>
-
-    <!-- Preference options -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
         android:gravity="center">
 
         <TextView
@@ -44,8 +21,18 @@
             android:layout_height="wrap_content"
             android:text="Preferences"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Preference options -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btn_statistics_visibility"
@@ -70,7 +57,7 @@
             style="@style/PrimaryButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Default Fields" />
+            android:text="Leg Default Fields" />
 
         <Space android:layout_width="match_parent" android:layout_height="16dp" />
 
@@ -79,7 +66,7 @@
             style="@style/PrimaryButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Custom Lists" />
+            android:text="Custom Suggest Lists" />
 
         <Space android:layout_width="match_parent" android:layout_height="16dp" />
 
@@ -88,7 +75,7 @@
             style="@style/PrimaryButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Leg Items" />
+            android:text="Leg Card Items" />
         <!-- Additional preference buttons can be added here later -->
         <!-- Additional preference buttons can be added here later -->
         <!--

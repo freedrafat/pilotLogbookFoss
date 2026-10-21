@@ -41,7 +41,7 @@
             style="@style/PrimaryButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Export PDF" />
+            android:text="Export Logbook as PDF (ICAO/EASA)" />
 
         <Space
             android:layout_width="match_parent"

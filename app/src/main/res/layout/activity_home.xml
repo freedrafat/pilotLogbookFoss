@@ -2,73 +2,95 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_view_logbook"
-        style="@style/PrimaryButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Logbook" />
+    <!-- Toolbar -->
+    <include layout="@layout/view_app_toolbar" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
 
-    <Button
-        android:id="@+id/btn_add_leg"
-        style="@style/PrimaryButtonStyle"
+    <LinearLayout
+        style="@style/Card.Surface"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add New Leg" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="24dp" />
-
-    <Button
-        android:id="@+id/btn_flight_sun"
-        style="@style/SecondaryButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Flight Sun Events" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
-
-    <Button
-        android:id="@+id/btn_settings"
-        style="@style/SecondaryButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Settings" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
-
-    <Button
-        android:id="@+id/btn_user_manual"
-        style="@style/PrimaryButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="User Manual" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
-
-    <TextView
-        android:id="@+id/txtAppVersion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:autoSizeTextType="uniform"
         android:gravity="center"
-        android:text="version"
-        android:textSize="14sp"
-        android:paddingTop="8dp"
-        android:textColor="@android:color/darker_gray" />
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_view_logbook"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Logbook" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <Button
+            android:id="@+id/btn_add_leg"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New Leg" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <Button
+            android:id="@+id/btn_flight_sun"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Flight Sun Events" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <Button
+            android:id="@+id/btn_settings"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_user_manual"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User Manual" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <TextView
+            android:id="@+id/txtAppVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="version" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
 
 </LinearLayout>

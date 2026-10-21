@@ -2,15 +2,13 @@ package com.my.striptologbook.ui
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.PreferencesManager   // ✅ new import
+import com.my.striptologbook.utils.InsetsHelper
+import com.my.striptologbook.utils.PreferencesManager
 
 class StatisticsVisibilityPreferencesActivity : BaseActivity() {
 
@@ -21,20 +19,13 @@ class StatisticsVisibilityPreferencesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics_visibility_preferences)
 
-        // Toolbar (unchanged)
-        val spacer = findViewById<View>(R.id.status_bar_spacer)
-        ViewCompat.setOnApplyWindowInsetsListener(spacer) { view, insets ->
-            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-            if (statusBarHeight > 0) {
-                val params = view.layoutParams
-                params.height = statusBarHeight
-                view.requestLayout()
-            }
-            insets
-        }
+        // -------- Status bar spacer ------------------------------
+        InsetsHelper.applyStatusBarSpacer(findViewById(R.id.status_bar_spacer))
+
+        // -------- Toolbar -----------------------------------------
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Statistics Visibility"
+        supportActionBar?.title = "Statistics Visibility"              //change title
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // RecyclerView

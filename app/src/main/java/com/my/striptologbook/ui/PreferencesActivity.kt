@@ -3,12 +3,10 @@ package com.my.striptologbook.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.my.striptologbook.R
+import com.my.striptologbook.utils.InsetsHelper
 
 class PreferencesActivity : BaseActivity() {
 
@@ -16,21 +14,15 @@ class PreferencesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preferences)
 
-        // Toolbar
-        val spacer = findViewById<View>(R.id.status_bar_spacer)
-        ViewCompat.setOnApplyWindowInsetsListener(spacer) { view, insets ->
-            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-            if (statusBarHeight > 0) {
-                val params = view.layoutParams
-                params.height = statusBarHeight
-                view.requestLayout()
-            }
-            insets
-        }
+        // -------- Status bar spacer ------------------------------
+        InsetsHelper.applyStatusBarSpacer(findViewById(R.id.status_bar_spacer))
+
+        // -------- Toolbar -----------------------------------------
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Preferences"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         findViewById<Button>(R.id.btn_statistics_visibility).setOnClickListener {
             startActivity(Intent(this, StatisticsVisibilityPreferencesActivity::class.java))

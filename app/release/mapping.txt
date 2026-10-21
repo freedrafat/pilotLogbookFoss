@@ -3,8 +3,8 @@
 # min_api: 29
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: d2c45a3452336b73e1cf2de908b95976a6075b654bcf53b429d9dfe7525e08eb
-# pg_map_hash: SHA-256 d2c45a3452336b73e1cf2de908b95976a6075b654bcf53b429d9dfe7525e08eb
+# pg_map_id: 5ad3b4b152b106a72f280fb7b195d54bedd9e11ae6a5e05a50096cedb7be38af
+# pg_map_hash: SHA-256 5ad3b4b152b106a72f280fb7b195d54bedd9e11ae6a5e05a50096cedb7be38af
 _COROUTINE.ArtificialStackFrames -> R8$$REMOVED$$CLASS$$0:
 # {"id":"sourceFile","fileName":"CoroutineDebugging.kt"}
 _COROUTINE.ArtificialStackFramesUnsafe -> r6:
@@ -2638,7 +2638,7 @@ androidx.activity.result.contract.ActivityResultContracts$RequestMultiplePermiss
 # {"id":"sourceFile","fileName":"ActivityResultContracts.kt"}
 androidx.annotation.Keep -> yr:
 # {"id":"sourceFile","fileName":"Keep.jvm.kt"}
-androidx.appcompat.R$styleable -> y20:
+androidx.appcompat.R$styleable -> x20:
     int[] ViewStubCompat -> A
     int[] ActionBar -> a
     int[] ActionBarLayout -> b
@@ -18434,67 +18434,31 @@ androidx.appcompat.widget.AppCompatTextHelper$$ExternalSyntheticBUOutline0 -> k5
       # {"id":"com.android.tools.r8.synthesized"}
     1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m():0:0 -> a
       # {"id":"com.android.tools.r8.synthesized"}
-    10:12:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
-    10:12:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-      # {"id":"com.android.tools.r8.synthesized"}
+    10:12:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Landroid/view/View;Lgh0;)Lgh0;"}
     13:18:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
-    13:18:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):22 -> b
-    13:18:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    19:22:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):22:22 -> b
-    19:22:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    23:26:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):24:24 -> b
-    23:26:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    27:28:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):25:25 -> b
-    27:28:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    29:32:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):26:26 -> b
-    29:32:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    33:34:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0:0 -> b
-    35:37:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
-    35:37:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    38:43:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
-    38:43:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):77 -> b
-    38:43:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    44:47:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):77:77 -> b
-    44:47:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    48:51:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):79:79 -> b
-    48:51:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    52:53:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):80:80 -> b
-    52:53:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    54:57:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):81:81 -> b
-    54:57:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    58:60:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
-    58:60:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    61:66:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
-    61:66:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):28 -> b
-    61:66:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    67:70:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):28:28 -> b
-    67:70:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    71:78:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):29:29 -> b
-    71:78:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    79:82:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):30:30 -> b
-    79:82:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    83:84:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):31:31 -> b
-    83:84:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    85:88:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):32:32 -> b
-    85:88:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    89:93:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
-    89:93:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    94:99:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
-    94:99:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):41 -> b
-    94:99:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    100:101:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):41:41 -> b
-    100:101:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    102:107:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):42:42 -> b
-    102:107:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    108:111:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):44:44 -> b
-    108:111:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    112:115:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):45:45 -> b
-    112:115:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    116:119:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):46:46 -> b
-    116:119:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    120:124:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):43:43 -> b
-    120:124:WindowInsetsCompat AppCompatTextHelper$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
+    13:18:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):77 -> b
+    19:22:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):77:77 -> b
+    23:26:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):79:79 -> b
+    27:28:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):80:80 -> b
+    29:32:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.LegListActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):81:81 -> b
+    33:35:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
+    36:41:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
+    36:41:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):28 -> b
+    42:45:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):28:28 -> b
+    46:53:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):29:29 -> b
+    54:57:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):30:30 -> b
+    58:59:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):31:31 -> b
+    60:63:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):32:32 -> b
+    64:68:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
+    69:74:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
+    69:74:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):41 -> b
+    75:76:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):41:41 -> b
+    77:82:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):42:42 -> b
+    83:86:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):44:44 -> b
+    87:90:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):45:45 -> b
+    91:94:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):46:46 -> b
+    95:98:androidx.core.view.WindowInsetsCompat com.my.striptologbook.utils.InsetsHelper.applyImeBottomPaddingToRoot$lambda$1(android.view.View,androidx.core.view.WindowInsetsCompat):43:43 -> b
     1:18:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m(int,java.lang.String):0:0 -> c
       # {"id":"com.android.tools.r8.synthesized"}
     1:21:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.Object):0:0 -> d
@@ -18521,25 +18485,27 @@ androidx.appcompat.widget.AppCompatTextHelper$$ExternalSyntheticBUOutline0 -> k5
       # {"id":"com.android.tools.r8.synthesized"}
     1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1():0:0 -> n
       # {"id":"com.android.tools.r8.synthesized"}
-    1:23:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.Object,java.lang.Object):0:0 -> o
+    1:22:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(int,java.lang.String):0:0 -> o
       # {"id":"com.android.tools.r8.synthesized"}
-    1:18:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.Object,java.lang.String):0:0 -> p
+    1:23:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.Object,java.lang.Object):0:0 -> p
       # {"id":"com.android.tools.r8.synthesized"}
-    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.String):0:0 -> q
+    1:18:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.Object,java.lang.String):0:0 -> q
       # {"id":"com.android.tools.r8.synthesized"}
-    1:25:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.String,java.lang.Object,java.lang.Object):0:0 -> r
+    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.String):0:0 -> r
       # {"id":"com.android.tools.r8.synthesized"}
-    1:28:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object):0:0 -> s
+    1:25:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.String,java.lang.Object,java.lang.Object):0:0 -> s
       # {"id":"com.android.tools.r8.synthesized"}
-    1:22:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$2(java.lang.Object,java.lang.String):0:0 -> t
+    1:28:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$1(java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object):0:0 -> t
       # {"id":"com.android.tools.r8.synthesized"}
-    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$2(java.lang.String):0:0 -> u
+    1:22:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$2(java.lang.Object,java.lang.String):0:0 -> u
       # {"id":"com.android.tools.r8.synthesized"}
-    1:22:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$3(java.lang.Object,java.lang.String):0:0 -> v
+    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$2(java.lang.String):0:0 -> v
       # {"id":"com.android.tools.r8.synthesized"}
-    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$3(java.lang.String):0:0 -> w
+    1:22:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$3(java.lang.Object,java.lang.String):0:0 -> w
       # {"id":"com.android.tools.r8.synthesized"}
-    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$4(java.lang.String):0:0 -> x
+    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$3(java.lang.String):0:0 -> x
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:6:void AppCompatTextHelper$$ExternalSyntheticBUOutline0.m$4(java.lang.String):0:0 -> y
       # {"id":"com.android.tools.r8.synthesized"}
 androidx.appcompat.widget.AppCompatTextHelper$1 -> l5:
 # {"id":"sourceFile","fileName":"AppCompatTextHelper.java"}
@@ -26149,7 +26115,7 @@ androidx.concurrent.futures.AbstractResolvableFuture$Waiter -> c0:
     4:13:void <init>():137:137 -> <init>
 androidx.concurrent.futures.ResolvableFuture -> y40:
 # {"id":"sourceFile","fileName":"ResolvableFuture.java"}
-androidx.core.R$styleable -> v20:
+androidx.core.R$styleable -> u20:
     int[] ColorStateListItem -> a
     int[] FontFamily -> b
     int[] FontFamilyFont -> c
@@ -26202,9 +26168,9 @@ androidx.core.app.NavUtils -> xy:
     4:7:kotlinx.coroutines.CompletableJob kotlinx.coroutines.SupervisorKt.SupervisorJob(kotlinx.coroutines.Job):27 -> a
     4:7:kotlinx.coroutines.CompletableJob kotlinx.coroutines.SupervisorKt.SupervisorJob$default(kotlinx.coroutines.Job,int,java.lang.Object):27 -> a
     4:9:okio.BufferedSink okio.Okio__OkioKt.buffer(okio.Sink):40:40 -> b
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lm80;)Lc30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lm80;)Lb30;"}
     4:9:okio.BufferedSource okio.Okio__OkioKt.buffer(okio.Source):34:34 -> c
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lq80;)Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lq80;)Lc30;"}
     1:4:java.util.Map okio.internal.ZipFilesKt.buildIndex(java.util.List):149:149 -> d
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/util/ArrayList;)Ljava/util/LinkedHashMap;"}
     5:8:okio.Path okio.Path$Companion.get$default(okio.Path$Companion,java.lang.String,boolean,int,java.lang.Object):119:119 -> d
@@ -26359,7 +26325,7 @@ androidx.core.app.NavUtils -> xy:
     46:49:boolean okio.internal.ResourceFileSystem$Companion.keepPath(okio.Path):212 -> l
     50:57:boolean okio.internal.ResourceFileSystem$Companion.keepPath(okio.Path):212:212 -> l
     3:13:okio.internal.ZipEntry okio.internal.ZipFilesKt.readCentralDirectoryZipEntry(okio.BufferedSource):190:190 -> m
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ld30;)Ljh0;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lc30;)Ljh0;"}
     14:16:okio.internal.ZipEntry okio.internal.ZipFilesKt.readCentralDirectoryZipEntry(okio.BufferedSource):197:197 -> m
     17:30:okio.internal.ZipEntry okio.internal.ZipFilesKt.readCentralDirectoryZipEntry(okio.BufferedSource):198:198 -> m
     31:36:okio.internal.ZipEntry okio.internal.ZipFilesKt.readCentralDirectoryZipEntry(okio.BufferedSource):203:203 -> m
@@ -26425,7 +26391,7 @@ androidx.core.app.NavUtils -> xy:
     1:15:void okio.internal.ZipFilesKt.readExtra(okio.BufferedSource,int,kotlin.jvm.functions.Function2):356:356 -> n
     1:15:void NavUtils.readExtra(RealBufferedSource,int,Function2):0 -> n
       # {"id":"com.android.tools.r8.synthesized"}
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ld30;ILso;)V"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lc30;ILso;)V"}
     16:23:void okio.internal.ZipFilesKt.readExtra(okio.BufferedSource,int,kotlin.jvm.functions.Function2):361:361 -> n
     16:23:void NavUtils.readExtra(RealBufferedSource,int,Function2):0 -> n
     24:37:void okio.internal.ZipFilesKt.readExtra(okio.BufferedSource,int,kotlin.jvm.functions.Function2):362:362 -> n
@@ -26454,7 +26420,7 @@ androidx.core.app.NavUtils -> xy:
     85:90:void okio.internal.ZipFilesKt.readExtra(okio.BufferedSource,int,kotlin.jvm.functions.Function2):359:359 -> n
     85:90:void NavUtils.readExtra(RealBufferedSource,int,Function2):0 -> n
     5:15:okio.internal.ZipEntry okio.internal.ZipFilesKt.readOrSkipLocalHeader(okio.BufferedSource,okio.internal.ZipEntry):398:398 -> o
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ld30;Ljh0;)Ljh0;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lc30;Ljh0;)Ljh0;"}
     16:18:okio.internal.ZipEntry okio.internal.ZipFilesKt.readOrSkipLocalHeader(okio.BufferedSource,okio.internal.ZipEntry):404:404 -> o
     19:34:okio.internal.ZipEntry okio.internal.ZipFilesKt.readOrSkipLocalHeader(okio.BufferedSource,okio.internal.ZipEntry):405:405 -> o
     35:37:okio.internal.ZipEntry okio.internal.ZipFilesKt.readOrSkipLocalHeader(okio.BufferedSource,okio.internal.ZipEntry):409:409 -> o
@@ -35283,7 +35249,7 @@ androidx.emoji2.viewsintegration.EmojiTransformationMethod -> mi:
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(3)"]}
     1:4:void onFocusChanged(android.view.View,java.lang.CharSequence,boolean,int,android.graphics.Rect):70:70 -> onFocusChanged
     5:8:void onFocusChanged(android.view.View,java.lang.CharSequence,boolean,int,android.graphics.Rect):71:71 -> onFocusChanged
-androidx.fragment.R$styleable -> w20:
+androidx.fragment.R$styleable -> v20:
     int[] Fragment -> a
     int[] FragmentContainerView -> b
     10:22:void <clinit>():0:0 -> <clinit>
@@ -44284,7 +44250,7 @@ androidx.navigationevent.NavigationEventProcessor -> bz:
     kotlinx.coroutines.flow.MutableStateFlow _history -> b
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow history -> c
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlin.collections.ArrayDeque overlayHandlers -> d
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lg6;"}
     kotlin.collections.ArrayDeque defaultHandlers -> e
@@ -45581,7 +45547,7 @@ androidx.profileinstaller.WritableFileSection -> ih0:
     4:5:void <init>(androidx.profileinstaller.FileSectionType,int,byte[],boolean):35:35 -> <init>
     6:7:void <init>(androidx.profileinstaller.FileSectionType,int,byte[],boolean):37:37 -> <init>
     8:10:void <init>(androidx.profileinstaller.FileSectionType,int,byte[],boolean):38:38 -> <init>
-androidx.recyclerview.R$styleable -> x20:
+androidx.recyclerview.R$styleable -> w20:
     int[] RecyclerView -> a
     3:10:void <clinit>():0:0 -> <clinit>
 androidx.recyclerview.widget.AdapterHelper -> h2:
@@ -73649,9 +73615,9 @@ com.my.striptologbook.data.PdfLayoutConfig -> com.my.striptologbook.data.PdfLayo
     150:150:int hashCode():0:0 -> hashCode
     151:151:int hashCode():0:0 -> hashCode
     1:294:java.lang.String toString():0:0 -> toString
-    2:515:void write$Self$app(com.my.striptologbook.data.PdfLayoutConfig,kotlinx.serialization.encoding.CompositeEncoder,kotlinx.serialization.descriptors.SerialDescriptor):9:9 -> write$Self$app
-    516:517:void write$Self$app(com.my.striptologbook.data.PdfLayoutConfig,kotlinx.serialization.encoding.CompositeEncoder,kotlinx.serialization.descriptors.SerialDescriptor):39:39 -> write$Self$app
-    518:547:void write$Self$app(com.my.striptologbook.data.PdfLayoutConfig,kotlinx.serialization.encoding.CompositeEncoder,kotlinx.serialization.descriptors.SerialDescriptor):9:9 -> write$Self$app
+    2:519:void write$Self$app(com.my.striptologbook.data.PdfLayoutConfig,kotlinx.serialization.encoding.CompositeEncoder,kotlinx.serialization.descriptors.SerialDescriptor):9:9 -> write$Self$app
+    520:521:void write$Self$app(com.my.striptologbook.data.PdfLayoutConfig,kotlinx.serialization.encoding.CompositeEncoder,kotlinx.serialization.descriptors.SerialDescriptor):39:39 -> write$Self$app
+    522:551:void write$Self$app(com.my.striptologbook.data.PdfLayoutConfig,kotlinx.serialization.encoding.CompositeEncoder,kotlinx.serialization.descriptors.SerialDescriptor):9:9 -> write$Self$app
 com.my.striptologbook.data.PdfLayoutConfig$$serializer -> com.my.striptologbook.data.PdfLayoutConfig$$serializer:
 # {"id":"sourceFile","fileName":"PdfLayoutConfig.kt"}
     8:140:void <clinit>():9:9 -> <clinit>
@@ -77717,9 +77683,9 @@ com.my.striptologbook.ui.CsvImportActivity$$ExternalSyntheticLambda0 -> ld:
     269:274:kotlin.Pair kotlin.text.StringsKt__StringsKt.rangesDelimitedBy$lambda$0$StringsKt__StringsKt(char[],boolean,java.lang.CharSequence,int):1342 -> invoke
     269:274:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0 -> invoke
     275:286:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0:0 -> invoke
-    287:289:kotlin.Unit com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$1(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,java.lang.String,boolean):0:0 -> invoke
+    287:289:kotlin.Unit com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,java.lang.String,boolean):0:0 -> invoke
     287:289:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0 -> invoke
-    290:299:kotlin.Unit com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$1(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,java.lang.String,boolean):47:47 -> invoke
+    290:299:kotlin.Unit com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,java.lang.String,boolean):41:41 -> invoke
     290:299:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0 -> invoke
     300:309:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0:0 -> invoke
     310:313:int kotlinx.coroutines.flow.internal.SafeCollector_commonKt.checkContext$lambda$0(kotlinx.coroutines.flow.internal.SafeCollector,int,kotlin.coroutines.CoroutineContext$Element):25:25 -> invoke
@@ -78265,7 +78231,7 @@ com.my.striptologbook.ui.CsvImportViewModel -> ud:
     kotlinx.coroutines.flow.MutableStateFlow _state -> c
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow state -> d
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     com.my.striptologbook.utils.CsvData csvData -> e
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lkd;"}
     java.util.Set TIMESTAMP_FIELDS -> f
@@ -81134,7 +81100,7 @@ com.my.striptologbook.ui.ExportImportViewModel -> uj:
     kotlinx.coroutines.flow.MutableStateFlow _result -> c
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow result -> d
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     1:6:void <init>(com.my.striptologbook.repository.LegRepository):31:31 -> <init>
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Lv4;)V"}
     7:12:void <init>(com.my.striptologbook.repository.LegRepository):33:33 -> <init>
@@ -88405,7 +88371,7 @@ com.my.striptologbook.ui.LegEditViewModel -> xs:
     kotlinx.coroutines.flow.MutableStateFlow _state -> f
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow state -> g
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     java.lang.Long depSunrise -> h
     java.lang.Long depSunset -> i
     java.lang.Long arrSunrise -> j
@@ -92001,23 +91967,23 @@ com.my.striptologbook.ui.LegViewModel -> eu:
     kotlinx.coroutines.flow.MutableStateFlow _legs -> c
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow legs -> d
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _currentFilter -> e
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow currentFilter -> f
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _customStartDate -> g
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow customStartDate -> h
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _customEndDate -> i
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow customEndDate -> j
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _filteredLegs -> k
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow filteredLegs -> l
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _summary -> m
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     boolean isUserFilterChanged -> n
@@ -94116,7 +94082,7 @@ com.my.striptologbook.ui.OpeningBalanceEditViewModel -> y00:
     kotlinx.coroutines.flow.MutableStateFlow _state -> e
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow state -> f
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     7:11:void <init>(com.my.striptologbook.repository.LegRepository,java.lang.Long,boolean):54:54 -> <init>
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Lv4;Ljava/lang/Long;Z)V"}
     12:13:void <init>(com.my.striptologbook.repository.LegRepository,java.lang.Long,boolean):51:51 -> <init>
@@ -94834,7 +94800,7 @@ com.my.striptologbook.ui.OpeningBalanceListAdapter$ViewHolder -> d10:
 com.my.striptologbook.ui.OpeningBalanceListViewModel -> f10:
 # {"id":"sourceFile","fileName":"OpeningBalanceListViewModel.kt"}
     kotlinx.coroutines.flow.StateFlow allRows -> b
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     1:3:void <init>(com.my.striptologbook.LogbookApplication):14:14 -> <init>
     4:7:void <init>(com.my.striptologbook.LogbookApplication):17:17 -> <init>
     8:15:kotlinx.coroutines.flow.Flow com.my.striptologbook.repository.LegRepository.getAllOpeningBalances():86:86 -> <init>
@@ -95233,53 +95199,55 @@ com.my.striptologbook.ui.PreferencesActivity -> com.my.striptologbook.ui.Prefere
     int $r8$clinit -> B
       # {"id":"com.android.tools.r8.synthesized"}
     1:4:void com.my.striptologbook.ui.BaseActivity.<init>():12:12 -> <init>
-    1:4:void <init>():13 -> <init>
-    1:6:void onCreate(android.os.Bundle):16:16 -> onCreate
-    7:12:void onCreate(android.os.Bundle):17:17 -> onCreate
-    13:16:void onCreate(android.os.Bundle):20:20 -> onCreate
-    17:25:void onCreate(android.os.Bundle):21:21 -> onCreate
-    26:31:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
-    26:31:void onCreate(android.os.Bundle):21 -> onCreate
-    32:37:void onCreate(android.os.Bundle):30:30 -> onCreate
-    38:40:void onCreate(android.os.Bundle):31:31 -> onCreate
-    41:51:void onCreate(android.os.Bundle):32:32 -> onCreate
-    52:64:void onCreate(android.os.Bundle):33:33 -> onCreate
-    65:82:void onCreate(android.os.Bundle):35:35 -> onCreate
-    83:96:void onCreate(android.os.Bundle):39:39 -> onCreate
-    97:114:void onCreate(android.os.Bundle):43:43 -> onCreate
-    115:132:void onCreate(android.os.Bundle):47:47 -> onCreate
-    133:150:void onCreate(android.os.Bundle):51:51 -> onCreate
-    151:166:void onCreate(android.os.Bundle):55:55 -> onCreate
-    4:12:boolean onOptionsItemSelected(android.view.MenuItem):62:62 -> onOptionsItemSelected
-    13:17:boolean onOptionsItemSelected(android.view.MenuItem):63:63 -> onOptionsItemSelected
-    18:22:boolean onOptionsItemSelected(android.view.MenuItem):66:66 -> onOptionsItemSelected
-com.my.striptologbook.ui.PreferencesActivity$$ExternalSyntheticLambda1 -> c20:
+    1:4:void <init>():14 -> <init>
+    1:6:void onCreate(android.os.Bundle):17:17 -> onCreate
+    7:12:void onCreate(android.os.Bundle):18:18 -> onCreate
+    13:19:void onCreate(android.os.Bundle):21:21 -> onCreate
+    20:28:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27:27 -> onCreate
+    20:28:void onCreate(android.os.Bundle):21 -> onCreate
+    29:34:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
+    29:34:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27 -> onCreate
+    29:34:void onCreate(android.os.Bundle):21 -> onCreate
+    35:40:void onCreate(android.os.Bundle):24:24 -> onCreate
+    41:43:void onCreate(android.os.Bundle):25:25 -> onCreate
+    44:54:void onCreate(android.os.Bundle):26:26 -> onCreate
+    55:67:void onCreate(android.os.Bundle):27:27 -> onCreate
+    68:85:void onCreate(android.os.Bundle):30:30 -> onCreate
+    86:99:void onCreate(android.os.Bundle):34:34 -> onCreate
+    100:117:void onCreate(android.os.Bundle):38:38 -> onCreate
+    118:135:void onCreate(android.os.Bundle):42:42 -> onCreate
+    136:153:void onCreate(android.os.Bundle):46:46 -> onCreate
+    154:169:void onCreate(android.os.Bundle):50:50 -> onCreate
+    4:12:boolean onOptionsItemSelected(android.view.MenuItem):57:57 -> onOptionsItemSelected
+    13:17:boolean onOptionsItemSelected(android.view.MenuItem):58:58 -> onOptionsItemSelected
+    18:22:boolean onOptionsItemSelected(android.view.MenuItem):61:61 -> onOptionsItemSelected
+com.my.striptologbook.ui.PreferencesActivity$$ExternalSyntheticLambda0 -> c20:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
-    byte PreferencesActivity$$ExternalSyntheticLambda1.$r8$classId -> b
+    byte PreferencesActivity$$ExternalSyntheticLambda0.$r8$classId -> b
       # {"id":"com.android.tools.r8.synthesized"}
-    com.my.striptologbook.ui.PreferencesActivity com.my.striptologbook.ui.PreferencesActivity$$InternalSyntheticLambda$1$b42442423066b7762ce2d964b34ea18af7a6ba8dde309f706daac3ee4eb4bff0$1.f$0 -> c
+    com.my.striptologbook.ui.PreferencesActivity com.my.striptologbook.ui.PreferencesActivity$$InternalSyntheticLambda$1$b42442423066b7762ce2d964b34ea18af7a6ba8dde309f706daac3ee4eb4bff0$0.f$0 -> c
       # {"id":"com.android.tools.r8.synthesized"}
-    1:8:void PreferencesActivity$$ExternalSyntheticLambda1.<init>(com.my.striptologbook.ui.PreferencesActivity,byte):0:0 -> <init>
+    1:8:void PreferencesActivity$$ExternalSyntheticLambda0.<init>(com.my.striptologbook.ui.PreferencesActivity,byte):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
-    12:22:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$6(com.my.striptologbook.ui.PreferencesActivity,android.view.View):56:56 -> onClick
-    12:22:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    12:22:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.PreferencesActivity,android.view.View):51:51 -> onClick
+    12:22:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
       # {"id":"com.android.tools.r8.synthesized"}
-    23:24:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    25:35:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.PreferencesActivity,android.view.View):52:52 -> onClick
-    25:35:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    36:37:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    38:48:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.PreferencesActivity,android.view.View):48:48 -> onClick
-    38:48:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    49:50:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    51:59:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.PreferencesActivity,android.view.View):44:44 -> onClick
-    51:59:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    60:61:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    62:70:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.PreferencesActivity,android.view.View):40:40 -> onClick
-    62:70:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    71:72:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    73:84:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$1(com.my.striptologbook.ui.PreferencesActivity,android.view.View):36:36 -> onClick
-    73:84:void PreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    23:24:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    25:35:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.PreferencesActivity,android.view.View):47:47 -> onClick
+    25:35:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    36:37:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    38:48:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.PreferencesActivity,android.view.View):43:43 -> onClick
+    38:48:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    49:50:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    51:59:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.PreferencesActivity,android.view.View):39:39 -> onClick
+    51:59:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    60:61:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    62:70:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$1(com.my.striptologbook.ui.PreferencesActivity,android.view.View):35:35 -> onClick
+    62:70:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    71:72:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    73:84:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.PreferencesActivity,android.view.View):31:31 -> onClick
+    73:84:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
 com.my.striptologbook.ui.SearchActivity -> com.my.striptologbook.ui.SearchActivity:
 # {"id":"sourceFile","fileName":"SearchActivity.kt"}
     com.my.striptologbook.ui.SearchViewModel viewModel -> B
@@ -95974,11 +95942,11 @@ com.my.striptologbook.ui.SearchViewModel -> h70:
     kotlinx.coroutines.flow.MutableStateFlow _conditions -> c
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow conditions -> d
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _logicOperator -> e
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow logicOperator -> f
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     1:3:void <init>(com.my.striptologbook.repository.LegRepository):12:12 -> <init>
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Lv4;)V"}
     4:5:void <init>(com.my.striptologbook.repository.LegRepository):11:11 -> <init>
@@ -95998,53 +95966,55 @@ com.my.striptologbook.ui.SettingsActivity -> com.my.striptologbook.ui.SettingsAc
     int $r8$clinit -> B
       # {"id":"com.android.tools.r8.synthesized"}
     1:4:void com.my.striptologbook.ui.BaseActivity.<init>():12:12 -> <init>
-    1:4:void <init>():13 -> <init>
-    1:6:void onCreate(android.os.Bundle):15:15 -> onCreate
-    7:12:void onCreate(android.os.Bundle):16:16 -> onCreate
-    13:16:void onCreate(android.os.Bundle):19:19 -> onCreate
-    17:25:void onCreate(android.os.Bundle):20:20 -> onCreate
-    26:31:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
-    26:31:void onCreate(android.os.Bundle):20 -> onCreate
-    32:37:void onCreate(android.os.Bundle):31:31 -> onCreate
-    38:40:void onCreate(android.os.Bundle):32:32 -> onCreate
-    41:51:void onCreate(android.os.Bundle):33:33 -> onCreate
-    52:64:void onCreate(android.os.Bundle):34:34 -> onCreate
-    65:82:void onCreate(android.os.Bundle):37:37 -> onCreate
-    83:99:void onCreate(android.os.Bundle):40:40 -> onCreate
-    100:117:void onCreate(android.os.Bundle):43:43 -> onCreate
-    118:135:void onCreate(android.os.Bundle):46:46 -> onCreate
-    136:153:void onCreate(android.os.Bundle):49:49 -> onCreate
-    154:169:void onCreate(android.os.Bundle):52:52 -> onCreate
-    4:12:boolean onOptionsItemSelected(android.view.MenuItem):59:59 -> onOptionsItemSelected
-    13:17:boolean onOptionsItemSelected(android.view.MenuItem):60:60 -> onOptionsItemSelected
-    18:22:boolean onOptionsItemSelected(android.view.MenuItem):63:63 -> onOptionsItemSelected
-com.my.striptologbook.ui.SettingsActivity$$ExternalSyntheticLambda1 -> c80:
+    1:4:void <init>():14 -> <init>
+    1:6:void onCreate(android.os.Bundle):16:16 -> onCreate
+    7:12:void onCreate(android.os.Bundle):17:17 -> onCreate
+    13:19:void onCreate(android.os.Bundle):20:20 -> onCreate
+    20:28:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27:27 -> onCreate
+    20:28:void onCreate(android.os.Bundle):20 -> onCreate
+    29:34:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
+    29:34:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27 -> onCreate
+    29:34:void onCreate(android.os.Bundle):20 -> onCreate
+    35:40:void onCreate(android.os.Bundle):23:23 -> onCreate
+    41:43:void onCreate(android.os.Bundle):24:24 -> onCreate
+    44:54:void onCreate(android.os.Bundle):25:25 -> onCreate
+    55:67:void onCreate(android.os.Bundle):26:26 -> onCreate
+    68:85:void onCreate(android.os.Bundle):29:29 -> onCreate
+    86:102:void onCreate(android.os.Bundle):32:32 -> onCreate
+    103:120:void onCreate(android.os.Bundle):35:35 -> onCreate
+    121:138:void onCreate(android.os.Bundle):38:38 -> onCreate
+    139:156:void onCreate(android.os.Bundle):41:41 -> onCreate
+    157:172:void onCreate(android.os.Bundle):44:44 -> onCreate
+    4:12:boolean onOptionsItemSelected(android.view.MenuItem):51:51 -> onOptionsItemSelected
+    13:17:boolean onOptionsItemSelected(android.view.MenuItem):52:52 -> onOptionsItemSelected
+    18:22:boolean onOptionsItemSelected(android.view.MenuItem):55:55 -> onOptionsItemSelected
+com.my.striptologbook.ui.SettingsActivity$$ExternalSyntheticLambda0 -> c80:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
-    byte SettingsActivity$$ExternalSyntheticLambda1.$r8$classId -> b
+    byte SettingsActivity$$ExternalSyntheticLambda0.$r8$classId -> b
       # {"id":"com.android.tools.r8.synthesized"}
-    com.my.striptologbook.ui.SettingsActivity com.my.striptologbook.ui.SettingsActivity$$InternalSyntheticLambda$1$cee67b70bfbbeb7ecb9ae4560244d89f807da481fd2616cf7e1dae556227d442$1.f$0 -> c
+    com.my.striptologbook.ui.SettingsActivity com.my.striptologbook.ui.SettingsActivity$$InternalSyntheticLambda$1$cee67b70bfbbeb7ecb9ae4560244d89f807da481fd2616cf7e1dae556227d442$0.f$0 -> c
       # {"id":"com.android.tools.r8.synthesized"}
-    1:8:void SettingsActivity$$ExternalSyntheticLambda1.<init>(com.my.striptologbook.ui.SettingsActivity,byte):0:0 -> <init>
+    1:8:void SettingsActivity$$ExternalSyntheticLambda0.<init>(com.my.striptologbook.ui.SettingsActivity,byte):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
-    10:20:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$6(com.my.striptologbook.ui.SettingsActivity,android.view.View):53:53 -> onClick
-    10:20:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    10:20:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$5(com.my.striptologbook.ui.SettingsActivity,android.view.View):45:45 -> onClick
+    10:20:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
       # {"id":"com.android.tools.r8.synthesized"}
-    21:22:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    23:33:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$5(com.my.striptologbook.ui.SettingsActivity,android.view.View):50:50 -> onClick
-    23:33:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    34:35:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    36:46:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$4(com.my.striptologbook.ui.SettingsActivity,android.view.View):47:47 -> onClick
-    36:46:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    47:48:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    49:59:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$3(com.my.striptologbook.ui.SettingsActivity,android.view.View):44:44 -> onClick
-    49:59:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    60:61:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    62:72:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$2(com.my.striptologbook.ui.SettingsActivity,android.view.View):41:41 -> onClick
-    62:72:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    73:74:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
-    75:86:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$1(com.my.striptologbook.ui.SettingsActivity,android.view.View):38:38 -> onClick
-    75:86:void SettingsActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    21:22:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    23:33:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$4(com.my.striptologbook.ui.SettingsActivity,android.view.View):42:42 -> onClick
+    23:33:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    34:35:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    36:46:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$3(com.my.striptologbook.ui.SettingsActivity,android.view.View):39:39 -> onClick
+    36:46:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    47:48:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    49:59:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$2(com.my.striptologbook.ui.SettingsActivity,android.view.View):36:36 -> onClick
+    49:59:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    60:61:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    62:72:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$1(com.my.striptologbook.ui.SettingsActivity,android.view.View):33:33 -> onClick
+    62:72:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
+    73:74:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
+    75:86:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(com.my.striptologbook.ui.SettingsActivity,android.view.View):30:30 -> onClick
+    75:86:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
 com.my.striptologbook.ui.SkipDetail -> n80:
 # {"id":"sourceFile","fileName":"CsvImportViewModel.kt"}
     int rowIndex -> a
@@ -96768,15 +96738,15 @@ com.my.striptologbook.ui.StatisticsViewModel -> ia0:
     kotlinx.coroutines.flow.MutableStateFlow _typeStats -> h
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow typeStats -> i
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _yearStats -> j
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow yearStats -> k
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     kotlinx.coroutines.flow.MutableStateFlow _isLoading -> l
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
     kotlinx.coroutines.flow.StateFlow isLoading -> m
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La30;"}
     1:3:void <init>(com.my.striptologbook.repository.LegRepository,java.lang.String,java.lang.Long,java.lang.Long,java.lang.String,android.content.Context):25:25 -> <init>
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Lv4;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Landroid/content/Context;)V"}
     4:5:void <init>(com.my.striptologbook.repository.LegRepository,java.lang.String,java.lang.Long,java.lang.Long,java.lang.String,android.content.Context):19:19 -> <init>
@@ -97312,68 +97282,70 @@ com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity -> com.my.strip
     int $r8$clinit -> D
       # {"id":"com.android.tools.r8.synthesized"}
     1:4:void com.my.striptologbook.ui.BaseActivity.<init>():12:12 -> <init>
-    1:4:void <init>():15 -> <init>
-    1:6:void onCreate(android.os.Bundle):21:21 -> onCreate
-    7:12:void onCreate(android.os.Bundle):22:22 -> onCreate
-    13:16:void onCreate(android.os.Bundle):25:25 -> onCreate
-    17:25:void onCreate(android.os.Bundle):26:26 -> onCreate
-    26:31:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
-    26:31:void onCreate(android.os.Bundle):26 -> onCreate
-    32:37:void onCreate(android.os.Bundle):35:35 -> onCreate
-    38:40:void onCreate(android.os.Bundle):36:36 -> onCreate
-    41:51:void onCreate(android.os.Bundle):37:37 -> onCreate
-    52:64:void onCreate(android.os.Bundle):38:38 -> onCreate
-    65:75:void onCreate(android.os.Bundle):41:41 -> onCreate
-    76:83:void onCreate(android.os.Bundle):42:42 -> onCreate
-    84:85:java.util.List com.my.striptologbook.ui.StatisticNames.getALL_STATISTICS():5:5 -> onCreate
-    84:85:void onCreate(android.os.Bundle):44 -> onCreate
-    86:98:void onCreate(android.os.Bundle):46:46 -> onCreate
-    99:108:void onCreate(android.os.Bundle):49:49 -> onCreate
-    109:126:void onCreate(android.os.Bundle):52:52 -> onCreate
-    127:141:void onCreate(android.os.Bundle):59:59 -> onCreate
-    142:148:void onCreate(android.os.Bundle):49:49 -> onCreate
-    4:12:boolean onOptionsItemSelected(android.view.MenuItem):68:68 -> onOptionsItemSelected
-    13:17:boolean onOptionsItemSelected(android.view.MenuItem):69:69 -> onOptionsItemSelected
-    18:22:boolean onOptionsItemSelected(android.view.MenuItem):72:72 -> onOptionsItemSelected
-com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2 -> ja0:
+    1:4:void <init>():16 -> <init>
+    1:6:void onCreate(android.os.Bundle):22:22 -> onCreate
+    7:12:void onCreate(android.os.Bundle):23:23 -> onCreate
+    13:19:void onCreate(android.os.Bundle):26:26 -> onCreate
+    20:28:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27:27 -> onCreate
+    20:28:void onCreate(android.os.Bundle):26 -> onCreate
+    29:34:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
+    29:34:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27 -> onCreate
+    29:34:void onCreate(android.os.Bundle):26 -> onCreate
+    35:40:void onCreate(android.os.Bundle):29:29 -> onCreate
+    41:43:void onCreate(android.os.Bundle):30:30 -> onCreate
+    44:54:void onCreate(android.os.Bundle):31:31 -> onCreate
+    55:67:void onCreate(android.os.Bundle):32:32 -> onCreate
+    68:78:void onCreate(android.os.Bundle):35:35 -> onCreate
+    79:86:void onCreate(android.os.Bundle):36:36 -> onCreate
+    87:88:java.util.List com.my.striptologbook.ui.StatisticNames.getALL_STATISTICS():5:5 -> onCreate
+    87:88:void onCreate(android.os.Bundle):38 -> onCreate
+    89:101:void onCreate(android.os.Bundle):40:40 -> onCreate
+    102:111:void onCreate(android.os.Bundle):43:43 -> onCreate
+    112:129:void onCreate(android.os.Bundle):46:46 -> onCreate
+    130:144:void onCreate(android.os.Bundle):53:53 -> onCreate
+    145:151:void onCreate(android.os.Bundle):43:43 -> onCreate
+    4:12:boolean onOptionsItemSelected(android.view.MenuItem):62:62 -> onOptionsItemSelected
+    13:17:boolean onOptionsItemSelected(android.view.MenuItem):63:63 -> onOptionsItemSelected
+    18:22:boolean onOptionsItemSelected(android.view.MenuItem):66:66 -> onOptionsItemSelected
+com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1 -> ja0:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
-    byte StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.$r8$classId -> b
+    byte StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.$r8$classId -> b
       # {"id":"com.android.tools.r8.synthesized"}
-    com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity$$InternalSyntheticLambda$1$da12abb0aef378fb6101bebc7be362b1985bfd40a2797e676c29d4dab28a6f2e$2.f$0 -> c
+    com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity$$InternalSyntheticLambda$1$da12abb0aef378fb6101bebc7be362b1985bfd40a2797e676c29d4dab28a6f2e$1.f$0 -> c
       # {"id":"com.android.tools.r8.synthesized"}
-    1:8:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.<init>(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,byte):0:0 -> <init>
+    1:8:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.<init>(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,byte):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
     13:14:java.util.List com.my.striptologbook.ui.StatisticNames.getALL_STATISTICS():5:5 -> onClick
-    13:14:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):60 -> onClick
-    13:14:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
+    13:14:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):54 -> onClick
+    13:14:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
       # {"id":"com.android.tools.r8.synthesized"}
-    15:30:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):77:77 -> onClick
-    15:30:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    31:41:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):61:61 -> onClick
-    31:41:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    42:45:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):63:63 -> onClick
-    42:45:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
+    15:30:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):71:71 -> onClick
+    15:30:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    31:41:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):55:55 -> onClick
+    31:41:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    42:45:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):57:57 -> onClick
+    42:45:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
     46:51:void androidx.recyclerview.widget.RecyclerView$Adapter.notifyDataSetChanged():8200:8200 -> onClick
-    46:51:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):63 -> onClick
-    46:51:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    52:55:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):63:63 -> onClick
-    52:55:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    56:57:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0:0 -> onClick
+    46:51:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):57 -> onClick
+    46:51:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    52:55:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):57:57 -> onClick
+    52:55:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    56:57:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
     58:59:java.util.List com.my.striptologbook.ui.StatisticNames.getALL_STATISTICS():5:5 -> onClick
-    58:59:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):53 -> onClick
-    58:59:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    60:75:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):75:75 -> onClick
-    60:75:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    76:86:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):54:54 -> onClick
-    76:86:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    87:90:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):56:56 -> onClick
-    87:90:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
+    58:59:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):47 -> onClick
+    58:59:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    60:75:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):69:69 -> onClick
+    60:75:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    76:86:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):48:48 -> onClick
+    76:86:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    87:90:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):50:50 -> onClick
+    87:90:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
     91:96:void androidx.recyclerview.widget.RecyclerView$Adapter.notifyDataSetChanged():8200:8200 -> onClick
-    91:96:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):56 -> onClick
-    91:96:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
-    97:100:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):56:56 -> onClick
-    97:100:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda2.onClick(android.view.View):0 -> onClick
+    91:96:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):50 -> onClick
+    91:96:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
+    97:100:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):50:50 -> onClick
+    97:100:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
 com.my.striptologbook.ui.UpdateAvailableDialogFragment -> ie0:
 # {"id":"sourceFile","fileName":"UpdateAvailableDialogFragment.kt"}
     com.my.striptologbook.ui.UpdateAvailableDialogFragment$Listener listener -> g0
@@ -107643,7 +107615,7 @@ kotlin.jvm.internal.TypeIntrinsics -> hd0:
     8:17:int okio.ByteString.size():131:131 -> m
     8:17:long okio.internal.-RealBufferedSource.commonIndexOf(okio.RealBufferedSource,okio.ByteString,int,int,long,long):343 -> m
       # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ld30;Lv8;IJ)J"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lc30;Lv8;IJ)J"}
     18:21:long okio.internal.-RealBufferedSource.commonIndexOf(okio.RealBufferedSource,okio.ByteString,int,int,long,long):343:343 -> m
     22:33:long okio.internal.-RealBufferedSource.commonIndexOf(okio.RealBufferedSource,okio.ByteString,int,int,long,long):346:346 -> m
     34:45:long okio.internal.-RealBufferedSource.commonIndexOf(okio.RealBufferedSource,okio.ByteString,int,int,long,long):349:349 -> m
@@ -107962,7 +107934,7 @@ kotlin.random.FallbackThreadLocalRandom$implStorage$1 -> vj:
 # {"id":"sourceFile","fileName":"PlatformRandom.kt"}
     1:6:java.util.Random initialValue():53:53 -> initialValue
     1:6:java.lang.Object initialValue():52 -> initialValue
-kotlin.random.Random -> a30:
+kotlin.random.Random -> z20:
 # {"id":"sourceFile","fileName":"Random.kt"}
     kotlin.random.Random defaultRandom -> b
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lw;"}
@@ -107981,7 +107953,7 @@ kotlin.random.Random -> a30:
     22:24:void <clinit>():275 -> <clinit>
     25:27:void <clinit>():275:275 -> <clinit>
     1:4:void <init>():21:21 -> <init>
-kotlin.random.Random$Default -> z20:
+kotlin.random.Random$Default -> y20:
 # {"id":"sourceFile","fileName":"Random.kt"}
 kotlin.random.jdk8.PlatformThreadLocalRandom -> x10:
 # {"id":"sourceFile","fileName":"PlatformThreadLocalRandom.kt"}
@@ -111712,7 +111684,7 @@ kotlinx.coroutines.DebugStringsKt -> ne:
     738:744:long kotlin.time.DurationKt.parseDuration(java.lang.String,boolean,boolean):1037:1037 -> d0
     738:744:long kotlin.time.DurationKt.parseDuration$default(java.lang.String,boolean,boolean,int,java.lang.Object):1036 -> d0
     1:7:kotlinx.coroutines.flow.StateFlow kotlinx.coroutines.flow.FlowKt__ShareKt.asStateFlow(kotlinx.coroutines.flow.MutableStateFlow):396:396 -> e
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lk90;)Lb30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lk90;)La30;"}
     4:12:java.lang.Integer com.my.striptologbook.utils.DateUtilsKt.parseTimeFromDigits(java.lang.String):311:311 -> e0
     13:22:java.lang.Integer com.my.striptologbook.utils.DateUtilsKt.parseTimeFromDigits(java.lang.String):498:498 -> e0
     23:32:java.lang.Integer com.my.striptologbook.utils.DateUtilsKt.parseTimeFromDigits(java.lang.String):311:311 -> e0
@@ -118192,7 +118164,7 @@ kotlinx.coroutines.flow.MutableSharedFlow -> ny:
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/lang/Object;Lpc;)Ljava/lang/Object;"}
 kotlinx.coroutines.flow.MutableStateFlow -> oy:
 # {"id":"sourceFile","fileName":"StateFlow.kt"}
-kotlinx.coroutines.flow.ReadonlyStateFlow -> b30:
+kotlinx.coroutines.flow.ReadonlyStateFlow -> a30:
 # {"id":"sourceFile","fileName":"Share.kt"}
     kotlinx.coroutines.flow.StateFlow $$delegate_0 -> b
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lk90;"}
@@ -141036,7 +141008,7 @@ okhttp3.internal.dns.RealDnsCache -> okhttp3.internal.dns.RealDnsCache:
     4:18:okhttp3.internal.dns.DnsQuery wrap$lambda$0(okhttp3.internal.dns.RealDnsCache,okhttp3.internal.dns.DnsQuery$Factory,okhttp3.internal.dns.Question):91:91 -> wrap$lambda$0
     19:24:okhttp3.internal.dns.DnsQuery wrap$lambda$0(okhttp3.internal.dns.RealDnsCache,okhttp3.internal.dns.DnsQuery$Factory,okhttp3.internal.dns.Question):92:92 -> wrap$lambda$0
     1:6:okhttp3.internal.dns.RealDnsCache$Entry wrap$lambda$0$0():91:91 -> wrap$lambda$0$0
-okhttp3.internal.dns.RealDnsCache$$ExternalSyntheticLambda1 -> e30:
+okhttp3.internal.dns.RealDnsCache$$ExternalSyntheticLambda1 -> d30:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
     okhttp3.internal.dns.RealDnsCache okhttp3.internal.dns.RealDnsCache$$InternalSyntheticLambda$1$b80c20b803bb98d9d678bae37b3b3f70d623343741353dfec5c08beb6e2ae620$0.f$0 -> a
@@ -142176,6 +142148,31 @@ okhttp3.internal.http.RealInterceptorChain -> okhttp3.internal.http.RealIntercep
     10:57:okhttp3.Interceptor$Chain withWriteTimeout(int,java.util.concurrent.TimeUnit):202:202 -> withWriteTimeout
     58:64:okhttp3.Interceptor$Chain withWriteTimeout(int,java.util.concurrent.TimeUnit):200:200 -> withWriteTimeout
     1:3:int writeTimeoutMillis():194:194 -> writeTimeoutMillis
+okhttp3.internal.http.RealInterceptorChain$$ExternalSyntheticBUOutline0 -> e30:
+# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
+# {"id":"com.android.tools.r8.synthesized"}
+    1:6:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m():0:0 -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:33:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(int,long):0:0 -> b
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:22:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(int,java.lang.String):0:0 -> c
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:10:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(java.lang.Object):0:0 -> d
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:25:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.Object):0:0 -> e
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:26:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.Object,java.lang.Object):0:0 -> f
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:24:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Throwable):0:0 -> g
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:18:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.String):0:0 -> h
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:25:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(java.lang.String,java.lang.Object,java.lang.Object):0:0 -> i
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:18:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m(java.lang.String,java.lang.Object,java.lang.Throwable):0:0 -> j
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:18:void RealInterceptorChain$$ExternalSyntheticBUOutline0.m$1(java.lang.Object,java.lang.String):0:0 -> k
+      # {"id":"com.android.tools.r8.synthesized"}
 okhttp3.internal.http.RealResponseBody -> okhttp3.internal.http.RealResponseBody:
 # {"id":"sourceFile","fileName":"RealResponseBody.kt"}
     okio.BufferedSource source -> source
@@ -145259,66 +145256,6 @@ okhttp3.internal.idn.Punycode -> okhttp3.internal.idn.Punycode:
     1:3:java.lang.String getPREFIX_STRING():35:35 -> getPREFIX_STRING
     15:21:int getPunycodeDigit(int):331:331 -> getPunycodeDigit
     3:17:boolean requiresEncode(java.lang.String,int,int):292:292 -> requiresEncode
-okhttp3.internal.idn.Punycode$$ExternalSyntheticBUOutline0 -> u20:
-# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
-# {"id":"com.android.tools.r8.synthesized"}
-    byte Punycode$$ExternalSyntheticBUOutline0.$r8$classId -> b
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:6:void Punycode$$ExternalSyntheticBUOutline0.<init>(byte):0:0 -> <init>
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:6:void Punycode$$ExternalSyntheticBUOutline0.m():0:0 -> a
-      # {"id":"com.android.tools.r8.synthesized"}
-    10:12:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
-    10:12:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-      # {"id":"com.android.tools.r8.synthesized"}
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Landroid/view/View;Lgh0;)Lgh0;"}
-    13:18:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
-    13:18:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):27 -> b
-    13:18:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    19:22:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):27:27 -> b
-    19:22:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    23:26:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):29:29 -> b
-    23:26:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    27:28:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):30:30 -> b
-    27:28:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    29:32:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):31:31 -> b
-    29:32:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    33:34:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0:0 -> b
-    35:37:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):0:0 -> b
-    35:37:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    38:43:androidx.core.graphics.Insets androidx.core.view.WindowInsetsCompat.getInsets(int):670:670 -> b
-    38:43:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):21 -> b
-    38:43:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    44:47:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):21:21 -> b
-    44:47:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    48:51:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):23:23 -> b
-    48:51:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    52:53:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):24:24 -> b
-    52:53:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    54:58:androidx.core.view.WindowInsetsCompat com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(android.view.View,androidx.core.view.WindowInsetsCompat):25:25 -> b
-    54:58:WindowInsetsCompat Punycode$$ExternalSyntheticBUOutline0.onApplyWindowInsets(android.view.View,WindowInsetsCompat):0 -> b
-    1:33:void Punycode$$ExternalSyntheticBUOutline0.m(int,long):0:0 -> c
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:22:void Punycode$$ExternalSyntheticBUOutline0.m(int,java.lang.String):0:0 -> d
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:10:void Punycode$$ExternalSyntheticBUOutline0.m(java.lang.Object):0:0 -> e
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:25:void Punycode$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.Object):0:0 -> f
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:26:void Punycode$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.Object,java.lang.Object):0:0 -> g
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:24:void Punycode$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Throwable):0:0 -> h
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:18:void Punycode$$ExternalSyntheticBUOutline0.m(java.lang.Object,java.lang.String):0:0 -> i
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:25:void Punycode$$ExternalSyntheticBUOutline0.m(java.lang.String,java.lang.Object,java.lang.Object):0:0 -> j
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:18:void Punycode$$ExternalSyntheticBUOutline0.m(java.lang.String,java.lang.Object,java.lang.Throwable):0:0 -> k
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:22:void Punycode$$ExternalSyntheticBUOutline0.m$1(int,java.lang.String):0:0 -> l
-      # {"id":"com.android.tools.r8.synthesized"}
-    1:18:void Punycode$$ExternalSyntheticBUOutline0.m$1(java.lang.Object,java.lang.String):0:0 -> m
-      # {"id":"com.android.tools.r8.synthesized"}
 okhttp3.internal.platform.Android10Platform -> okhttp3.internal.platform.Android10Platform:
 # {"id":"sourceFile","fileName":"Android10Platform.kt"}
     9:17:void <clinit>():147:147 -> <clinit>
@@ -148273,7 +148210,7 @@ okio.Buffer -> k8:
     278:287:long indexOfElement(okio.ByteString,long):1670:1670 -> p
     278:287:long indexOfElement(okio.ByteString):560 -> p
     1:5:okio.BufferedSource peek():186:186 -> peek
-      # {"id":"com.android.tools.r8.residualsignature","signature":"()Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"()Lc30;"}
     6:11:okio.BufferedSource okio.Okio__OkioKt.buffer(okio.Source):34:34 -> peek
     6:11:okio.BufferedSource okio.Okio.buffer(okio.Source):1 -> peek
     6:11:okio.BufferedSource peek():186 -> peek
@@ -148921,7 +148858,7 @@ okio.BufferedSource -> r8:
     java.lang.String readUtf8LineStrict() -> n
     byte[] readByteArray() -> o
     okio.BufferedSource peek() -> peek
-      # {"id":"com.android.tools.r8.residualsignature","signature":"()Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"()Lc30;"}
     boolean exhausted() -> q
     byte[] readByteArray(long) -> r
     byte readByte() -> readByte
@@ -149226,11 +149163,11 @@ okio.ByteString -> v8:
 okio.DeflaterSink -> rf:
 # {"id":"sourceFile","fileName":"DeflaterSink.kt"}
     okio.BufferedSink sink -> b
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lc30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
     java.util.zip.Deflater deflater -> c
     boolean closed -> d
     1:3:void <init>(okio.BufferedSink,java.util.zip.Deflater):23:23 -> <init>
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lc30;Ljava/util/zip/Deflater;)V"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lb30;Ljava/util/zip/Deflater;)V"}
     4:5:void <init>(okio.BufferedSink,java.util.zip.Deflater):24:24 -> <init>
     6:8:void <init>(okio.BufferedSink,java.util.zip.Deflater):25:25 -> <init>
     1:5:okio.Buffer okio.RealBufferedSink.getBuffer():51:51 -> a
@@ -149955,7 +149892,7 @@ okio.ForwardingTimeout -> nm:
 okio.GzipSink -> op:
 # {"id":"sourceFile","fileName":"GzipSink.kt"}
     okio.RealBufferedSink sink -> b
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Lc30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Lb30;"}
     java.util.zip.Deflater deflater -> c
     okio.DeflaterSink deflaterSink -> d
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lrf;"}
@@ -150065,7 +150002,7 @@ okio.GzipSource -> pp:
 # {"id":"sourceFile","fileName":"GzipSource.kt"}
     byte section -> b
     okio.RealBufferedSource source -> c
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Lc30;"}
     java.util.zip.Inflater inflater -> d
     okio.InflaterSource inflaterSource -> e
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lnq;"}
@@ -150230,7 +150167,7 @@ okio.HashingSink$Companion -> R8$$REMOVED$$CLASS$$246:
 okio.InflaterSource -> nq:
 # {"id":"sourceFile","fileName":"InflaterSource.kt"}
     okio.BufferedSource source -> b
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Lc30;"}
     java.util.zip.Inflater inflater -> c
     int bufferBytesHeldByInflater -> d
     boolean closed -> e
@@ -150240,7 +150177,7 @@ okio.InflaterSource -> nq:
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Lq80;Ljava/util/zip/Inflater;)V"}
     9:12:void <init>(okio.Source,java.util.zip.Inflater):37:37 -> <init>
     13:15:void <init>(okio.BufferedSource,java.util.zip.Inflater):25:27 -> <init>
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ld30;Ljava/util/zip/Inflater;)V"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lc30;Ljava/util/zip/Inflater;)V"}
     12:19:long readOrInflate(okio.Buffer,long):60:60 -> a
     12:19:long InflaterSource.readOrInflate(Buffer,long):0 -> a
       # {"id":"com.android.tools.r8.synthesized"}
@@ -151342,7 +151279,7 @@ okio.PriorityQueue -> g20:
     133:135:void remove(okio.AsyncTimeout):424 -> b
     136:139:void remove(okio.AsyncTimeout):427:427 -> b
     140:145:void remove(okio.AsyncTimeout):403:403 -> b
-okio.RealBufferedSink -> c30:
+okio.RealBufferedSink -> b30:
 # {"id":"sourceFile","fileName":"RealBufferedSink.kt"}
     okio.Sink sink -> b
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lm80;"}
@@ -151474,7 +151411,7 @@ okio.RealBufferedSink -> c30:
     7:9:okio.BufferedSink writeShort(int):239:239 -> writeShort
     10:13:okio.BufferedSink writeShort(int):241:241 -> writeShort
     14:20:okio.BufferedSink writeShort(int):237:237 -> writeShort
-okio.RealBufferedSource -> d30:
+okio.RealBufferedSource -> c30:
 # {"id":"sourceFile","fileName":"RealBufferedSource.kt"}
     okio.Source source -> b
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lq80;"}
@@ -151602,7 +151539,7 @@ okio.RealBufferedSource -> d30:
     10:14:byte[] okio.Buffer.readByteArray():1159:1159 -> o
     10:14:byte[] readByteArray():267 -> o
     1:5:okio.BufferedSource peek():490:490 -> peek
-      # {"id":"com.android.tools.r8.residualsignature","signature":"()Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"()Lc30;"}
     6:11:okio.BufferedSource okio.Okio__OkioKt.buffer(okio.Source):34:34 -> peek
     6:11:okio.BufferedSource okio.Okio.buffer(okio.Source):1 -> peek
     6:11:okio.BufferedSource peek():490 -> peek
@@ -153603,7 +153540,7 @@ okio.internal.ZipFilesKt$$ExternalSyntheticLambda0 -> lh0:
       # {"id":"com.android.tools.r8.residualsignature","signature":"Ln40;"}
       # {"id":"com.android.tools.r8.synthesized"}
     okio.BufferedSource okio.internal.ZipFilesKt$$InternalSyntheticLambda$3$813b94d375b9f3f7b95ab06ad65cdfd4c8ccd897db771f45fb03260fc87bb13a$0.f$0 -> d
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Lc30;"}
       # {"id":"com.android.tools.r8.synthesized"}
     kotlin.jvm.internal.Ref$ObjectRef okio.internal.ZipFilesKt$$InternalSyntheticLambda$3$813b94d375b9f3f7b95ab06ad65cdfd4c8ccd897db771f45fb03260fc87bb13a$0.f$2 -> e
       # {"id":"com.android.tools.r8.residualsignature","signature":"Ln40;"}
@@ -153613,10 +153550,10 @@ okio.internal.ZipFilesKt$$ExternalSyntheticLambda0 -> lh0:
       # {"id":"com.android.tools.r8.synthesized"}
     1:15:void ZipFilesKt$$ExternalSyntheticLambda0.<init>(RealBufferedSource,Ref$ObjectRef,Ref$ObjectRef,Ref$ObjectRef):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ld30;Ln40;Ln40;Ln40;)V"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lc30;Ln40;Ln40;Ln40;)V"}
     16:16:void ZipFilesKt$$ExternalSyntheticLambda0.<init>(Ref$ObjectRef,RealBufferedSource,Ref$ObjectRef,Ref$ObjectRef):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ln40;Ld30;Ln40;Ln40;)V"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ln40;Lc30;Ln40;Ln40;)V"}
     38:47:kotlin.Unit okio.internal.ZipFilesKt.readCentralDirectoryZipEntry$lambda$1$0(kotlin.jvm.internal.Ref$ObjectRef,okio.BufferedSource,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$ObjectRef,int,long):262:262 -> invoke
     38:47:java.lang.Object ZipFilesKt$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0 -> invoke
       # {"id":"com.android.tools.r8.synthesized"}
@@ -153657,7 +153594,7 @@ okio.internal.ZipFilesKt$$ExternalSyntheticLambda1 -> mh0:
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lm40;"}
       # {"id":"com.android.tools.r8.synthesized"}
     okio.BufferedSource okio.internal.ZipFilesKt$$InternalSyntheticLambda$3$a06a606b7ef868b3f7adb3f0f6d2fa36dde5a6582cec4f696ab6b90df6e3d5ef$0.f$3 -> e
-      # {"id":"com.android.tools.r8.residualsignature","signature":"Ld30;"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Lc30;"}
       # {"id":"com.android.tools.r8.synthesized"}
     kotlin.jvm.internal.Ref$LongRef okio.internal.ZipFilesKt$$InternalSyntheticLambda$3$a06a606b7ef868b3f7adb3f0f6d2fa36dde5a6582cec4f696ab6b90df6e3d5ef$0.f$4 -> f
       # {"id":"com.android.tools.r8.residualsignature","signature":"Lm40;"}
@@ -153676,7 +153613,7 @@ okio.internal.ZipFilesKt$$ExternalSyntheticLambda1 -> mh0:
       # {"id":"com.android.tools.r8.synthesized"}
     1:22:void ZipFilesKt$$ExternalSyntheticLambda1.<init>(Ref$BooleanRef,long,Ref$LongRef,RealBufferedSource,Ref$LongRef,Ref$LongRef,Ref$ObjectRef,Ref$ObjectRef,Ref$ObjectRef):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
-      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lk40;JLm40;Ld30;Lm40;Lm40;Ln40;Ln40;Ln40;)V"}
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Lk40;JLm40;Lc30;Lm40;Lm40;Ln40;Ln40;Ln40;)V"}
     14:29:kotlin.Unit okio.internal.ZipFilesKt.readCentralDirectoryZipEntry$lambda$1(kotlin.jvm.internal.Ref$BooleanRef,long,kotlin.jvm.internal.Ref$LongRef,okio.BufferedSource,kotlin.jvm.internal.Ref$LongRef,kotlin.jvm.internal.Ref$LongRef,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$ObjectRef,int,long):234:234 -> invoke
       # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}
     30:34:kotlin.Unit okio.internal.ZipFilesKt.readCentralDirectoryZipEntry$lambda$1(kotlin.jvm.internal.Ref$BooleanRef,long,kotlin.jvm.internal.Ref$LongRef,okio.BufferedSource,kotlin.jvm.internal.Ref$LongRef,kotlin.jvm.internal.Ref$LongRef,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$ObjectRef,kotlin.jvm.internal.Ref$ObjectRef,int,long):255:255 -> invoke

@@ -10,14 +10,14 @@ const val PDF_PAGE_HEIGHT = 595f
 data class PdfLayoutConfig(
     // Column widths (pre-scale, in pt)
     val widthDate: Float          = 44f,
-    val widthPlace: Float         = 28f,
-    val widthTime: Float          = 28f,
+    val widthPlace: Float = 24f,
+    val widthTime: Float = 26f,
     val widthAircraftModel: Float = 40f,
-    val widthAircraftReg: Float   = 34f,
+    val widthAircraftReg: Float = 32f,
     val widthDuration: Float      = 34f,
     val widthNamePic: Float       = 44f,
     val widthCount: Float         = 20f,
-    val widthRemarks: Float       = 90f,
+    val widthRemarks: Float = 104f,
 
     // Page layout
     val marginLeft: Float    = 12f,
@@ -33,11 +33,11 @@ data class PdfLayoutConfig(
     val headerTextSize: Float  = 5.5f,
     val bodyTextSize: Float    = 6.5f,
     val remarksTextSize: Float = 5.5f,
-    val certTextSize: Float    = 6f,
+    val certTextSize: Float = 3.5f,
     val ownerTextSize: Float = 6.5f,
 
-    val fontFamily: String = "SANS_SERIF",   // "SANS_SERIF" | "SERIF" | "MONOSPACE"
-    val alternateRowBackground: Boolean = false,
+    val fontFamily: String = "MONOSPACE",   // "SANS_SERIF" | "SERIF" | "MONOSPACE"
+    val alternateRowBackground: Boolean = true,
 
 ) {
     /** Flat 24‑column array. Indices must match the layout in PdfGenerator. */
