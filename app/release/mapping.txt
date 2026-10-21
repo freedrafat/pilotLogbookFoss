@@ -3,8 +3,8 @@
 # min_api: 29
 # common_typos_disable
 # {"id":"com.android.tools.r8.mapping","version":"2.2"}
-# pg_map_id: 5ad3b4b152b106a72f280fb7b195d54bedd9e11ae6a5e05a50096cedb7be38af
-# pg_map_hash: SHA-256 5ad3b4b152b106a72f280fb7b195d54bedd9e11ae6a5e05a50096cedb7be38af
+# pg_map_id: da93fd0ef1e70b8f29fdadcec6180865641ff49b403bb6306efe62ca738bc27f
+# pg_map_hash: SHA-256 da93fd0ef1e70b8f29fdadcec6180865641ff49b403bb6306efe62ca738bc27f
 _COROUTINE.ArtificialStackFrames -> R8$$REMOVED$$CLASS$$0:
 # {"id":"sourceFile","fileName":"CoroutineDebugging.kt"}
 _COROUTINE.ArtificialStackFramesUnsafe -> r6:
@@ -77685,7 +77685,7 @@ com.my.striptologbook.ui.CsvImportActivity$$ExternalSyntheticLambda0 -> ld:
     275:286:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0:0 -> invoke
     287:289:kotlin.Unit com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,java.lang.String,boolean):0:0 -> invoke
     287:289:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0 -> invoke
-    290:299:kotlin.Unit com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,java.lang.String,boolean):41:41 -> invoke
+    290:299:kotlin.Unit com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,java.lang.String,boolean):38:38 -> invoke
     290:299:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0 -> invoke
     300:309:java.lang.Object CsvImportActivity$$ExternalSyntheticLambda0.invoke(java.lang.Object,java.lang.Object):0:0 -> invoke
     310:313:int kotlinx.coroutines.flow.internal.SafeCollector_commonKt.checkContext$lambda$0(kotlinx.coroutines.flow.internal.SafeCollector,int,kotlin.coroutines.CoroutineContext$Element):25:25 -> invoke
@@ -95199,28 +95199,28 @@ com.my.striptologbook.ui.PreferencesActivity -> com.my.striptologbook.ui.Prefere
     int $r8$clinit -> B
       # {"id":"com.android.tools.r8.synthesized"}
     1:4:void com.my.striptologbook.ui.BaseActivity.<init>():12:12 -> <init>
-    1:4:void <init>():14 -> <init>
-    1:6:void onCreate(android.os.Bundle):17:17 -> onCreate
-    7:12:void onCreate(android.os.Bundle):18:18 -> onCreate
-    13:19:void onCreate(android.os.Bundle):21:21 -> onCreate
+    1:4:void <init>():11 -> <init>
+    1:6:void onCreate(android.os.Bundle):14:14 -> onCreate
+    7:12:void onCreate(android.os.Bundle):15:15 -> onCreate
+    13:19:void onCreate(android.os.Bundle):18:18 -> onCreate
     20:28:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27:27 -> onCreate
-    20:28:void onCreate(android.os.Bundle):21 -> onCreate
+    20:28:void onCreate(android.os.Bundle):18 -> onCreate
     29:34:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
     29:34:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27 -> onCreate
-    29:34:void onCreate(android.os.Bundle):21 -> onCreate
-    35:40:void onCreate(android.os.Bundle):24:24 -> onCreate
-    41:43:void onCreate(android.os.Bundle):25:25 -> onCreate
-    44:54:void onCreate(android.os.Bundle):26:26 -> onCreate
-    55:67:void onCreate(android.os.Bundle):27:27 -> onCreate
-    68:85:void onCreate(android.os.Bundle):30:30 -> onCreate
-    86:99:void onCreate(android.os.Bundle):34:34 -> onCreate
-    100:117:void onCreate(android.os.Bundle):38:38 -> onCreate
-    118:135:void onCreate(android.os.Bundle):42:42 -> onCreate
-    136:153:void onCreate(android.os.Bundle):46:46 -> onCreate
-    154:169:void onCreate(android.os.Bundle):50:50 -> onCreate
-    4:12:boolean onOptionsItemSelected(android.view.MenuItem):57:57 -> onOptionsItemSelected
-    13:17:boolean onOptionsItemSelected(android.view.MenuItem):58:58 -> onOptionsItemSelected
-    18:22:boolean onOptionsItemSelected(android.view.MenuItem):61:61 -> onOptionsItemSelected
+    29:34:void onCreate(android.os.Bundle):18 -> onCreate
+    35:40:void onCreate(android.os.Bundle):21:21 -> onCreate
+    41:43:void onCreate(android.os.Bundle):22:22 -> onCreate
+    44:54:void onCreate(android.os.Bundle):23:23 -> onCreate
+    55:67:void onCreate(android.os.Bundle):24:24 -> onCreate
+    68:85:void onCreate(android.os.Bundle):27:27 -> onCreate
+    86:99:void onCreate(android.os.Bundle):31:31 -> onCreate
+    100:117:void onCreate(android.os.Bundle):35:35 -> onCreate
+    118:135:void onCreate(android.os.Bundle):39:39 -> onCreate
+    136:153:void onCreate(android.os.Bundle):43:43 -> onCreate
+    154:169:void onCreate(android.os.Bundle):47:47 -> onCreate
+    4:12:boolean onOptionsItemSelected(android.view.MenuItem):54:54 -> onOptionsItemSelected
+    13:17:boolean onOptionsItemSelected(android.view.MenuItem):55:55 -> onOptionsItemSelected
+    18:22:boolean onOptionsItemSelected(android.view.MenuItem):58:58 -> onOptionsItemSelected
 com.my.striptologbook.ui.PreferencesActivity$$ExternalSyntheticLambda0 -> c20:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
@@ -95230,23 +95230,23 @@ com.my.striptologbook.ui.PreferencesActivity$$ExternalSyntheticLambda0 -> c20:
       # {"id":"com.android.tools.r8.synthesized"}
     1:8:void PreferencesActivity$$ExternalSyntheticLambda0.<init>(com.my.striptologbook.ui.PreferencesActivity,byte):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
-    12:22:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.PreferencesActivity,android.view.View):51:51 -> onClick
+    12:22:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$5(com.my.striptologbook.ui.PreferencesActivity,android.view.View):48:48 -> onClick
     12:22:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
       # {"id":"com.android.tools.r8.synthesized"}
     23:24:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    25:35:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.PreferencesActivity,android.view.View):47:47 -> onClick
+    25:35:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.PreferencesActivity,android.view.View):44:44 -> onClick
     25:35:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     36:37:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    38:48:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.PreferencesActivity,android.view.View):43:43 -> onClick
+    38:48:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$3(com.my.striptologbook.ui.PreferencesActivity,android.view.View):40:40 -> onClick
     38:48:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     49:50:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    51:59:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.PreferencesActivity,android.view.View):39:39 -> onClick
+    51:59:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.PreferencesActivity,android.view.View):36:36 -> onClick
     51:59:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     60:61:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    62:70:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$1(com.my.striptologbook.ui.PreferencesActivity,android.view.View):35:35 -> onClick
+    62:70:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$1(com.my.striptologbook.ui.PreferencesActivity,android.view.View):32:32 -> onClick
     62:70:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     71:72:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    73:84:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.PreferencesActivity,android.view.View):31:31 -> onClick
+    73:84:void com.my.striptologbook.ui.PreferencesActivity.onCreate$lambda$0(com.my.striptologbook.ui.PreferencesActivity,android.view.View):28:28 -> onClick
     73:84:void PreferencesActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
 com.my.striptologbook.ui.SearchActivity -> com.my.striptologbook.ui.SearchActivity:
 # {"id":"sourceFile","fileName":"SearchActivity.kt"}
@@ -95966,28 +95966,28 @@ com.my.striptologbook.ui.SettingsActivity -> com.my.striptologbook.ui.SettingsAc
     int $r8$clinit -> B
       # {"id":"com.android.tools.r8.synthesized"}
     1:4:void com.my.striptologbook.ui.BaseActivity.<init>():12:12 -> <init>
-    1:4:void <init>():14 -> <init>
-    1:6:void onCreate(android.os.Bundle):16:16 -> onCreate
-    7:12:void onCreate(android.os.Bundle):17:17 -> onCreate
-    13:19:void onCreate(android.os.Bundle):20:20 -> onCreate
+    1:4:void <init>():11 -> <init>
+    1:6:void onCreate(android.os.Bundle):13:13 -> onCreate
+    7:12:void onCreate(android.os.Bundle):14:14 -> onCreate
+    13:19:void onCreate(android.os.Bundle):17:17 -> onCreate
     20:28:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27:27 -> onCreate
-    20:28:void onCreate(android.os.Bundle):20 -> onCreate
+    20:28:void onCreate(android.os.Bundle):17 -> onCreate
     29:34:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
     29:34:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27 -> onCreate
-    29:34:void onCreate(android.os.Bundle):20 -> onCreate
-    35:40:void onCreate(android.os.Bundle):23:23 -> onCreate
-    41:43:void onCreate(android.os.Bundle):24:24 -> onCreate
-    44:54:void onCreate(android.os.Bundle):25:25 -> onCreate
-    55:67:void onCreate(android.os.Bundle):26:26 -> onCreate
-    68:85:void onCreate(android.os.Bundle):29:29 -> onCreate
-    86:102:void onCreate(android.os.Bundle):32:32 -> onCreate
-    103:120:void onCreate(android.os.Bundle):35:35 -> onCreate
-    121:138:void onCreate(android.os.Bundle):38:38 -> onCreate
-    139:156:void onCreate(android.os.Bundle):41:41 -> onCreate
-    157:172:void onCreate(android.os.Bundle):44:44 -> onCreate
-    4:12:boolean onOptionsItemSelected(android.view.MenuItem):51:51 -> onOptionsItemSelected
-    13:17:boolean onOptionsItemSelected(android.view.MenuItem):52:52 -> onOptionsItemSelected
-    18:22:boolean onOptionsItemSelected(android.view.MenuItem):55:55 -> onOptionsItemSelected
+    29:34:void onCreate(android.os.Bundle):17 -> onCreate
+    35:40:void onCreate(android.os.Bundle):20:20 -> onCreate
+    41:43:void onCreate(android.os.Bundle):21:21 -> onCreate
+    44:54:void onCreate(android.os.Bundle):22:22 -> onCreate
+    55:67:void onCreate(android.os.Bundle):23:23 -> onCreate
+    68:85:void onCreate(android.os.Bundle):26:26 -> onCreate
+    86:102:void onCreate(android.os.Bundle):29:29 -> onCreate
+    103:120:void onCreate(android.os.Bundle):32:32 -> onCreate
+    121:138:void onCreate(android.os.Bundle):35:35 -> onCreate
+    139:156:void onCreate(android.os.Bundle):38:38 -> onCreate
+    157:172:void onCreate(android.os.Bundle):41:41 -> onCreate
+    4:12:boolean onOptionsItemSelected(android.view.MenuItem):48:48 -> onOptionsItemSelected
+    13:17:boolean onOptionsItemSelected(android.view.MenuItem):49:49 -> onOptionsItemSelected
+    18:22:boolean onOptionsItemSelected(android.view.MenuItem):52:52 -> onOptionsItemSelected
 com.my.striptologbook.ui.SettingsActivity$$ExternalSyntheticLambda0 -> c80:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
@@ -95997,23 +95997,23 @@ com.my.striptologbook.ui.SettingsActivity$$ExternalSyntheticLambda0 -> c80:
       # {"id":"com.android.tools.r8.synthesized"}
     1:8:void SettingsActivity$$ExternalSyntheticLambda0.<init>(com.my.striptologbook.ui.SettingsActivity,byte):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
-    10:20:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$5(com.my.striptologbook.ui.SettingsActivity,android.view.View):45:45 -> onClick
+    10:20:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$5(com.my.striptologbook.ui.SettingsActivity,android.view.View):42:42 -> onClick
     10:20:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
       # {"id":"com.android.tools.r8.synthesized"}
     21:22:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    23:33:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$4(com.my.striptologbook.ui.SettingsActivity,android.view.View):42:42 -> onClick
+    23:33:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$4(com.my.striptologbook.ui.SettingsActivity,android.view.View):39:39 -> onClick
     23:33:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     34:35:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    36:46:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$3(com.my.striptologbook.ui.SettingsActivity,android.view.View):39:39 -> onClick
+    36:46:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$3(com.my.striptologbook.ui.SettingsActivity,android.view.View):36:36 -> onClick
     36:46:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     47:48:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    49:59:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$2(com.my.striptologbook.ui.SettingsActivity,android.view.View):36:36 -> onClick
+    49:59:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$2(com.my.striptologbook.ui.SettingsActivity,android.view.View):33:33 -> onClick
     49:59:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     60:61:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    62:72:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$1(com.my.striptologbook.ui.SettingsActivity,android.view.View):33:33 -> onClick
+    62:72:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$1(com.my.striptologbook.ui.SettingsActivity,android.view.View):30:30 -> onClick
     62:72:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
     73:74:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0:0 -> onClick
-    75:86:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(com.my.striptologbook.ui.SettingsActivity,android.view.View):30:30 -> onClick
+    75:86:void com.my.striptologbook.ui.SettingsActivity.onCreate$lambda$0(com.my.striptologbook.ui.SettingsActivity,android.view.View):27:27 -> onClick
     75:86:void SettingsActivity$$ExternalSyntheticLambda0.onClick(android.view.View):0 -> onClick
 com.my.striptologbook.ui.SkipDetail -> n80:
 # {"id":"sourceFile","fileName":"CsvImportViewModel.kt"}
@@ -97282,31 +97282,31 @@ com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity -> com.my.strip
     int $r8$clinit -> D
       # {"id":"com.android.tools.r8.synthesized"}
     1:4:void com.my.striptologbook.ui.BaseActivity.<init>():12:12 -> <init>
-    1:4:void <init>():16 -> <init>
-    1:6:void onCreate(android.os.Bundle):22:22 -> onCreate
-    7:12:void onCreate(android.os.Bundle):23:23 -> onCreate
-    13:19:void onCreate(android.os.Bundle):26:26 -> onCreate
+    1:4:void <init>():13 -> <init>
+    1:6:void onCreate(android.os.Bundle):19:19 -> onCreate
+    7:12:void onCreate(android.os.Bundle):20:20 -> onCreate
+    13:19:void onCreate(android.os.Bundle):23:23 -> onCreate
     20:28:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27:27 -> onCreate
-    20:28:void onCreate(android.os.Bundle):26 -> onCreate
+    20:28:void onCreate(android.os.Bundle):23 -> onCreate
     29:34:void androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(android.view.View,androidx.core.view.OnApplyWindowInsetsListener):2922:2922 -> onCreate
     29:34:void com.my.striptologbook.utils.InsetsHelper.applyStatusBarSpacer(android.view.View):27 -> onCreate
-    29:34:void onCreate(android.os.Bundle):26 -> onCreate
-    35:40:void onCreate(android.os.Bundle):29:29 -> onCreate
-    41:43:void onCreate(android.os.Bundle):30:30 -> onCreate
-    44:54:void onCreate(android.os.Bundle):31:31 -> onCreate
-    55:67:void onCreate(android.os.Bundle):32:32 -> onCreate
-    68:78:void onCreate(android.os.Bundle):35:35 -> onCreate
-    79:86:void onCreate(android.os.Bundle):36:36 -> onCreate
+    29:34:void onCreate(android.os.Bundle):23 -> onCreate
+    35:40:void onCreate(android.os.Bundle):26:26 -> onCreate
+    41:43:void onCreate(android.os.Bundle):27:27 -> onCreate
+    44:54:void onCreate(android.os.Bundle):28:28 -> onCreate
+    55:67:void onCreate(android.os.Bundle):29:29 -> onCreate
+    68:78:void onCreate(android.os.Bundle):32:32 -> onCreate
+    79:86:void onCreate(android.os.Bundle):33:33 -> onCreate
     87:88:java.util.List com.my.striptologbook.ui.StatisticNames.getALL_STATISTICS():5:5 -> onCreate
-    87:88:void onCreate(android.os.Bundle):38 -> onCreate
-    89:101:void onCreate(android.os.Bundle):40:40 -> onCreate
-    102:111:void onCreate(android.os.Bundle):43:43 -> onCreate
-    112:129:void onCreate(android.os.Bundle):46:46 -> onCreate
-    130:144:void onCreate(android.os.Bundle):53:53 -> onCreate
-    145:151:void onCreate(android.os.Bundle):43:43 -> onCreate
-    4:12:boolean onOptionsItemSelected(android.view.MenuItem):62:62 -> onOptionsItemSelected
-    13:17:boolean onOptionsItemSelected(android.view.MenuItem):63:63 -> onOptionsItemSelected
-    18:22:boolean onOptionsItemSelected(android.view.MenuItem):66:66 -> onOptionsItemSelected
+    87:88:void onCreate(android.os.Bundle):35 -> onCreate
+    89:101:void onCreate(android.os.Bundle):37:37 -> onCreate
+    102:111:void onCreate(android.os.Bundle):40:40 -> onCreate
+    112:129:void onCreate(android.os.Bundle):43:43 -> onCreate
+    130:144:void onCreate(android.os.Bundle):50:50 -> onCreate
+    145:151:void onCreate(android.os.Bundle):40:40 -> onCreate
+    4:12:boolean onOptionsItemSelected(android.view.MenuItem):59:59 -> onOptionsItemSelected
+    13:17:boolean onOptionsItemSelected(android.view.MenuItem):60:60 -> onOptionsItemSelected
+    18:22:boolean onOptionsItemSelected(android.view.MenuItem):63:63 -> onOptionsItemSelected
 com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1 -> ja0:
 # {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
 # {"id":"com.android.tools.r8.synthesized"}
@@ -97317,34 +97317,34 @@ com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity$$ExternalSynthe
     1:8:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.<init>(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,byte):0:0 -> <init>
       # {"id":"com.android.tools.r8.synthesized"}
     13:14:java.util.List com.my.striptologbook.ui.StatisticNames.getALL_STATISTICS():5:5 -> onClick
-    13:14:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):54 -> onClick
+    13:14:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):51 -> onClick
     13:14:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
       # {"id":"com.android.tools.r8.synthesized"}
-    15:30:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):71:71 -> onClick
+    15:30:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):68:68 -> onClick
     15:30:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    31:41:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):55:55 -> onClick
+    31:41:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):52:52 -> onClick
     31:41:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    42:45:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):57:57 -> onClick
+    42:45:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):54:54 -> onClick
     42:45:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
     46:51:void androidx.recyclerview.widget.RecyclerView$Adapter.notifyDataSetChanged():8200:8200 -> onClick
-    46:51:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):57 -> onClick
+    46:51:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):54 -> onClick
     46:51:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    52:55:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):57:57 -> onClick
+    52:55:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$4(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):54:54 -> onClick
     52:55:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
     56:57:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0:0 -> onClick
     58:59:java.util.List com.my.striptologbook.ui.StatisticNames.getALL_STATISTICS():5:5 -> onClick
-    58:59:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):47 -> onClick
+    58:59:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):44 -> onClick
     58:59:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    60:75:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):69:69 -> onClick
+    60:75:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):66:66 -> onClick
     60:75:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    76:86:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):48:48 -> onClick
+    76:86:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):45:45 -> onClick
     76:86:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    87:90:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):50:50 -> onClick
+    87:90:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):47:47 -> onClick
     87:90:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
     91:96:void androidx.recyclerview.widget.RecyclerView$Adapter.notifyDataSetChanged():8200:8200 -> onClick
-    91:96:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):50 -> onClick
+    91:96:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):47 -> onClick
     91:96:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
-    97:100:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):50:50 -> onClick
+    97:100:void com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity.onCreate$lambda$2(com.my.striptologbook.ui.StatisticsVisibilityPreferencesActivity,android.view.View):47:47 -> onClick
     97:100:void StatisticsVisibilityPreferencesActivity$$ExternalSyntheticLambda1.onClick(android.view.View):0 -> onClick
 com.my.striptologbook.ui.UpdateAvailableDialogFragment -> ie0:
 # {"id":"sourceFile","fileName":"UpdateAvailableDialogFragment.kt"}
