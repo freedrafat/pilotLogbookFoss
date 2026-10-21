@@ -68,7 +68,7 @@ class SignatureView @JvmOverloads constructor(
 
     fun toBitmap(): Bitmap? {
         if (width <= 0 || height <= 0) return null
-        val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bmp: Bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val c = Canvas(bmp)
         c.drawColor(Color.WHITE)
         for ((path, paint) in paths) c.drawPath(path, paint)
