@@ -1,6 +1,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                       USER MANUAL
                  Logbook & Flight Tools
+                      v.20261026
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Welcome to the Logbook & Flight Tools app. This manual covers every
@@ -25,6 +26,8 @@ TABLE OF CONTENTS
 13. Opening Balance (Prior Experience)
 14. Files and Data Storage
 15. Support & Troubleshooting
+16. Work Directory
+17. Settings Backup / Restore
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. INTRODUCTION
@@ -68,8 +71,10 @@ can access all main features:
   • Updates – check for app updates.
   • User Manual – this documentation.
 
-The first time you open the app, the built-in airport database is
-copied automatically. You do not need to do anything.
+
+The first time you open an airport-related screen or use the Leg Editor,
+the built-in airport database is copied automatically. You do not need
+to do anything.
 
 To add your first leg, go to the Logbook screen and tap the plus
 button.
@@ -80,6 +85,11 @@ experience in the Opening Balance screen, reached from Settings
 totals shown in the Leg List summary card, in Statistics, and in the
 PDF logbook, without ever appearing as a flight leg.
 
+Several features save files: JSON backups, CSV exports, PDF exports,
+and settings backups. All of them write to a single folder on your device,
+the Work Directory. You choose the Work Directory once, and the app
+remembers it. See section 16.
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 3. HOME SCREEN & NAVIGATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -87,13 +97,11 @@ PDF logbook, without ever appearing as a flight leg.
 The Home screen provides quick access to all major features through a
 grid of buttons:
 
-  • Logbook – opens the Leg List.
-  • Flight Sun Calculator – opens the calculator.
-  • Airports – opens the airport management screen.
-  • Backup – opens the backup screen.
-  • Export/Import – opens CSV export and import.
-  • Preferences – opens the preferences screen.
-  • Updates – checks for new app versions.
+  • View Logbook – opens the Leg List.
+  • Add New Leg – opens a blank Leg Editor.
+  • Flight Sun Events – opens the calculator.
+  • Settings – opens the Settings screen (Backup, Export/Import,
+    Preferences, Airports, Updates, Opening Balance).
   • User Manual – opens this manual.
 
 Every other screen has a Home button in the top-right corner of the
@@ -116,7 +124,7 @@ The Leg Editor is where you enter all the details of a flight leg.
 4.1. Opening the Editor
 ───────────────────────
 
-  • To add a new leg: tap the plus button in the Leg List toolbar.
+  • To add a new leg: tap the "Add New Leg" button on the Home screen.
   • To edit an existing leg: tap on any leg in the Leg List.
 
 4.2. Fields and What They Mean
@@ -157,8 +165,8 @@ The editor contains many fields. Below is an explanation of each:
     Type and fills in the Category field automatically. You can
     overwrite the Category afterwards.
 
-  • Departure – departure airport.
-  • Destination – arrival airport.
+  • Departure – departure airport (IATA or ICAO code).
+  • Destination – arrival airport (IATA or ICAO code).
 
   • Off-Block – time when you left the parking position (UTC).
   • Takeoff – time of takeoff (UTC).
@@ -239,8 +247,8 @@ The app automatically computes many fields to save you time.
 
   • Time fields accept "HH:MM" (for example, "14:30") or "HHMM" (for
     example, "1430"). The app normalises your input to "HH:MM".
-  • Duration fields accept "H:MM" (for example, "2:30") or "HHMM"
-    (for example, "230" for 2 hours and 30 minutes). The app formats
+  • Duration fields accept "H:MM" (for example, "2:30") or "HHMM" (for
+    example, "230" for 2 hours and 30 minutes). The app formats
     it as "H:MM".
   • If you enter an invalid value, the field turns yellow. Correct it
     before saving.
@@ -461,7 +469,7 @@ or crosses into or out of night.
     pre-filled with the leg's departure airport, destination, take-off
     time and landing time, and shows the Off-Block and On-Block times
     for reference.
-  • From the Home screen, tap Flight Sun Calculator.
+  • From the Home screen, tap Flight Sun Events.
 
 6.3. Input Fields
 ─────────────────
@@ -605,9 +613,11 @@ You can manually update to the latest version from the web:
 
 The Airports screen offers several management options:
 
-  • Airport Database – opens the Airport Editor.
+  • Edit Airport Database – opens the Airport Editor.
   • Export Airports – saves the current merged database as a JSON file
-    to your Downloads folder.
+	to your Downloads folder. No save dialog appears; the file is
+	written	directly. The filename is airports_export_<number>.json.
+	A toast confirms the export.
   • Clear User Modifications – removes all airports you have added,
     edited or deleted.
   • Delete Entire Database – permanently removes the entire airport
@@ -665,11 +675,22 @@ verified, the operation is blocked.
 8.2. Restoring from a Backup
 ────────────────────────────
 
-  1. In the Backup screen, tap Restore.
-  2. Pick a JSON backup file from your device.
-  3. Confirm that you want to replace all current data.
-  4. The app clears the legs table and inserts all legs from the
-     backup. The Opening Balance table is not affected.
+  8.2. Restoring from a Backup
+
+    1. In the Backup screen, tap Restore.
+    2. Confirm that you want to replace all current data.
+    3. If your Work Directory contains backup files, a list of
+       them appears, newest first. Pick one.
+       If it does not, a "No backups found" message appears with
+       a "Browse elsewhere" button.
+    4. You can also tap "Browse elsewhere" at any time to pick a
+       backup file from anywhere on your device (for example a
+       file you copied from another phone).
+    5. The app clears the legs table and inserts all legs from
+       the backup. The Opening Balance is replaced only if the
+       backup file contains an Opening Balance section. Old-
+       format backups restore legs only and leave the Opening
+       Balance untouched.
 
 8.3. Deleting All Data
 ──────────────────────
@@ -686,43 +707,46 @@ Settings → Opening Balance (section 14).
 9. CSV EXPORT / IMPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-9.1. Export CSV
-───────────────
 
-From the Export/Import screen, tap Export CSV. The app creates a CSV
-file with all legs and saves it. The file contains a column for
-Instrument Approaches. Timestamps are written in the standard ISO
-8601 format in UTC.
+  9.1. Export CSV
 
-CSV export covers legs only. The Opening Balance is not included.
+    Tap Export CSV on the Export/Import screen. The app writes a
+    CSV file directly to your Work Directory. No save dialog
+    appears. The filename is logbook_export_<date>.csv. The file
+    contains a column for Instrument Approaches. Timestamps are
+    written in the standard ISO 8601 format in UTC.
 
-9.2. Import CSV
-───────────────
+    CSV export covers legs only. The Opening Balance is not
+    included.
 
-Tap Import CSV and select a CSV file. The app opens the CSV Import
-screen, where you can map columns to app fields:
+    If no Work Directory has been set yet, a folder picker
+    opens; after you pick, the export continues automatically.
 
-  • A list of columns from the CSV header is shown.
-  • For each column, a dropdown lets you map it to a corresponding
-    field in the app. You can skip columns by selecting None.
-  • Once all required fields are mapped, tap Import to insert the
-    data.
+  9.2. Import CSV
+    Tap Import CSV. A list of CSV files in your Work Directory
+    appears, newest first. Pick the one to import. You can also
+    tap "Browse elsewhere" to pick a CSV file from anywhere on
+    your device.
 
-CSV import creates legs only. It never creates Opening Balance rows.
+    After you pick, the CSV Import screen opens with a mapping
+    list:
+      • A list of columns from the CSV header is shown.
+      • For each column, a dropdown lets you map it to a
+        corresponding field in the app. You can skip columns by
+        selecting None.
+      • Once all required fields are mapped, tap Import.
 
-Automatic mapping for app-generated files
-─────────────────────────────────────────
+    CSV import creates legs only. It never creates Opening
+    Balance rows.
 
-If the CSV file was produced by this app, the columns are recognised
-and mapped automatically. You can still review and adjust any mapping
-before importing.
+    Automatic mapping for app-generated files
+      If the CSV file was produced by this app, columns are
+      recognised and mapped automatically.
 
-Backup before import
-────────────────────
-
-When you tap Import, the app first creates a verified JSON backup of
-your current logbook in the folder you selected on the Backup screen.
-The import only starts if the backup is confirmed to be valid.
+    Backup before import
+      When you tap Import, the app first creates a verified JSON
+      backup of your current logbook in your Work Directory. The
+      import only starts if the backup is confirmed to be valid.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 10. PDF LOGBOOK EXPORT
@@ -732,18 +756,21 @@ The app produces a printable logbook page in the ICAO and EASA layout
 prescribed by EASA AMC1 FCL.050, in landscape A4. Every aspect of the
 printed page can be adjusted before exporting.
 
-10.1. Exporting
-───────────────
+  10.1. Exporting
 
-  1. From the Export/Import screen, tap Export PDF.
-  2. Choose what to include:
-       • All – every leg in the database.
-       • From – To – only legs whose Off-Block date falls inside the
-         chosen dates.
-       • Last N pages – only the last N printed pages of the logbook,
-         most recent first.
-  3. Tap Generate. The app builds the PDF and then opens the system
-     file-saving dialog.
+    1. From the Export/Import screen, tap Export PDF.
+    2. Choose what to include:
+         • All – every leg in the database.
+         • From – To – only legs whose Off-Block date falls
+           inside the chosen dates.
+         • Last N pages – only the last N printed pages.
+    3. Tap Generate. The app builds the PDF and writes it
+       directly to your Work Directory. No save dialog appears.
+       The filename is logbook_<date>.pdf. A toast confirms the
+       export.
+
+    If no Work Directory has been set yet, a folder picker
+    opens first; after you pick, the range dialog appears.
 
 10.2. What Appears on Each Page
 ───────────────────────────────
@@ -820,8 +847,10 @@ Beneath the column widths, the app shows a live scale indicator. The
 scale factor is applied to every column width and every text size, so
 the layout always fits the page edge to edge.
 
-Set Defaults restores every field to the factory values. Tap Save to
-keep your changes.
+Set Defaults restores the layout fields (margins, heights, widths,
+text sizes, and font) to the factory values, setting the font to
+Sans-serif. It does not change your selected rows per page, owner
+name, or signature. Tap Save to keep your changes.
 
 The Leg Items customization (section 11.5) affects only the on-screen
 Leg List; it does not change the PDF layout.
@@ -830,7 +859,7 @@ Leg List; it does not change the PDF layout.
 11. PREFERENCES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Access Preferences from the Home screen.
+Access Preferences from the Settings screen.
 
 11.1. Default Fields
 ────────────────────
@@ -896,10 +925,47 @@ The Leg Items screen lets you customise the four lines of information
 shown on every leg card in the Leg List. It does not change the leg
 data itself, and it does not affect the PDF export.
 
+11.6. Backup / Restore Settings
+───────────────────────────────
+    Access: Preferences → Backup / Restore Settings.
+
+    This screen lets you save all your settings to a single JSON
+    file in your Work Directory, and restore them later. It is
+    separate from the logbook backup (section 8): the logbook
+    backup saves flights and Opening Balance; the settings
+    backup saves preferences.
+
+    Save Settings
+      Reads every preference and writes logbook_prefs_<date>.json
+      to your Work Directory. Includes default field values,
+      custom lists, Leg Items layout, PDF format, statistics
+      visibility, update settings, default altitude, and your
+      signature image (as PNG, stored inside the JSON file).
+
+    Restore Settings
+      Shows a confirm dialog ("This will replace your current
+      settings with the backup. Continue?").
+      After confirming, a list of logbook_prefs_*.json files in
+      your Work Directory appears, newest first. Pick one.
+      You can also tap "Browse elsewhere" to pick a settings
+      file from anywhere on your device.
+
+    What gets replaced
+      The settings that are present in the file overwrite your
+      current values. Settings absent from the file are left
+      untouched. Your Work Directory choice is not changed.
+
+    Signature
+      If the backup includes a signature, it replaces your
+      current signature. If the backup contains no signature,
+      your current signature is removed. If the signature cannot
+      be applied (for example the file is corrupt), the rest of
+      the settings are still restored and a warning appears.
+
 Opening Leg Items
 ─────────────────
 
-From the Home screen: Preferences → Leg Items.
+From the Settings screen: Preferences → Leg Items.
 
 The screen shows:
 
@@ -989,25 +1055,40 @@ never" or "Last check: dd.MM.yyyy HH:mm". The date is shown in UTC.
 12.4. When an Update Is Found
 ─────────────────────────────
 
-Whether the update was found by an automatic or manual check, the
-flow is the same from the moment the update is confirmed:
+Whether the update was found by an automatic or manual check,
+the flow is the same from the moment the update is confirmed:
 
-  1. The app prepares a verified backup of your logbook in your
-     backup folder. If the backup cannot be verified, the update does
-     not proceed.
-  2. A dialog appears with the title Update Available. Two buttons:
-     Download and Later.
-  3. If you tap Download, the APK is downloaded. If auto-install is
-     enabled, it is installed right away. If auto-install is
-     disabled, the APK is saved to your Downloads folder for you to
-     install manually.
+      1. The app prepares a verified backup of your logbook in
+         your Work Directory. If no Work Directory is set, a
+         folder picker opens; the backup and download resume
+         once you pick. If the backup cannot be verified, the
+         update does not proceed.
+      2. A dialog appears with the title "Update Available".
+         Two buttons: Download and Later.
+      3. If you tap Download, the update is handed to your
+         device's download service. You can leave the app — the
+         download continues in the background, and a system
+         notification shows its progress.
+      4. When the download finishes, the system notification
+         changes to completed. Tap it to open the file. Your
+         device's installer (or Files app) opens and offers to
+         install the update.
 
-12.5. Auto-install Updates
+    If you tap Later, nothing else happens. The next auto-check
+    will respect the 7-day throttle.
+
+
+12.5. About the Download
 ──────────────────────────
 
-The Auto-install updates switch on the Updates screen controls whether
-a downloaded APK is installed automatically or saved for manual
-installation.
+    Updates are always downloaded to your device's Downloads
+    folder. The file is opened by the system when you tap the
+    completed notification. You can also find it in your
+    Downloads folder or Files app at any time.
+
+    The app does not download in the background on its own.
+    Downloads only start when you tap Download in the update
+    dialog.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 13. OPENING BALANCE (PRIOR EXPERIENCE)
@@ -1066,7 +1147,7 @@ The Opening Balance is never shown as a flight leg.
     backup (created before this feature) leaves it untouched.
   • The Opening Balance is not part of CSV export or import.
   • Delete All on the Backup screen removes legs only.
-  
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 14. FILES AND DATA STORAGE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1077,29 +1158,37 @@ server. Your privacy is fully respected.
 14.1. Internal Storage
 ─────────────────────
 
-The app stores its data in the internal storage directory:
+    The app stores its private data in its internal storage
+    directory:
+      • logbook_database – SQLite database containing legs and
+        Opening Balance.
+      • airports.json – base airport database (created on first
+        airport-related use).
+      • airports_user.json – your airport modifications.
+      • airports.cache – serialized cache of the merged airport
+        database.
+      • pdf_signature.png – your signature image (if set).
 
-  • logbook.db – the SQLite database containing both your legs and
-    your Opening Balance.
-  • airports.json – the base airport database.
-  • airports_user.json – your airport modifications.
-  • airports.cache – a serialised cache of the merged airport
-    database.
+    Your Leg Items profiles and every other preference are
+    stored in the app's private preferences.
 
-Your Leg Items profiles are stored in the app's private preferences.
-They are not part of a logbook backup and are not affected by Backup
-or Restore. The same is true for every other preference.
+14.2. Work Directory and Export Files
+─────────────────────────────────────
+    A single folder, called the Work Directory, receives every
+    file the app creates for you:
+      • logbook_backup_*.json – logbook backups.
+      • logbook_export_*.csv – CSV exports.
+      • logbook_*.pdf – PDF exports.
+      • logbook_prefs_*.json – settings backups.
 
-Your Opening Balance is stored inside the same database file as your
-legs, but in its own table. It is part of a JSON backup but is not
-part of CSV export.
+    The Work Directory is a subfolder named PilotLogbookFoss
+    inside the folder you pick. You pick the parent folder once.
+    The app keeps the 10 most recent logbook backups and deletes
+    older ones automatically; the other files are not rotated.
 
-14.2. Backup and Export Files
-─────────────────────────────
-
-JSON backups and CSV exports are saved to the location you choose when
-exporting. The app keeps the 10 most recent JSON backups in your
-backup folder and deletes older ones automatically.
+    Airport database exports (section 7.3) and update APK downloads
+    go to your device's Downloads folder instead, and are not part
+    of the Work Directory.
 
 14.3. Clearing Data
 ───────────────────
@@ -1115,6 +1204,16 @@ The app provides functions to clear data. Each is separate:
 
 Clearing the logbook does not remove your Leg Items profiles, your
 Opening Balance, or your update-check settings.
+
+14.4. First Launch
+───────────────────
+    On first launch, the app does not copy the airport database
+    yet, does not create a Work Directory, and does not create
+    any export or backup file. The airport database is copied
+    the first time an airport-related screen opens. The Work
+    Directory is created the first time you use a feature that
+    needs it (Backup, CSV, PDF, Updates, or Backup / Restore
+    Settings) and you pick a parent folder.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 15. SUPPORT & TROUBLESHOOTING
@@ -1209,15 +1308,27 @@ Leg Items
     in Custom Lists – changes to Custom Lists apply the next time you
     open the Leg Editor or the Opening Balance editor.
 
-Updates
-  • The app never checks for updates automatically – open Updates and
-    check that Automatic check for updates is ON.
-  • The app is not checking on every start – Check on every app start
-    may be OFF, or the 7-day timer has not expired yet.
-  • Last check does not change when I open the app – by design. An
-    automatic check that cannot reach the server does not count.
-  • Update Available dialog reappears after I rotate my phone – by
-    design. The dialog is preserved across rotation.
+Updates:
+
+  • The app never checks for updates automatically — open
+    Updates and check that Automatic check for updates is ON.
+  • The app is not checking on every start — Check on every app
+    start may be OFF, or the 7-day timer has not expired yet.
+  • Last check does not change when I open the app — by design.
+    An automatic check that cannot reach the server does not
+    count.
+  • Update Available dialog reappears after I rotate my phone —
+    by design. The dialog is preserved across rotation.
+  • I tapped Download but nothing happened — the download
+    service did not accept the request. Retry. The file is not
+    on your device until the system notification shows
+    progress.
+  • I tapped Download and closed the app — the download
+    continues in the background. Look at the system
+    notification.
+  • My update installed automatically — it did not. The app
+    never installs silently. The system notification opens the
+    file; you must confirm the install in the system installer.
 
 15.2. Getting Help
 ──────────────────
@@ -1230,6 +1341,80 @@ online help or contact support at freedrafat@proton.me
 
 All data remains on your device. The app does not collect any personal
 information, nor does it send any data to external servers.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+16. WORK DIRECTORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  The Work Directory is where the app writes every logbook-
+  related file: JSON backups, CSV exports, PDF exports, and
+  settings backups. You choose it once, and the app remembers.
+
+  How to set it
+    Open any of the following:
+      • Settings → Work Directory
+      • Settings → Backup → Backup Logbook
+      • Settings → Export/Import → Export CSV, Export PDF, or
+        Import CSV
+      • Preferences → Backup / Restore Settings → Save Settings
+        or Restore Settings
+      • Settings → App Update, if an update is found
+
+    A folder picker opens at your Downloads folder. Tap "Use
+    this folder" to accept, or navigate elsewhere first. The app
+    creates a subfolder named PilotLogbookFoss inside the folder
+    you pick. All logbook files live there.
+
+  How to change it
+    Open Settings → Work Directory. The picker opens at your
+    current folder. Pick a new one. Files already written stay
+    in the old folder; new files go to the new one.
+
+  What happens if the folder becomes unavailable
+    If the folder is deleted or its permission is revoked, the
+    next time you use a feature that needs it the app tells you
+    and asks you to pick it again. Files already written inside
+    it are not deleted by the app.
+
+  What goes to Downloads instead
+    Airport database exports and, if you disable auto-install,
+    update APK downloads. These are one-off files that go to
+    your Downloads folder, not the Work Directory.
+
+── NEW §17 SETTINGS BACKUP / RESTORE ──
+
+  Settings Backup lets you save your preferences to a file and
+  restore them later, for example when you move to a new phone.
+  It is separate from the logbook backup.
+
+  What it saves
+    Update settings, default Leg Editor fields, custom suggest
+    lists, Leg Items card layout, PDF format settings, statistics
+    visibility, default Sun Calculator altitude, and your
+    signature image.
+
+  What it does not save
+    Your flights (that is the logbook backup), your airport
+    database, your Work Directory choice, or your Opening
+    Balance.
+
+  Where the file goes
+    The Work Directory. Filename: logbook_prefs_<date>.json.
+
+  How to use it
+    1. On your old phone, open Preferences → Backup / Restore
+       Settings → Save Settings.
+    2. Copy the logbook_prefs_*.json file from the Work
+       Directory to your new phone's Work Directory (or to any
+       accessible location).
+    3. On your new phone, open Preferences → Backup / Restore
+       Settings → Restore Settings.
+    4. Confirm the dialog, pick the file, done.
+
+  Signature in the backup
+    Your signature image is stored inside the JSON file. On
+    restore it is written to the app's internal storage and set
+    as your current signature automatically.
 
 ───────────────────────────────────────────────────────────────────────
 Thank you for using the Logbook & Flight Tools app. We hope it makes

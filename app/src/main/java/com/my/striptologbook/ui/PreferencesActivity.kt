@@ -48,6 +48,10 @@ class PreferencesActivity : BaseActivity() {
             startActivity(Intent(this, LegItemsPreferencesActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btn_settings_backup).setOnClickListener {
+            startActivity(Intent(this, SettingsBackupActivity::class.java))
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

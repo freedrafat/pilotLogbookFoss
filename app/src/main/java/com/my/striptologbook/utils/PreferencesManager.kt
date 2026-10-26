@@ -22,8 +22,12 @@ class PreferencesManager private constructor(context: Context) {
         }
 
         private const val KEY_LAST_AIRPORTS_DOWNLOAD = "last_airports_download"
-        private const val KEY_AUTO_INSTALL = "auto_install_apk"
-        private const val KEY_BACKUP_FOLDER_URI = "backup_folder_uri"
+
+        // Historical name: originally only for the Backup folder. Now serves
+        // as the "work directory" for all logbook-related file operations
+        // (backups, CSV, PDF, and future preferences/settings save+restore).
+        // Rename was avoided to preserve existing user data.
+        private const val KEY_WORK_FOLDER_URI = "backup_folder_uri"
 
         private const val KEY_FLIGHT_SUN_DEPARTURE_IATA = "flight_sun_dep_iata"
         private const val KEY_FLIGHT_SUN_ARRIVAL_IATA = "flight_sun_arr_iata"
@@ -92,13 +96,17 @@ class PreferencesManager private constructor(context: Context) {
     fun setLastAirportsDownload(date: String?) {
         prefs.edit { putString(KEY_LAST_AIRPORTS_DOWNLOAD, date) }
     }
-
-    // Auto-install APK preference (default true)
-    fun isAutoInstallEnabled(): Boolean = prefs.getBoolean(KEY_AUTO_INSTALL, true)
-    fun setAutoInstallEnabled(enabled: Boolean) {
-        prefs.edit { putBoolean(KEY_AUTO_INSTALL, enabled) }
-    }
     // ---------------------------------------------------------------- Update check
+    /**
+     * One-time cleanup: removes the orphan "auto_install_apk" key left
+     * by versions before the DownloadManager refactor. Harmless to call
+     * repeatedly — removing an absent key is a no-op.
+     */
+    fun clearLegacyAutoInstallKey() {
+        if (prefs.contains("auto_install_apk")) {
+            prefs.edit { remove("auto_install_apk") }
+        }
+    }
 
     /** Master switch for automatic update checks. Default: true. */
     fun isAutoCheckUpdatesEnabled(): Boolean =
@@ -125,13 +133,13 @@ class PreferencesManager private constructor(context: Context) {
     }
 
 
-    fun getBackupFolderUri(): String? = prefs.getString(KEY_BACKUP_FOLDER_URI, null)
+    fun getBackupFolderUri(): String? = prefs.getString(KEY_WORK_FOLDER_URI, null)
 
     fun setBackupFolderUri(uri: String?) {
         if (uri == null) {
-            prefs.edit { remove(KEY_BACKUP_FOLDER_URI) }
+            prefs.edit { remove(KEY_WORK_FOLDER_URI) }
         } else {
-            prefs.edit { putString(KEY_BACKUP_FOLDER_URI, uri) }
+            prefs.edit { putString(KEY_WORK_FOLDER_URI, uri) }
         }
     }
 
@@ -374,6 +382,30 @@ class PreferencesManager private constructor(context: Context) {
     fun saveLegItemLayout(layout: com.my.striptologbook.data.LegItemLayout) {
         val json = com.my.striptologbook.data.LegItemLayout.toJson(layout)
         prefs.edit { putString(KEY_LEG_ITEM_LAYOUT, json) }
+    }
+
+    /**
+     * Raw stored JSON for the Leg Items layout, without normalisation.
+     * Used by settings backup/restore (Q6: raw string). Returns null if
+     * the key has never been written.
+     */
+    fun getLegItemLayoutRaw(): String? = prefs.getString(KEY_LEG_ITEM_LAYOUT, null)
+
+    fun setLegItemLayoutRaw(raw: String?) {
+        if (raw == null) prefs.edit { remove(KEY_LEG_ITEM_LAYOUT) }
+        else prefs.edit { putString(KEY_LEG_ITEM_LAYOUT, raw) }
+    }
+
+    /**
+     * Raw stored JSON for the PDF layout config, without normalisation.
+     * Used by settings backup/restore (Q6: raw string). Returns null if
+     * the key has never been written.
+     */
+    fun getPdfLayoutConfigRaw(): String? = prefs.getString(KEY_PDF_LAYOUT_CONFIG, null)
+
+    fun setPdfLayoutConfigRaw(raw: String?) {
+        if (raw == null) prefs.edit { remove(KEY_PDF_LAYOUT_CONFIG) }
+        else prefs.edit { putString(KEY_PDF_LAYOUT_CONFIG, raw) }
     }
 
     /**

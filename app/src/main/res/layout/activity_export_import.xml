@@ -23,10 +23,20 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/txt_work_directory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="Work directory: Not set"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
-    <!-- Content -->
-    <!-- activity_export_import.xml -->
+    <!-- PDF Section -->
     <LinearLayout
         style="@style/Card.Surface"
         android:layout_width="match_parent"
@@ -56,6 +66,7 @@
 
     </LinearLayout>
 
+    <!-- CSV Section -->
     <LinearLayout
         style="@style/Card.Surface"
         android:layout_width="match_parent"

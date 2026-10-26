@@ -1,6 +1,5 @@
 package com.my.striptologbook.ui
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,12 +12,19 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
-import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.*
+import com.my.striptologbook.utils.BackupManager
+import com.my.striptologbook.utils.FileManager
+import com.my.striptologbook.utils.InsetsHelper
+import com.my.striptologbook.utils.PreferencesManager
+import com.my.striptologbook.utils.UpdateCheckResult
+import com.my.striptologbook.utils.UpdateChecker
+import com.my.striptologbook.utils.UpdateDownloader
+import com.my.striptologbook.utils.UpdateInfo
+import com.my.striptologbook.utils.WorkDirectoryState
+import com.my.striptologbook.utils.formatDateUtc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,7 +41,6 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
     private lateinit var tvLastCheckDate: TextView
     private lateinit var btnCheckUpdate: Button
     private lateinit var progressBar: ProgressBar
-    private lateinit var switchAutoInstall: SwitchCompat
     private lateinit var switchAutoCheck: SwitchCompat
     private lateinit var switchCheckEveryStart: SwitchCompat
 
@@ -47,17 +52,12 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
         ActivityResultContracts.OpenDocumentTree()
     ) { uri: Uri? ->
         if (uri != null) {
-            try {
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                )
-                PreferencesManager.getInstance(this).setBackupFolderUri(uri.toString())
+            if (FileManager.persistWorkDirectoryPermission(this, uri)) {
                 Toast.makeText(this, "Backup folder set successfully", Toast.LENGTH_SHORT).show()
                 lifecycleScope.launch {
                     performBackupAndUpdate()
                 }
-            } catch (_: SecurityException) {
+            } else {
                 Toast.makeText(
                     this,
                     "Failed to persist permission. Please try again.",
@@ -77,34 +77,29 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_updates)
 
+        // One-time cleanup of the orphan auto_install_apk key
+        PreferencesManager.getInstance(this).clearLegacyAutoInstallKey()
+
         // -------- Status bar spacer ------------------------------
         InsetsHelper.applyStatusBarSpacer(findViewById(R.id.status_bar_spacer))
 
         // -------- Toolbar -----------------------------------------
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Updates"              //change title
+        supportActionBar?.title = "Updates"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 
         // Views
         txtAppVersion          = findViewById(R.id.txtAppVersion)
         tvLastCheckDate        = findViewById(R.id.tv_last_check_date)
         btnCheckUpdate         = findViewById(R.id.btn_check_update)
         progressBar            = findViewById(R.id.progressBar)
-        switchAutoInstall      = findViewById(R.id.switch_auto_install)
         switchAutoCheck        = findViewById(R.id.switch_auto_check)
         switchCheckEveryStart  = findViewById(R.id.switch_check_every_start)
 
         txtAppVersion.text = "App version: ${getAppVersionName()}"
 
         val prefs = PreferencesManager.getInstance(this)
-
-        // ----- Auto-install switch -----
-        switchAutoInstall.isChecked = prefs.isAutoInstallEnabled()
-        switchAutoInstall.setOnCheckedChangeListener { _, isChecked ->
-            prefs.setAutoInstallEnabled(isChecked)
-        }
 
         // ----- Automatic check for updates (master) -----
         switchAutoCheck.isChecked = prefs.isAutoCheckUpdatesEnabled()
@@ -127,7 +122,7 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
         // ------------------------------------------------------------------
         // Auto-triggered mode: Home already found an update and the user
         // tapped "Download" there. Skip the network check, skip the prompt,
-        // go straight to folder -> backup -> download.
+        // go straight to folder -> backup -> enqueue.
         // ------------------------------------------------------------------
         val autoUrl      = intent.getStringExtra(EXTRA_AUTO_UPDATE_URL)
         val autoFileName = intent.getStringExtra(EXTRA_AUTO_UPDATE_FILENAME)
@@ -196,35 +191,32 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
     // Backup + update flow
     // ------------------------------------------------------------------------
 
-    /**
-     * Runs the verified backup, then either shows the prompt (manual mode)
-     * or starts the download directly (auto-triggered mode, where the
-     * confirmation already happened on Home).
-     */
     private suspend fun performBackupAndUpdate() {
         val prefs = PreferencesManager.getInstance(this)
-        val folderUriString = prefs.getBackupFolderUri()
-        if (folderUriString == null) {
-            Toast.makeText(this, "Please select a backup folder first", Toast.LENGTH_LONG).show()
-            folderPickerLauncher.launch(null)
-            // Button stays disabled; picker callback continues the flow
-            return
-        }
 
-        try {
-            val folderUri = folderUriString.toUri()
-            val folder = DocumentFile.fromTreeUri(this, folderUri)
-            if (folder == null || !folder.exists() || !folder.isDirectory) {
+        val folder = when (val state = FileManager.resolveWorkDirectory(this)) {
+            WorkDirectoryState.NotSet -> {
+                Toast.makeText(this, "Please select a backup folder first", Toast.LENGTH_LONG)
+                    .show()
+                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+                return
+            }
+
+            WorkDirectoryState.Invalid -> {
                 prefs.setBackupFolderUri(null)
                 Toast.makeText(
                     this,
                     "Backup folder unavailable. Please select it again.",
                     Toast.LENGTH_LONG
                 ).show()
-                folderPickerLauncher.launch(null)
+                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
                 return
             }
 
+            is WorkDirectoryState.Ready -> state.folder
+        }
+
+        try {
             val repository = (application as LogbookApplication).repository
             val legs = repository.getAllLegsList()
             val openingBalance = repository.getAllOpeningBalancesList()
@@ -251,12 +243,23 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
                     }
 
                     if (autoTriggered) {
-                        // User already accepted on Home — start the download now.
-                        UpdateDownloader.startDownload(this, updateInfo.apkUrl, updateInfo.fileName)
+                        // User already accepted on Home — enqueue now.
+                        val id = UpdateDownloader.enqueue(
+                            this@UpdatesActivity,
+                            updateInfo.apkUrl,
+                            updateInfo.fileName
+                        )
+                        if (id == null) {
+                            Toast.makeText(
+                                this@UpdatesActivity,
+                                "Could not start the download. Please try again.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                         pendingUpdateInfo = null
                         btnCheckUpdate.isEnabled = true
                     } else {
-                        // Manual flow: show the same dialog the auto path uses.
+                        // Manual flow: show the confirmation dialog.
                         pendingUpdateInfo = null
                         showUpdateAvailableDialog(updateInfo)
                         // Button re-enabled by the fragment's callbacks
@@ -290,7 +293,14 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
     // ------------------------------------------------------------------------
 
     override fun onUpdateAccepted(info: UpdateInfo) {
-        UpdateDownloader.startDownload(this, info.apkUrl, info.fileName)
+        val id = UpdateDownloader.enqueue(this, info.apkUrl, info.fileName)
+        if (id == null) {
+            Toast.makeText(
+                this,
+                "Could not start the download. Please try again.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
         btnCheckUpdate.isEnabled = true
     }
 

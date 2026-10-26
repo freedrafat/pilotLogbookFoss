@@ -57,29 +57,6 @@
                 android:layout_height="wrap_content"
                 android:text="Restore from Backup (JSON)" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
-
-            <Button
-                android:id="@+id/btn_change_backup_folder"
-                style="@style/SecondaryButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Change Backup Folder" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
-
-            <TextView
-                android:id="@+id/txt_backup_folder_path"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="No backup folder selected" />
-
         </LinearLayout>
     </LinearLayout>
 

@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
@@ -17,45 +16,53 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
+import com.my.striptologbook.utils.BackupManager
+import com.my.striptologbook.utils.FileManager
+import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
+import com.my.striptologbook.utils.WorkDirectoryState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.core.net.toUri
-
-import com.my.striptologbook.utils.BackupManager
-import com.my.striptologbook.utils.InsetsHelper
 
 class BackupActivity : BaseActivity() {
 
+    private enum class PendingAction { BACKUP, RESTORE }
+
     private lateinit var viewModel: ExportImportViewModel
-    private lateinit var txtFolderPath: TextView
+
+    private var pendingAction: PendingAction? = null
 
     private companion object {
         private const val TAG = "BackupActivity"
-        private const val MAX_BACKUPS_TO_KEEP = 10
     }
 
-    // Folder picker
+    // Work-directory picker (Backup and Restore)
     private val folderPickerLauncher = registerForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
     ) { uri: Uri? ->
-        if (uri != null) {
-            try {
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                )
-                PreferencesManager.getInstance(this).setBackupFolderUri(uri.toString())
-                Toast.makeText(this, "Backup folder set successfully", Toast.LENGTH_SHORT).show()
-                updateFolderPathDisplay()
-            } catch (_: SecurityException) {
-                Toast.makeText(this, "Failed to persist permission. Please try again.", Toast.LENGTH_LONG).show()
+        val action = pendingAction
+        pendingAction = null
+        if (uri == null || action == null) return@registerForActivityResult
+        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
+            Toast.makeText(
+                this,
+                "Failed to persist permission. Please try again.",
+                Toast.LENGTH_LONG
+            ).show()
+            return@registerForActivityResult
+        }
+        when (val state = FileManager.resolveWorkDirectory(this)) {
+            is WorkDirectoryState.Ready -> when (action) {
+                PendingAction.BACKUP -> doBackup(state.folder)
+                PendingAction.RESTORE -> doRestore(state.folder)
             }
+
+            else -> Toast.makeText(this, "Work directory not available.", Toast.LENGTH_LONG).show()
         }
     }
 
-    // Restore launcher (using StartActivityForResult to use extras)
+    // External file picker — restore from anywhere
     private val openFileLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -72,7 +79,6 @@ class BackupActivity : BaseActivity() {
             }
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,9 +98,6 @@ class BackupActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // -------- Toolbar ------------
 
-        txtFolderPath = findViewById(R.id.txt_backup_folder_path)
-        updateFolderPathDisplay()
-
         // ViewModel
         val app = application as LogbookApplication
         viewModel = ExportImportViewModel(app.repository)
@@ -111,60 +114,56 @@ class BackupActivity : BaseActivity() {
                         Toast.makeText(this@BackupActivity, result.message, Toast.LENGTH_LONG).show()
                         viewModel.consumeResult()
                     }
-                    else -> {}
+                    null -> {}
                 }
             }
         }
 
         // Buttons
         findViewById<Button>(R.id.btn_backup_json).setOnClickListener { performBackup() }
-        findViewById<Button>(R.id.btn_change_backup_folder).setOnClickListener { folderPickerLauncher.launch(null) }
         findViewById<Button>(R.id.btn_restore).setOnClickListener { showRestoreConfirmDialog() }
         findViewById<Button>(R.id.btn_delete_all).setOnClickListener { showDeleteAllConfirmDialog() }
     }
 
-    private fun updateFolderPathDisplay() {
-        val folderUri = PreferencesManager.getInstance(this).getBackupFolderUri()
-        txtFolderPath.text = "Backup folder: ${getDisplayPath(folderUri)}"
-    }
+    // ------------------------------------------------------------------------
+    // Work-directory gate (shared by Backup and Restore)
+    // ------------------------------------------------------------------------
 
-    private fun getDisplayPath(uriString: String?): String {
-        if (uriString == null) return "Not set"
-        return try {
-            val uri = uriString.toUri()
-            val lastSegment = uri.lastPathSegment ?: "Unknown"
-            lastSegment.replace("primary:", "").replace(":", "/")
-        } catch (_: Exception) {
-            "Selected folder"
+    private fun ensureWorkDirectoryThen(action: PendingAction, onReady: (DocumentFile) -> Unit) {
+        when (val state = FileManager.resolveWorkDirectory(this)) {
+            WorkDirectoryState.NotSet -> {
+                Toast.makeText(this, "Please select a work directory first", Toast.LENGTH_SHORT)
+                    .show()
+                pendingAction = action
+                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+            }
+
+            WorkDirectoryState.Invalid -> {
+                PreferencesManager.getInstance(this).setBackupFolderUri(null)
+                Toast.makeText(
+                    this,
+                    "Work directory unavailable. Please select it again.",
+                    Toast.LENGTH_LONG
+                ).show()
+                pendingAction = action
+                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+            }
+
+            is WorkDirectoryState.Ready -> onReady(state.folder)
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Backup
+    // ------------------------------------------------------------------------
 
     private fun performBackup() {
-        val prefs = PreferencesManager.getInstance(this)
-        val folderUriString = prefs.getBackupFolderUri()
+        ensureWorkDirectoryThen(PendingAction.BACKUP) { folder -> doBackup(folder) }
+    }
 
-        if (folderUriString == null) {
-            Toast.makeText(this, "Please select a backup folder first", Toast.LENGTH_SHORT).show()
-            folderPickerLauncher.launch(null)
-            return
-        }
-
+    private fun doBackup(folder: DocumentFile) {
         lifecycleScope.launch {
             try {
-                val folderUri = folderUriString.toUri()
-                val folder = DocumentFile.fromTreeUri(this@BackupActivity, folderUri)
-                if (folder == null || !folder.exists() || !folder.isDirectory) {
-                    prefs.setBackupFolderUri(null)
-                    updateFolderPathDisplay()
-                    Toast.makeText(
-                        this@BackupActivity,
-                        "Backup folder unavailable. Please select it again.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    folderPickerLauncher.launch(null)
-                    return@launch
-                }
-
                 val repository = (application as LogbookApplication).repository
                 val legs = repository.getAllLegsList()
                 val openingBalance = repository.getAllOpeningBalancesList()
@@ -185,7 +184,6 @@ class BackupActivity : BaseActivity() {
                             "Backup completed successfully",
                             Toast.LENGTH_SHORT
                         ).show()
-                        // Non-blocking cleanup
                         lifecycleScope.launch(Dispatchers.IO) {
                             BackupManager.cleanupOldBackups(folder)
                         }
@@ -209,20 +207,59 @@ class BackupActivity : BaseActivity() {
         }
     }
 
+    // ------------------------------------------------------------------------
+    // Restore
+    // ------------------------------------------------------------------------
+
     private fun showRestoreConfirmDialog() {
         AlertDialog.Builder(this)
             .setTitle("Confirm Restore")
             .setMessage("This will replace ALL existing data with the backup. Continue?")
             .setPositiveButton("Continue") { _, _ ->
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "application/json"
-                    putExtra("android.intent.extra.INITIAL_URI", getDownloadsUri())
-                }
-                openFileLauncher.launch(intent)
+                ensureWorkDirectoryThen(PendingAction.RESTORE) { folder -> doRestore(folder) }
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun doRestore(folder: DocumentFile) {
+        val jsonFiles = FileManager.listWorkDirFilesByExtension(folder, "json")
+        if (jsonFiles.isEmpty()) {
+            AlertDialog.Builder(this)
+                .setTitle("No backups found")
+                .setMessage("The work directory contains no JSON backups.")
+                .setPositiveButton("Browse elsewhere") { _, _ -> launchExternalRestorePicker() }
+                .setNegativeButton("Cancel", null)
+                .show()
+            return
+        }
+
+        val names = jsonFiles.map { it.name ?: "(unnamed)" }.toTypedArray()
+        AlertDialog.Builder(this)
+            .setTitle("Select backup to restore")
+            .setItems(names) { _, which ->
+                val file = jsonFiles[which]
+                try {
+                    contentResolver.takePersistableUriPermission(
+                        file.uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                } catch (_: SecurityException) {
+                }
+                viewModel.restoreFromJson(contentResolver, file.uri)
+            }
+            .setNeutralButton("Browse elsewhere") { _, _ -> launchExternalRestorePicker() }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun launchExternalRestorePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/json"
+            putExtra("android.intent.extra.INITIAL_URI", getDownloadsUri())
+        }
+        openFileLauncher.launch(intent)
     }
 
     private fun getDownloadsUri(): Uri? {
@@ -232,6 +269,10 @@ class BackupActivity : BaseActivity() {
             null
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Delete All
+    // ------------------------------------------------------------------------
 
     private fun showDeleteAllConfirmDialog() {
         AlertDialog.Builder(this)

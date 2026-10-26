@@ -1,31 +1,25 @@
 package com.my.striptologbook.ui
 
 import android.content.ContentResolver
-import android.net.Uri
-import android.util.Log
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.my.striptologbook.data.Leg
 import com.my.striptologbook.repository.LegRepository
 import com.my.striptologbook.utils.FileManager
+import com.my.striptologbook.utils.PdfGenerator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import java.io.IOException
-
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
-import com.my.striptologbook.utils.PdfGenerator
 
 sealed class ExportImportResult {
     object Success : ExportImportResult()
     data class Error(val message: String) : ExportImportResult()
-    data class PdfReady(val bytes: ByteArray, val suggestedName: String) : ExportImportResult() {
-        override fun equals(other: Any?) = this === other
-        override fun hashCode() = System.identityHashCode(this)
-    }
 }
 
 class ExportImportViewModel(private val repository: LegRepository) : ViewModel() {
@@ -38,7 +32,7 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
     }
 
     // ------------------- Backup (JSON) -------------------
-    fun backupToJson(contentResolver: ContentResolver, uri: Uri) {
+    fun backupToJson(contentResolver: ContentResolver, uri: android.net.Uri) {
         viewModelScope.launch {
             try {
                 val legs = repository.getAllLegsList()
@@ -57,69 +51,40 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
     }
 
     // ------------------- Restore (JSON) -------------------
-    fun restoreFromJson(contentResolver: ContentResolver, uri: Uri) {
-        Log.d("RestoreDebug", "✅ restoreFromJson called with URI: $uri")
+    fun restoreFromJson(contentResolver: ContentResolver, uri: android.net.Uri) {
         viewModelScope.launch {
             try {
-                Log.d("RestoreDebug", "📂 Reading file...")
                 val jsonString = FileManager.readJsonFromUri(contentResolver, uri)
-                Log.d("RestoreDebug", "📄 JSON length: ${jsonString.length}")
-                Log.d("RestoreDebug", "📄 First 200 chars: ${jsonString.take(200)}")
-
-                Log.d("RestoreDebug", "🔄 Deserializing...")
                 val content = FileManager.readBackupFromJson(jsonString)
-                Log.d("RestoreDebug", "✅ Deserialized ${content.legs.size} legs, " +
-                        "${content.openingBalance.size} opening balance rows, " +
-                        "hasOpeningBalanceKey=${content.hasOpeningBalanceKey}")
 
                 if (content.legs.isEmpty() && content.openingBalance.isEmpty()) {
-                    Log.d("RestoreDebug", "⚠️ Nothing to restore")
                     _result.value = ExportImportResult.Error("The file contains no data")
                     return@launch
                 }
 
-                Log.d("RestoreDebug", "🗑️ Clearing legs...")
                 repository.clearAllLegs()
-                Log.d("RestoreDebug", "✅ Legs cleared")
-
                 if (content.legs.isNotEmpty()) {
-                    Log.d("RestoreDebug", "📥 Inserting ${content.legs.size} legs...")
                     repository.insertAll(content.legs)
-                    Log.d("RestoreDebug", "✅ Legs inserted")
                 }
-
-                // Option 1: opening balance is only restored when the file
-                // actually carried an opening balance key. Old backups
-                // (top-level array) do not, and they must leave the device's
-                // opening balance untouched.
                 if (content.hasOpeningBalanceKey) {
-                    Log.d("RestoreDebug", "🗑️ Clearing opening balances...")
                     repository.clearAllOpeningBalances()
-                    Log.d("RestoreDebug", "📥 Inserting ${content.openingBalance.size} opening balance rows...")
                     for (row in content.openingBalance) {
                         repository.insertOpeningBalance(row.copy(id = 0))
                     }
-                    Log.d("RestoreDebug", "✅ Opening balances inserted")
-                } else {
-                    Log.d("RestoreDebug", "ℹ️ Old-format backup: opening balance left untouched")
                 }
-
                 _result.value = ExportImportResult.Success
             } catch (e: SerializationException) {
-                Log.e("RestoreDebug", "❌ Serialization error", e)
                 _result.value = ExportImportResult.Error("Invalid JSON format: ${e.message}")
             } catch (e: IOException) {
-                Log.e("RestoreDebug", "❌ IO error", e)
                 _result.value = ExportImportResult.Error("IO Error: ${e.message}")
             } catch (e: Exception) {
-                Log.e("RestoreDebug", "❌ Unexpected error", e)
                 _result.value = ExportImportResult.Error("Restore failed: ${e.message}")
             }
         }
     }
 
     // ------------------- Export CSV -------------------
-    fun exportToCsv(contentResolver: ContentResolver, uri: Uri) {
+    fun exportToCsv(contentResolver: ContentResolver, folder: DocumentFile) {
         viewModelScope.launch {
             try {
                 val legs = repository.getAllLegsList()
@@ -128,7 +93,13 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
                     return@launch
                 }
                 val csv = FileManager.serializeLegsToCsv(legs)
-                FileManager.writeJsonToUri(contentResolver, uri, csv) // reuses write method
+                FileManager.writeTextToWorkDir(
+                    contentResolver = contentResolver,
+                    folder = folder,
+                    mimeType = "text/csv",
+                    fileName = FileManager.suggestExportFileName(),
+                    content = csv
+                )
                 _result.value = ExportImportResult.Success
             } catch (e: Exception) {
                 _result.value = ExportImportResult.Error("Export failed: ${e.message}")
@@ -136,8 +107,10 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
         }
     }
 
-
-    fun exportPdf(
+    // ------------------- Export PDF -------------------
+    fun exportPdfToFolder(
+        contentResolver: ContentResolver,
+        folder: DocumentFile,
         range: DateRange,
         rowsPerPage: Int,
         ownerName: String,
@@ -175,7 +148,14 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
                         title       = "Pilot Logbook"
                     )
                 }
-                _result.value = ExportImportResult.PdfReady(bytes, FileManager.suggestPdfFileName())
+                FileManager.writeBytesToWorkDir(
+                    contentResolver = contentResolver,
+                    folder = folder,
+                    mimeType = "application/pdf",
+                    fileName = FileManager.suggestPdfFileName(),
+                    bytes = bytes
+                )
+                _result.value = ExportImportResult.Success
             } catch (e: Exception) {
                 _result.value = ExportImportResult.Error("PDF generation failed: ${e.message}")
             }
@@ -193,7 +173,6 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
         }
     }
 
-    // Reset result after it's been consumed (by UI)
     fun consumeResult() {
         clearResult()
     }

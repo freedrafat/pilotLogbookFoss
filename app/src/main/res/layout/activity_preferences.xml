@@ -76,6 +76,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Leg Card Items" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <Button
+            android:id="@+id/btn_settings_backup"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Backup / Restore Settings" />
+
+
         <!-- Additional preference buttons can be added here later -->
         <!-- Additional preference buttons can be added here later -->
         <!--

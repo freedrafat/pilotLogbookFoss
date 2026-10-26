@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.UpdateInfo
 
 /**
@@ -47,13 +46,8 @@ class UpdateAvailableDialogFragment : DialogFragment() {
             versionName = args.getString(ARG_VERSION, "")
         )
 
-        val autoInstall = PreferencesManager
-            .getInstance(requireContext())
-            .isAutoInstallEnabled()
-
-        val message = "A new version is available.\n\n" +
-                (if (autoInstall) "It will be downloaded and installed automatically."
-                else "It will be saved in your Downloads folder for manual installation.")
+        val message =
+            "The update will be downloaded to your Downloads folder. Open the file to install it."
 
         return AlertDialog.Builder(requireContext())
             .setTitle("Update Available")

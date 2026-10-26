@@ -1,51 +1,39 @@
 package com.my.striptologbook.ui
 
 import android.app.AlertDialog
+import android.content.ContentValues
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.R
 import com.my.striptologbook.data.AirportDataManager
+import com.my.striptologbook.data.AirportDataManager.Airport
+import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.formatDateOnly
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-
-import androidx.activity.result.contract.ActivityResultContracts
-import android.content.Intent
-import android.net.Uri
-import android.widget.ScrollView
 import org.json.JSONObject
-
-import com.my.striptologbook.data.AirportDataManager.Airport
-import com.my.striptologbook.utils.InsetsHelper
+import java.io.File
 
 class AirportsActivity : BaseActivity() {
 
     private lateinit var airportDataManager: AirportDataManager
     private lateinit var progressBar: ProgressBar
     private lateinit var txtStatus: TextView
-
-
-    private val exportAirportLauncher = registerForActivityResult(
-        ActivityResultContracts.CreateDocument("application/json")
-    ) { uri: Uri? ->
-        if (uri != null) {
-            exportAirportsToUri(uri)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +53,6 @@ class AirportsActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // -------- Toolbar ------------
 
-
         airportDataManager = AirportDataManager.getInstance(this)
         airportDataManager.ensureInitialDatabase()
 
@@ -78,14 +65,12 @@ class AirportsActivity : BaseActivity() {
             downloadAirportDatabase()
         }
 
-
         findViewById<Button>(R.id.btn_airport_database).setOnClickListener {
             startActivity(Intent(this, AirportEditorActivity::class.java))
         }
 
         findViewById<Button>(R.id.btn_export_airports).setOnClickListener {
-            val fileName = "airports_export_${System.currentTimeMillis()}.json"
-            exportAirportLauncher.launch(fileName)
+            exportAirports()
         }
 
         findViewById<Button>(R.id.btn_clear_user_airports).setOnClickListener {
@@ -114,7 +99,6 @@ class AirportsActivity : BaseActivity() {
                 .setNegativeButton("Cancel", null)
                 .show()
         }
-
     }
 
     private fun updateStatusText() {
@@ -182,26 +166,71 @@ class AirportsActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun exportAirportsToUri(uri: Uri) {
+    private fun exportAirports() {
         lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val allAirports = airportDataManager.getAllAirports()
-                if (allAirports.isEmpty()) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@AirportsActivity, "No airport data to export", Toast.LENGTH_SHORT).show()
-                    }
-                    return@launch
-                }
-                val json = buildJsonExport(allAirports)
-                contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    outputStream.write(json.toByteArray())
-                }
+            val allAirports = airportDataManager.getAllAirports()
+            if (allAirports.isEmpty()) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@AirportsActivity, "Export successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@AirportsActivity,
+                        "No airport data to export",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return@launch
+            }
+
+            val json = buildJsonExport(allAirports)
+            val fileName = "airports_export_${System.currentTimeMillis()}.json"
+
+            var failure: Exception? = null
+            try {
+                val values = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                    put(MediaStore.MediaColumns.IS_PENDING, 1)
+                }
+
+                val uri = contentResolver.insert(
+                    MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                    values
+                ) ?: throw IllegalStateException("Failed to create MediaStore entry")
+
+                try {
+                    contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        outputStream.write(json.toByteArray())
+                    } ?: throw IllegalStateException("Failed to open output stream")
+
+                    val publishValues = ContentValues().apply {
+                        put(MediaStore.MediaColumns.IS_PENDING, 0)
+                    }
+                    contentResolver.update(uri, publishValues, null, null)
+                } catch (writeError: Exception) {
+                    try {
+                        contentResolver.delete(uri, null, null)
+                    } catch (_: Exception) {
+                    }
+                    throw writeError
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@AirportsActivity, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+                failure = e
+            }
+
+            withContext(Dispatchers.Main) {
+                val fail = failure
+                if (fail == null) {
+                    Toast.makeText(
+                        this@AirportsActivity,
+                        "airport DB successfull on /Downloads",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@AirportsActivity,
+                        "Export failed: ${fail.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -225,5 +254,4 @@ class AirportsActivity : BaseActivity() {
         }
         return root.toString(2)
     }
-
 }

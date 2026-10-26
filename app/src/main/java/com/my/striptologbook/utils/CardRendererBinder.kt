@@ -2,7 +2,6 @@ package com.my.striptologbook.utils
 
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.my.striptologbook.data.OpeningBalanceCardLine
 
 /**

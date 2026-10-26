@@ -8,21 +8,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import kotlinx.coroutines.launch
-import java.io.File
-
-import androidx.core.net.toUri
-import androidx.documentfile.provider.DocumentFile
 import com.my.striptologbook.utils.BackupManager
+import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
+import com.my.striptologbook.utils.WorkDirectoryState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CsvImportActivity : BaseActivity() {
@@ -47,7 +46,7 @@ class CsvImportActivity : BaseActivity() {
         // -------- Toolbar -----------------------------------------
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "CSV Import"              //change title
+        supportActionBar?.title = "CSV Import"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -79,7 +78,6 @@ class CsvImportActivity : BaseActivity() {
         val app = application as LogbookApplication
         val factory = CsvImportViewModelFactory(app.repository)
         viewModel = ViewModelProvider(this, factory)[CsvImportViewModel::class.java]
-
 
         // Observe state
         lifecycleScope.launch {
@@ -118,7 +116,6 @@ class CsvImportActivity : BaseActivity() {
                             val sb = StringBuilder("\n\nSkipped Rows Details:\n")
                             sb.append("---------------------\n")
 
-                            // Limit to first 20 entries for display
                             val entriesToShow = result.skipDetails.take(20)
                             entriesToShow.forEach { detail ->
                                 sb.append("Row ${detail.rowIndex} (OB: ${detail.offBlock}, DEP: ${detail.departure}, ARR: ${detail.arrival})\n")
@@ -145,7 +142,6 @@ class CsvImportActivity : BaseActivity() {
                     }
 
                     is ImportResult.Error -> {
-                        // Keep Toast for errors, or you can also show a dialog
                         Toast.makeText(
                             this@CsvImportActivity,
                             result.message,
@@ -159,16 +155,17 @@ class CsvImportActivity : BaseActivity() {
             }
         }
 
-        val filePath = intent.getStringExtra("filePath")
-        if (filePath != null) {
+        val fileUriString = intent.getStringExtra("fileUri")
+        if (fileUriString != null) {
             try {
-                val file = File(filePath)
-                if (file.exists()) {
-                    val inputStream = file.inputStream()
-                    viewModel.loadCsvFile(inputStream, file.name)
-                    Log.d(TAG, "File loaded successfully: ${file.name}, size: ${file.length()} bytes")
+                val uri = fileUriString.toUri()
+                val inputStream = contentResolver.openInputStream(uri)
+                if (inputStream != null) {
+                    val fileName = uri.lastPathSegment ?: "imported.csv"
+                    viewModel.loadCsvFile(inputStream, fileName)
+                    Log.d(TAG, "File loaded from URI: $uri")
                 } else {
-                    Toast.makeText(this, "File not found", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Cannot open file", Toast.LENGTH_LONG).show()
                     finish()
                 }
             } catch (e: Exception) {
@@ -177,7 +174,7 @@ class CsvImportActivity : BaseActivity() {
                 finish()
             }
         } else {
-            Toast.makeText(this, "No file path", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "No file URI", Toast.LENGTH_LONG).show()
             finish()
         }
 
@@ -191,35 +188,36 @@ class CsvImportActivity : BaseActivity() {
             viewModel.resetState()
             finish()
         }
-
     }
 
     private fun performBackupThenImport() {
         btnImport.isEnabled = false
 
         val prefs = PreferencesManager.getInstance(this)
-        val folderUriString = prefs.getBackupFolderUri()
-        if (folderUriString == null) {
-            Toast.makeText(this, "Please set a backup folder first", Toast.LENGTH_LONG).show()
-            btnImport.isEnabled = true
-            return
+
+        val folder = when (val state = FileManager.resolveWorkDirectory(this)) {
+            WorkDirectoryState.NotSet -> {
+                Toast.makeText(this, "Please set a backup folder first", Toast.LENGTH_LONG).show()
+                btnImport.isEnabled = true
+                return
+            }
+
+            WorkDirectoryState.Invalid -> {
+                prefs.setBackupFolderUri(null)
+                Toast.makeText(
+                    this,
+                    "Backup folder unavailable. Please set it again.",
+                    Toast.LENGTH_LONG
+                ).show()
+                btnImport.isEnabled = true
+                return
+            }
+
+            is WorkDirectoryState.Ready -> state.folder
         }
 
         lifecycleScope.launch {
             try {
-                val folderUri = folderUriString.toUri()
-                val folder = DocumentFile.fromTreeUri(this@CsvImportActivity, folderUri)
-                if (folder == null || !folder.exists() || !folder.isDirectory) {
-                    prefs.setBackupFolderUri(null)
-                    Toast.makeText(
-                        this@CsvImportActivity,
-                        "Backup folder unavailable. Please set it again.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    btnImport.isEnabled = true
-                    return@launch
-                }
-
                 val repository = (application as LogbookApplication).repository
                 val legs = repository.getAllLegsList()
                 val openingBalance = repository.getAllOpeningBalancesList()
