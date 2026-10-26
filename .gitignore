@@ -13,3 +13,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Built application files
+*.apk
+*.aab
+*.ap_
+
+# Release folder
+release/
+
+# ProGuard mapping
+mapping.txt
