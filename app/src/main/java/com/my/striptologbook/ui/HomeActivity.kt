@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
+import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.UpdateCheckResult
 import com.my.striptologbook.utils.UpdateChecker
@@ -25,6 +26,15 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        // -------- Status bar spacer ------------------------------
+        InsetsHelper.applyStatusBarSpacer(findViewById(R.id.status_bar_spacer))
+
+        // -------- Toolbar -----------------------------------------
+//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+//        setSupportActionBar(toolbar)
+//        supportActionBar?.title = "Home"              //change title
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Silent auto update check (with a short delay so it never blocks
         // the first frame). The gate and timestamp logic live in

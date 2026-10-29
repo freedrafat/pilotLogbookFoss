@@ -1,7 +1,6 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                      USER MANUAL
-                 Logbook & Flight Tools
-                      v.20261026
+            USER MANUAL
+	Logbook & Flight Tools - 20261029
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Welcome to the Logbook & Flight Tools app. This manual covers every
@@ -707,7 +706,6 @@ Settings → Opening Balance (section 14).
 9. CSV EXPORT / IMPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-
   9.1. Export CSV
 
     Tap Export CSV on the Export/Import screen. The app writes a
@@ -722,31 +720,36 @@ Settings → Opening Balance (section 14).
     If no Work Directory has been set yet, a folder picker
     opens; after you pick, the export continues automatically.
 
-  9.2. Import CSV
-    Tap Import CSV. A list of CSV files in your Work Directory
-    appears, newest first. Pick the one to import. You can also
-    tap "Browse elsewhere" to pick a CSV file from anywhere on
-    your device.
+9.2. Import CSV
 
-    After you pick, the CSV Import screen opens with a mapping
-    list:
-      • A list of columns from the CSV header is shown.
-      • For each column, a dropdown lets you map it to a
-        corresponding field in the app. You can skip columns by
-        selecting None.
-      • Once all required fields are mapped, tap Import.
+    Tap Import CSV. If no Work Directory has been set yet, a folder
+    picker opens first; after you pick a folder, the import continues
+    automatically.
+
+    If your Work Directory contains CSV files, a list of them
+    appears, newest first. Pick the file to import. Tap "Browse
+    elsewhere" to pick a CSV file from anywhere on your device.
+
+    The CSV Import screen opens. It shows the file name, the number
+    of data rows, and one entry per column of the CSV. For each
+    column, a dropdown lets you choose which app field that column
+    should fill. Columns from a CSV produced by this app are
+    matched automatically. For columns you do not want to import,
+    leave the dropdown on "Ignore".
+
+    When the columns are mapped the way you want, tap Import. The
+    app first creates and verifies a JSON backup of your current
+    logbook in your Work Directory. The import only starts if that
+    backup succeeds. If the Import button stays disabled, some
+    date or time values in the CSV could not be read; correct
+    those values in the file, then pick the file again.
+
+    When the import finishes, a summary appears: how many rows
+    were imported, how many were skipped, and how many had errors,
+    followed by a short reason for each skipped row.
 
     CSV import creates legs only. It never creates Opening
     Balance rows.
-
-    Automatic mapping for app-generated files
-      If the CSV file was produced by this app, columns are
-      recognised and mapped automatically.
-
-    Backup before import
-      When you tap Import, the app first creates a verified JSON
-      backup of your current logbook in your Work Directory. The
-      import only starts if the backup is confirmed to be valid.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 10. PDF LOGBOOK EXPORT

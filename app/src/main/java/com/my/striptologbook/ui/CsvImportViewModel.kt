@@ -214,9 +214,7 @@ class CsvImportViewModel(
      * Returns true if the value is empty or parseable.
      */
     private fun isValueParseable(field: LegField, value: String): Boolean {
-        if (value.isEmpty()) return true
-
-        return when (field) {
+        return value.isEmpty() || when (field) {
             // Full timestamp or Date‑only: try parseTimestamp (covers both)
             in setOf(
                 LegField.OFF_BLOCK_DATETIME,
@@ -458,12 +456,14 @@ class CsvImportViewModel(
 
             // ---------- Helper to compute a timestamp for other events ----------
             // Returns Pair(timestamp, explicitFlag)
-            // Priority: Full first, then Date+Time, then Time-only + baseDate (implicit)
+            // Priority: Full first, then Date+Time, then Time-only + baseDate (implicit).
+            // Time-only values are adjusted against referenceTs before being returned.
             fun computeTimestampWithExplicit(
                 dateField: LegField,
                 timeField: LegField,
                 fullField: LegField,
                 baseDate: Long?,
+                referenceTs: Long? = null,
                 isSunriseSunset: Boolean = false
             ): Pair<Long?, Boolean> {
                 val dateStr = getRaw(dateField)
@@ -492,39 +492,44 @@ class CsvImportViewModel(
                     val minutes = timeStr.toMinutesOrNull() ?: throw IllegalArgumentException(
                         "Row $rowIndex, column '${getColumnName(timeField)}': value '$timeStr' is not a valid time (HH:MM)"
                     )
-                    // For sunrise/sunset, no cross‑midnight adjustment later, so we compute directly
-                    if (isSunriseSunset) {
-                        return Pair(baseDate + (minutes * 60_000L), false)
+                    val raw = baseDate + (minutes * 60_000L)
+                    if (referenceTs != null && !isSunriseSunset) {
+                        return Pair(adjustTimestampRelativeToReference(raw, referenceTs), false)
                     }
-                    // For other events, we return the raw computed timestamp (will be adjusted later if implicit)
-                    return Pair(baseDate + (minutes * 60_000L), false)
+                    return Pair(raw, false)
                 }
 
                 return Pair(null, false)
             }
 
-            // Compute each raw timestamp and its explicitness
-            val (offBlockTsFinal, offBlockExplicitFinal) = Pair(offBlockTs, offBlockExplicit)
-
-            val (takeoffRaw, takeoffExplicit) = computeTimestampWithExplicit(
+            // Compute takeoff, landing and onBlock. Implicit (time-only)
+            // values are adjusted here, during construction, against the
+            // previous event in the timeline.
+            val (takeoffFinal, takeoffExplicit) = computeTimestampWithExplicit(
                 dateField = LegField.TAKEOFF_DATE_ONLY,
                 timeField = LegField.TAKEOFF_TIME_ONLY,
                 fullField = LegField.TAKEOFF_DATETIME,
-                baseDate = offBlockDate
+                baseDate = offBlockDate,
+                referenceTs = offBlockTs
             )
 
-            val (landingRaw, landingExplicit) = computeTimestampWithExplicit(
+            val (landingFinal, landingExplicit) = computeTimestampWithExplicit(
                 dateField = LegField.LANDING_DATE_ONLY,
                 timeField = LegField.LANDING_TIME_ONLY,
                 fullField = LegField.LANDING_DATETIME,
-                baseDate = offBlockDate
+                baseDate = offBlockDate,
+                referenceTs = takeoffFinal ?: offBlockTs
             )
 
-            val (onBlockRaw, onBlockExplicit) = computeTimestampWithExplicit(
+            val (onBlockFinal, onBlockExplicit) = computeTimestampWithExplicit(
                 dateField = LegField.ON_BLOCK_DATE_ONLY,
                 timeField = LegField.ON_BLOCK_TIME_ONLY,
                 fullField = LegField.ON_BLOCK_DATETIME,
-                baseDate = offBlockDate
+                baseDate = offBlockDate,
+                referenceTs = when {
+                    landingFinal != null && offBlockTs != null && landingFinal > offBlockTs -> landingFinal
+                    else -> offBlockTs
+                }
             )
 
             // Sunrise and Sunset are always explicit (no cross‑midnight adjustment) – we parse them with the same function
@@ -545,12 +550,10 @@ class CsvImportViewModel(
             )
 
             // ---------- Strict validation for explicit timestamps ----------
-            // We only validate the explicit ones (those that came from Full or Date+Time)
-            // Note: offBlockTsFinal may be null if no explicit source, but we still track its explicitness.
-
+            // Runs on the final (already-adjusted) values.
             fun validateExplicitTimestamps(): String? {
-                val hasOB = offBlockTsFinal != null
-                val hasON = onBlockRaw != null
+                val hasOB = offBlockTs != null
+                val hasON = onBlockFinal != null
 
                 // Rule 1: OffBlock and OnBlock must be both present or both absent
                 if (hasOB && !hasON) {
@@ -566,8 +569,8 @@ class CsvImportViewModel(
                 }
 
                 // From here, both OffBlock and OnBlock are present
-                val hasTO = takeoffRaw != null
-                val hasLD = landingRaw != null
+                val hasTO = takeoffFinal != null
+                val hasLD = landingFinal != null
 
                 // Rule 2: Takeoff and Landing must be both present or both absent
                 if (hasTO && !hasLD) {
@@ -579,57 +582,48 @@ class CsvImportViewModel(
 
                 // Rule 3: If both Takeoff and Landing are missing → verify only OffBlock < OnBlock
                 if (!hasTO && !hasLD) {
-                    if (offBlockTsFinal!! >= onBlockRaw!!) {
-                        return "Row $rowIndex: OffBlock must be strictly before OnBlock (OffBlock=${formatTimestampIsoUtc(offBlockTsFinal)}, OnBlock=${formatTimestampIsoUtc(onBlockRaw)})"
+                    if (offBlockTs!! >= onBlockFinal!!) {
+                        return "Row $rowIndex: OffBlock must be strictly before OnBlock (OffBlock=${
+                            formatTimestampIsoUtc(
+                                offBlockTs
+                            )
+                        }, OnBlock=${formatTimestampIsoUtc(onBlockFinal)})"
                     }
                     return null
                 }
 
                 // Rule 4: All four are present → verify full chain: OB < TO < LD < ON
-                if (offBlockTsFinal!! >= takeoffRaw!!) {
-                    return "Row $rowIndex: OffBlock must be before Takeoff (OffBlock=${formatTimestampIsoUtc(offBlockTsFinal)}, Takeoff=${formatTimestampIsoUtc(takeoffRaw)})"
+                if (offBlockTs!! >= takeoffFinal!!) {
+                    return "Row $rowIndex: OffBlock must be before Takeoff (OffBlock=${
+                        formatTimestampIsoUtc(
+                            offBlockTs
+                        )
+                    }, Takeoff=${formatTimestampIsoUtc(takeoffFinal)})"
                 }
-                if (takeoffRaw >= landingRaw!!) {
-                    return "Row $rowIndex: Takeoff must be before Landing (Takeoff=${formatTimestampIsoUtc(takeoffRaw)}, Landing=${formatTimestampIsoUtc(landingRaw)})"
+                if (takeoffFinal >= landingFinal!!) {
+                    return "Row $rowIndex: Takeoff must be before Landing (Takeoff=${
+                        formatTimestampIsoUtc(
+                            takeoffFinal
+                        )
+                    }, Landing=${formatTimestampIsoUtc(landingFinal)})"
                 }
-                if (landingRaw >= onBlockRaw!!) {
-                    return "Row $rowIndex: Landing must be before OnBlock (Landing=${formatTimestampIsoUtc(landingRaw)}, OnBlock=${formatTimestampIsoUtc(onBlockRaw)})"
+                if (landingFinal >= onBlockFinal!!) {
+                    return "Row $rowIndex: Landing must be before OnBlock (Landing=${
+                        formatTimestampIsoUtc(
+                            landingFinal
+                        )
+                    }, OnBlock=${formatTimestampIsoUtc(onBlockFinal)})"
                 }
 
                 return null
             }
 
             // Run validation – only if any of the four timestamps are explicit.
-            // (If all are implicit, we skip validation and rely on adjustment.)
-            if (offBlockExplicitFinal || takeoffExplicit || landingExplicit || onBlockExplicit) {
+            if (offBlockExplicit || takeoffExplicit || landingExplicit || onBlockExplicit) {
                 val validationError = validateExplicitTimestamps()
                 if (validationError != null) {
                     return Pair(null, validationError)
                 }
-            }
-
-            // ---------- Cross‑midnight adjustment for implicit timestamps only ----------
-            var finalTakeoffTs = takeoffRaw
-            var finalLandingTs = landingRaw
-            var finalOnBlockTs = onBlockRaw
-
-            // Adjust Takeoff if it is implicit and we have a reference
-            if (!takeoffExplicit && finalTakeoffTs != null && offBlockTsFinal != null) {
-                finalTakeoffTs = adjustTimestampRelativeToReference(finalTakeoffTs, offBlockTsFinal)
-            }
-
-            // Adjust Landing if it is implicit and we have a reference
-            if (!landingExplicit && finalLandingTs != null) {
-                val ref = finalTakeoffTs ?: offBlockTsFinal
-                if (ref != null) {
-                    finalLandingTs = adjustTimestampRelativeToReference(finalLandingTs, ref)
-                }
-            }
-
-            // Adjust OnBlock if it is implicit and we have a reference
-            if (!onBlockExplicit && finalOnBlockTs != null && offBlockTsFinal != null) {
-                val ref = if (finalLandingTs != null && finalLandingTs > offBlockTsFinal) finalLandingTs else offBlockTsFinal
-                finalOnBlockTs = adjustTimestampRelativeToReference(finalOnBlockTs, ref)
             }
 
             // ---------- Build the Leg object ----------
@@ -650,10 +644,10 @@ class CsvImportViewModel(
                 icaoDeparture = fieldValues[LegField.ICAO_DEPARTURE]?.ifEmpty { null },
                 icaoDestination = fieldValues[LegField.ICAO_DESTINATION]?.ifEmpty { null },
 
-                offBlock = offBlockTsFinal,
-                onBlock = finalOnBlockTs,
-                takeoffTime = finalTakeoffTs,
-                landingTime = finalLandingTs,
+                offBlock = offBlockTs,
+                onBlock = onBlockFinal,
+                takeoffTime = takeoffFinal,
+                landingTime = landingFinal,
 
                 sunrise = sunriseTs,
                 sunset = sunsetTs,
@@ -700,7 +694,7 @@ class CsvImportViewModel(
     // Helper to adjust a timestamp relative to a reference (cross‑midnight logic)
     private fun adjustTimestampRelativeToReference(candidate: Long, reference: Long): Long {
         var adjusted = candidate
-        while (adjusted <= reference) {
+        while (adjusted < reference) {
             adjusted += DAY_MILLIS
         }
         while (adjusted >= reference + DAY_MILLIS) {
