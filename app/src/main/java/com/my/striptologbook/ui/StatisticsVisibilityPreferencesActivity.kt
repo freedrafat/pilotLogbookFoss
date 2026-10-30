@@ -19,6 +19,10 @@ class StatisticsVisibilityPreferencesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics_visibility_preferences)
 
+
+        // One-time cleanup of the removed VFR statistic visibility keys
+        PreferencesManager.getInstance(this).clearLegacyVfrVisibilityKeys()
+
         // -------- Status bar spacer ------------------------------
         InsetsHelper.applyStatusBarSpacer(findViewById(R.id.status_bar_spacer))
 

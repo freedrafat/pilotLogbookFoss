@@ -108,6 +108,23 @@ class PreferencesManager private constructor(context: Context) {
         }
     }
 
+    /**
+     * One-time cleanup: removes the visibility keys for the removed
+     * VFR statistics ("VFR", "VFR Night", "VFR Day").
+     * Harmless to call repeatedly — removing an absent key is a no-op.
+     */
+    fun clearLegacyVfrVisibilityKeys() {
+        val keys = listOf(
+            "stat_visibility_VFR",
+            "stat_visibility_VFR Night",
+            "stat_visibility_VFR Day"
+        )
+        val toRemove = keys.filter { prefs.contains(it) }
+        if (toRemove.isNotEmpty()) {
+            prefs.edit { toRemove.forEach { remove(it) } }
+        }
+    }
+
     /** Master switch for automatic update checks. Default: true. */
     fun isAutoCheckUpdatesEnabled(): Boolean =
         prefs.getBoolean(KEY_AUTO_CHECK_UPDATES, true)

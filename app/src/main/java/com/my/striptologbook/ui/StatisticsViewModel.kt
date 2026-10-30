@@ -3,7 +3,11 @@ package com.my.striptologbook.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.my.striptologbook.data.*
+import com.my.striptologbook.data.Leg
+import com.my.striptologbook.data.MonthStat
+import com.my.striptologbook.data.OpeningBalance
+import com.my.striptologbook.data.TypeStatRow
+import com.my.striptologbook.data.YearStat
 import com.my.striptologbook.repository.LegRepository
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.getDateAtMidnight
@@ -53,7 +57,12 @@ class StatisticsViewModel(
     private suspend fun computeTypeStats() {
         val allLegs = repository.getAllLegsList()
         val filteredLegs = applyFilter(allLegs)
-        val openingBalances = repository.getAllOpeningBalancesList()
+        val (fStart, fEnd) = computeFilterRange()
+        val openingBalances = filterOpeningBalances(
+            repository.getAllOpeningBalancesList(),
+            fStart,
+            fEnd
+        )
 
         if (filteredLegs.isEmpty() && openingBalances.isEmpty()) {
             _typeStats.value = emptyList()
@@ -92,15 +101,6 @@ class StatisticsViewModel(
             StatDef("Flight Day",
                 { it.flightTimeDay ?: 0 },
                 { it.flightTimeDay ?: 0 }),
-            StatDef("VFR",
-                { (it.flightTimeTotal ?: 0) - (it.ifrTotal ?: 0) },
-                { (it.flightTimeTotal ?: 0) - (it.ifrTotal ?: 0) }),
-            StatDef("VFR Night",
-                { (it.flightTimeNight ?: 0) - (it.ifrNight ?: 0) },
-                { (it.flightTimeNight ?: 0) - (it.ifrNight ?: 0) }),
-            StatDef("VFR Day",
-                { (it.flightTimeDay ?: 0) - (it.ifrDay ?: 0) },
-                { (it.flightTimeDay ?: 0) - (it.ifrDay ?: 0) }),
             StatDef("IFR",
                 { it.ifrTotal ?: 0 },
                 { it.ifrTotal ?: 0 }),
@@ -166,14 +166,14 @@ class StatisticsViewModel(
         }
     }
 
-    // ----- FILTER (unchanged) -----
+    // ----- FILTER  -----
     private fun applyFilter(legs: List<Leg>): List<Leg> {
         val filter = try { FilterType.valueOf(filterType ?: "ALL") } catch (_: Exception) { FilterType.ALL }
         if (filter == FilterType.ALL) return legs
 
         val todayMidnight = getTodayMidnight()
-        var start: Long? = null
-        var end: Long? = null
+        var start: Long?
+        var end: Long?
 
         when (filter) {
             FilterType.LAST_7_DAYS -> {
@@ -245,6 +245,116 @@ class StatisticsViewModel(
             val startOk = start == null || dateMidnight >= start
             val endOk = end == null || dateMidnight <= end
             startOk && endOk
+        }
+    }
+
+    /**
+     * Duplicates the start/end range computed inside applyFilter(), so that
+     * opening balances can be filtered with the same range without modifying
+     * applyFilter() itself.
+     */
+    private fun computeFilterRange(): Pair<Long?, Long?> {
+        val filter = try {
+            FilterType.valueOf(filterType ?: "ALL")
+        } catch (_: Exception) {
+            FilterType.ALL
+        }
+        if (filter == FilterType.ALL) return null to null
+
+        val todayMidnight = getTodayMidnight()
+        var start: Long? = null
+        var end: Long? = null
+
+        when (filter) {
+            FilterType.LAST_7_DAYS -> {
+                start = todayMidnight - 6 * 24 * 60 * 60 * 1000L
+                end = todayMidnight
+            }
+
+            FilterType.LAST_28_DAYS -> {
+                start = todayMidnight - 27 * 24 * 60 * 60 * 1000L
+                end = todayMidnight
+            }
+
+            FilterType.ACTUAL_MONTH -> {
+                val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.DAY_OF_MONTH, 1)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                start = cal.timeInMillis
+                end = todayMidnight
+            }
+
+            FilterType.PREVIOUS_MONTH -> {
+                val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+                    timeInMillis = System.currentTimeMillis()
+                    add(Calendar.MONTH, -1)
+                    set(Calendar.DAY_OF_MONTH, 1)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                start = cal.timeInMillis
+                val currentMonthFirst = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.DAY_OF_MONTH, 1)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.timeInMillis
+                end = currentMonthFirst - 1
+            }
+
+            FilterType.ACTUAL_YEAR -> {
+                val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.DAY_OF_YEAR, 1)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                start = cal.timeInMillis
+                end = todayMidnight
+            }
+
+            FilterType.CUSTOM -> {
+                start = customStart
+                end = customEnd ?: todayMidnight
+            }
+
+            FilterType.ALL -> {
+                start = null
+                end = null
+            }
+        }
+        return start to end
+    }
+
+    /**
+     * ALL filter  -> all opening balances included (null dates allowed).
+     * Any filter  -> only balances with BOTH startDate and endDate non-null,
+     *                whose period [startDate, endDate] overlaps [start, end]
+     *                (inclusive).
+     */
+    private fun filterOpeningBalances(
+        balances: List<OpeningBalance>,
+        start: Long?,
+        end: Long?
+    ): List<OpeningBalance> {
+        if (start == null && end == null) return balances // ALL
+        return balances.filter { ob ->
+            val s = ob.startDate ?: return@filter false
+            val e = ob.endDate ?: return@filter false
+            val endOk = end == null || s <= end
+            val startOk = start == null || e >= start
+            endOk && startOk
         }
     }
 
