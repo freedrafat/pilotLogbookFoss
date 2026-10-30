@@ -18,8 +18,6 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.my.striptologbook.R
 import com.my.striptologbook.data.PDF_PAGE_WIDTH
 import com.my.striptologbook.data.PdfLayoutConfig

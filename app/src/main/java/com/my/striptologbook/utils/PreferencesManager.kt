@@ -257,7 +257,7 @@ class PreferencesManager private constructor(context: Context) {
     fun getCustomPositionList(): List<String> {
         val raw = prefs.getString(KEY_CUSTOM_POSITION_LIST, null) ?: return DEFAULT_POSITION_LIST
         val parsed = raw.split("|").filter { it.isNotEmpty() }
-        return if (parsed.isEmpty()) DEFAULT_POSITION_LIST else parsed
+        return parsed.ifEmpty { DEFAULT_POSITION_LIST }
     }
 
     fun setCustomPositionList(list: List<String>) {
@@ -267,7 +267,7 @@ class PreferencesManager private constructor(context: Context) {
     fun getCustomCategoryList(): List<String> {
         val raw = prefs.getString(KEY_CUSTOM_CATEGORY_LIST, null) ?: return DEFAULT_CATEGORY_LIST
         val parsed = raw.split("|").filter { it.isNotEmpty() }
-        return if (parsed.isEmpty()) DEFAULT_CATEGORY_LIST else parsed
+        return parsed.ifEmpty { DEFAULT_CATEGORY_LIST }
     }
 
     fun setCustomCategoryList(list: List<String>) {

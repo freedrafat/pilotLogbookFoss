@@ -10,23 +10,44 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.R
 import com.my.striptologbook.data.AirportDataManager
-import com.my.striptologbook.utils.*
+import com.my.striptologbook.utils.InsetsHelper
+import com.my.striptologbook.utils.MovingSunriseCalculator
+import com.my.striptologbook.utils.PreferencesManager
+import com.my.striptologbook.utils.Waypoint
+import com.my.striptologbook.utils.extractMinutesSinceMidnight
+import com.my.striptologbook.utils.extractTimeOnly
+import com.my.striptologbook.utils.formatCoordinate
+import com.my.striptologbook.utils.formatDateOnly
+import com.my.striptologbook.utils.getDateAtMidnight
+import com.my.striptologbook.utils.getTodayMidnight
+import com.my.striptologbook.utils.normalizeTime
+import com.my.striptologbook.utils.parseCoordinate
+import com.my.striptologbook.utils.showCustomDatePicker
+import com.my.striptologbook.utils.toMinutesOrNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
-
-import androidx.activity.OnBackPressedCallback
-import com.my.striptologbook.utils.formatCoordinate
-import com.my.striptologbook.utils.parseCoordinate
-import androidx.core.view.isVisible
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 
 class FlightSunActivity : AppCompatActivity() {
 
@@ -243,9 +264,9 @@ class FlightSunActivity : AppCompatActivity() {
                     val lat = parts[0].ifEmpty { null }?.toDoubleOrNull()
                     val lon = parts[1].ifEmpty { null }?.toDoubleOrNull()
                     val time = parts[2].ifEmpty { null }?.takeIf { Regex("^\\d{2}:\\d{2}$").matches(it) }
-                    val latTemp = if (parts.size > 3) parts[3] == "1" else false
-                    val lonTemp = if (parts.size > 4) parts[4] == "1" else false
-                    val timeTemp = if (parts.size > 5) parts[5] == "1" else false
+                    val latTemp = parts.size > 3 && parts[3] == "1"
+                    val lonTemp = parts.size > 4 && parts[4] == "1"
+                    val timeTemp = parts.size > 5 && parts[5] == "1"
                     addWaypointRow(lat, lon, time, latTemp, lonTemp, timeTemp)
                 }
             }
@@ -492,7 +513,8 @@ class FlightSunActivity : AppCompatActivity() {
             updateCode: (String) -> Unit
         ) {
             autoComplete.threshold = 0
-            autoComplete.setAdapter(ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, emptyList<String>()))
+            autoComplete.adapter =
+                ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, emptyList<String>())
 
             autoComplete.addTextChangedListener(object : TextWatcher {
                 private var lastQuery = ""
@@ -519,7 +541,7 @@ class FlightSunActivity : AppCompatActivity() {
                                     android.R.layout.simple_dropdown_item_1line,
                                     suggestions
                                 )
-                                autoComplete.setAdapter(adapter)
+                                autoComplete.adapter = adapter
                                 autoComplete.showDropDown()
                             } else {
                                 autoComplete.dismissDropDown()
@@ -1260,8 +1282,7 @@ class FlightSunActivity : AppCompatActivity() {
 
     private fun allNonEmptyRowsHaveUserTime(): Boolean {
         val nonEmpty = getNonEmptyRows()
-        if (nonEmpty.isEmpty()) return false
-        return nonEmpty.all { it.timeStr != null && !it.isTimeTemporary }
+        return nonEmpty.isNotEmpty() && nonEmpty.all { it.timeStr != null && !it.isTimeTemporary }
     }
 
     private fun buildRouteFromUi(): MutableList<Waypoint>? {

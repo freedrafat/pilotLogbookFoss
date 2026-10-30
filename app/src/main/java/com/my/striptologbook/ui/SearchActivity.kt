@@ -1,19 +1,25 @@
 package com.my.striptologbook.ui
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,29 +32,15 @@ import com.my.striptologbook.data.SearchField
 import com.my.striptologbook.data.SearchFields
 import com.my.striptologbook.data.SearchOperator
 import com.my.striptologbook.utils.InsetsHelper
-
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
 import com.my.striptologbook.utils.formatDateDigits
 import com.my.striptologbook.utils.formatDateOnly
 import com.my.striptologbook.utils.normalizeDuration
 import com.my.striptologbook.utils.normalizeTime
 import com.my.striptologbook.utils.showCustomDatePicker
-
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.milliseconds
-
-import android.app.Dialog
-import android.view.ViewGroup
-import com.my.striptologbook.utils.formatDateDigits
-import com.my.striptologbook.utils.formatDateOnly
-import com.my.striptologbook.utils.normalizeDuration
-import com.my.striptologbook.utils.normalizeTime
-import com.my.striptologbook.utils.showCustomDatePicker
 
 class SearchActivity : BaseActivity() {
     private lateinit var viewModel: SearchViewModel
@@ -289,7 +281,7 @@ class SearchActivity : BaseActivity() {
                         android.R.layout.simple_dropdown_item_1line,
                         boolList
                     )
-                    autoComplete.setAdapter(adapter)
+                    autoComplete.adapter = adapter
                     autoComplete.showDropDown()
                 }
             }
@@ -309,7 +301,7 @@ class SearchActivity : BaseActivity() {
                             android.R.layout.simple_dropdown_item_1line,
                             filtered
                         )
-                        autoComplete.setAdapter(adapter)
+                        autoComplete.adapter = adapter
                         autoComplete.showDropDown()
                     } else {
                         autoComplete.dismissDropDown()
@@ -364,7 +356,7 @@ class SearchActivity : BaseActivity() {
                                 android.R.layout.simple_dropdown_item_1line,
                                 suggestions
                             )
-                            autoComplete.setAdapter(adapter)
+                            autoComplete.adapter = adapter
                             autoComplete.showDropDown()
                         } else {
                             autoComplete.dismissDropDown()

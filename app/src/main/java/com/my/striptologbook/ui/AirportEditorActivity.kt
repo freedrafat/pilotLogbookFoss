@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Filter
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.my.striptologbook.R
 import com.my.striptologbook.data.AirportDataManager
 import com.my.striptologbook.data.AirportDataManager.Airport
 import com.my.striptologbook.utils.InsetsHelper
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.abs
 
 class AirportEditorActivity : BaseActivity() {
@@ -255,7 +260,7 @@ class AirportEditorActivity : BaseActivity() {
             }
         }
 
-        autoCompleteSearch.setAdapter(adapter)
+        autoCompleteSearch.adapter = adapter
         autoCompleteSearch.threshold = 1
         autoCompleteSearch.setOnItemClickListener { parent, _, position, _ ->
             val selected = parent.getItemAtPosition(position) as Airport

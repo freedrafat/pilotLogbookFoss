@@ -601,8 +601,7 @@ object PdfGenerator {
 
         if (signature != null && signature.width > 0 && signature.height > 0) {
             val availTop = certBaseline + 2f
-            val availBottom = signatureBottomLimit
-            val availHeight = availBottom - availTop
+            val availHeight = signatureBottomLimit - availTop
             val availWidth = remarksWidth - 8f
             if (availHeight > 6f && availWidth > 6f) {
                 val sf = minOf(availWidth / signature.width, availHeight / signature.height)
@@ -647,7 +646,7 @@ object PdfGenerator {
         val current = StringBuilder()
 
         for (word in words) {
-            val candidate = if (current.isEmpty()) word else "${current} $word"
+            val candidate = if (current.isEmpty()) word else "$current $word"
             if (paint.measureText(candidate) <= maxWidth) {
                 current.clear()
                 current.append(candidate)

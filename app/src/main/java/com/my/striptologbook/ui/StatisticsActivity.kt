@@ -5,21 +5,18 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.striptologbook.R
 import com.my.striptologbook.data.MonthStat
 import com.my.striptologbook.data.YearStat
+import com.my.striptologbook.utils.InsetsHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.ViewModelProvider
-import com.my.striptologbook.utils.InsetsHelper
 
 class StatisticsActivity : BaseActivity() {
 

@@ -9,14 +9,13 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.ScrollView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.PreferencesManager
-
-import android.widget.ScrollView
 import com.my.striptologbook.utils.InsetsHelper
+import com.my.striptologbook.utils.PreferencesManager
 
 class DefaultFieldsPreferencesActivity : BaseActivity() {
 
@@ -84,8 +83,7 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
         cbDefaultIsIfr.isChecked = preferencesManager.getDefaultIsIfr()
         etDefaultSimuIfrApproach.setText(preferencesManager.getDefaultSimuIfrApproach().toString())
 
-        val storedPosition = preferencesManager.getDefaultPosition()
-        when (storedPosition) {
+        when (val storedPosition = preferencesManager.getDefaultPosition()) {
             "PIC" -> rbPositionPic.isChecked = true
             "SIC" -> rbPositionSic.isChecked = true
             "Dual" -> rbPositionDual.isChecked = true

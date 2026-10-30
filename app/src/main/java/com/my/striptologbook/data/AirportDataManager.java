@@ -10,7 +10,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -308,8 +317,8 @@ public class AirportDataManager {
     // ========== NEW: User modification support ==========
 
     private static final String USER_JSON_FILENAME = "airports_user.json";
-    private Set<String> modifiedIcaoCodes = new HashSet<>();
-    private Set<String> deletedIcaoCodes = new HashSet<>();
+    private final Set<String> modifiedIcaoCodes = new HashSet<>();
+    private final Set<String> deletedIcaoCodes = new HashSet<>();
 
     private void applyUserModifications() {
         File userFile = new File(appContext.getFilesDir(), USER_JSON_FILENAME);
@@ -365,7 +374,7 @@ public class AirportDataManager {
         }
     }
 
-    private Airport parseAirportFromJson(JSONObject obj) throws JSONException {
+    private Airport parseAirportFromJson(JSONObject obj) {
         String name = obj.optString("name", "Unknown");
         String city = obj.optString("city", "");
         String state = obj.optString("state", "");

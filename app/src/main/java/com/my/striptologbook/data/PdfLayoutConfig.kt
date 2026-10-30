@@ -70,7 +70,6 @@ data class PdfLayoutConfig(
 
     val declaredSum: Float   get() = columnWidths().sum()
     val contentWidth: Float  get() = PDF_PAGE_WIDTH - marginLeft - marginRight
-    val scaleFactor: Float   get() = contentWidth / declaredSum
 
     companion object {
         val DEFAULT = PdfLayoutConfig()
