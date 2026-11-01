@@ -1,6 +1,6 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            USER MANUAL
-	Logbook & Flight Tools - 20261029
+                      USER MANUAL
+	Logbook & Flight Tools - 20261031
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Welcome to the Logbook & Flight Tools app. This manual covers every
@@ -391,9 +391,9 @@ Tap Search to open the results. The result screen has a "Search
 Results" title and hides the date filter chips. Tap Back to return to
 the search screen and adjust your conditions.
 
-Known limitation: a not-equals condition does not include legs whose
-field is empty. To include them, add a second condition for the same
-field with equals and an empty value, and use OR logic.
+A not-equals condition includes legs whose field is empty (an empty value is treated as "not equal to X").
+
+To exclude empty fields, add a second condition for the same field with not-equals and an empty value, and use AND logic.
 
 Search never includes the Opening Balance. Only actual legs are
 filtered.
