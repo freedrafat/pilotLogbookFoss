@@ -123,6 +123,7 @@ data class LegEditState(
                 numberLdgTotal = leg.numberLdgTotal?.toString() ?: "",
                 isSimulator = leg.isSimulator,
                 pilotFlying = leg.pilotFlying,
+                isIfr = leg.ifrTotal != null || leg.ifrNight != null || leg.ifrDay != null,
                 comment = leg.comment ?: ""
             )
         }

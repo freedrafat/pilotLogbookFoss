@@ -103,7 +103,7 @@ class LegEditViewModel(
         viewModelScope.launch {
             val leg = repository.getLegById(id)
             if (leg != null) {
-                _state.update { LegEditState.fromLeg(leg).copy(isIfr = defaultFields.isIfr) }
+                _state.update { LegEditState.fromLeg(leg) }
             }
         }
     }
@@ -470,18 +470,35 @@ class LegEditViewModel(
 
     private fun computeBlockNightTotal() {
         val state = _state.value
-        val hasManualSunrise = state.sunriseTimeStr.isNotEmpty()
-        val hasManualSunset = state.sunsetTimeStr.isNotEmpty()
 
-        if (hasManualSunrise || hasManualSunset) {
-            // Use legacy (old) block night calculation
+        if (hasSweepData) {
+            // Sweep data from the Night button takes priority.
+            val off = state.offBlock ?: return
+            val on = state.onBlock ?: return
+            val takeoff = state.takeoffTime ?: return
+            val landing = state.landingTime ?: return
+
+            val fullEvents = buildBlockEvents(off, takeoff, landing, on)
+            val nightMinutes = computeNightMinutes(fullEvents, off, on, offBlockIsDay)
+            val nightStr = when (nightMinutes) {
+                null -> ""
+                0L -> "0:00"
+                else -> formatDuration(nightMinutes.toInt())
+            }
+            _state.update { it.copy(blockTimeNight = nightStr) }
+            recalcBlockDay()
+        } else if (state.sunriseTimeStr.isNotEmpty() || state.sunsetTimeStr.isNotEmpty()) {
+            // No sweep data — fall back to the legacy static calculation.
             when {
-                hasManualSunrise && hasManualSunset -> computeBlockNightTotalTwoEntrys()
-                hasManualSunrise xor hasManualSunset -> computeBlockNightTotalOneEntry()
-                else -> { /* both empty – do nothing */ }
+                state.sunriseTimeStr.isNotEmpty() && state.sunsetTimeStr.isNotEmpty() ->
+                    computeBlockNightTotalTwoEntrys()
+
+                else ->
+                    computeBlockNightTotalOneEntry()
             }
         } else {
-            // Use new sweep-based calculation (requires data from FlightSunActivity)
+            // Restore original behavior for the "no sweep data, no sun strings" case:
+            // the original code ran this sweep body unconditionally in that case.
             val off = state.offBlock ?: return
             val on = state.onBlock ?: return
             val takeoff = state.takeoffTime ?: return
@@ -497,7 +514,6 @@ class LegEditViewModel(
             _state.update { it.copy(blockTimeNight = nightStr) }
             recalcBlockDay()
         }
-
     }
 
     private fun computeBlockNightTotalTwoEntrys() {
@@ -642,18 +658,31 @@ class LegEditViewModel(
 
     private fun computeFlightNightTotal() {
         val state = _state.value
-        val hasManualSunrise = state.sunriseTimeStr.isNotEmpty()
-        val hasManualSunset = state.sunsetTimeStr.isNotEmpty()
 
-        if (hasManualSunrise || hasManualSunset) {
-            // Use legacy (old) flight night calculation
+        if (hasSweepData) {
+            // Sweep data from the Night button takes priority.
+            val takeoff = state.takeoffTime ?: return
+            val landing = state.landingTime ?: return
+
+            val nightMinutes = computeNightMinutes(flightEvents, takeoff, landing, takeoffIsDay)
+            val nightStr = when (nightMinutes) {
+                null -> ""
+                0L -> "0:00"
+                else -> formatDuration(nightMinutes.toInt())
+            }
+            _state.update { it.copy(flightTimeNight = nightStr) }
+            recalcFlightDay()
+        } else if (state.sunriseTimeStr.isNotEmpty() || state.sunsetTimeStr.isNotEmpty()) {
+            // No sweep data — fall back to the legacy static calculation.
             when {
-                hasManualSunrise && hasManualSunset -> computeFlightNightTotalTwoEntrys()
-                hasManualSunrise xor hasManualSunset -> computeFlightNightTotalOneEntry()
-                else -> { /* both empty – do nothing */ }
+                state.sunriseTimeStr.isNotEmpty() && state.sunsetTimeStr.isNotEmpty() ->
+                    computeFlightNightTotalTwoEntrys()
+
+                else ->
+                    computeFlightNightTotalOneEntry()
             }
         } else {
-            // Use new sweep-based calculation (requires data from FlightSunActivity)
+            // Restore original behavior for the "no sweep data, no sun strings" case.
             val takeoff = state.takeoffTime ?: return
             val landing = state.landingTime ?: return
 
@@ -1143,7 +1172,7 @@ class LegEditViewModel(
     }
 
     // ---------- Save ----------
-    fun saveLeg(): Leg {
+    suspend fun saveLeg() {
         val currentState = _state.value
 
         val leg = Leg(
@@ -1188,15 +1217,11 @@ class LegEditViewModel(
             comment = currentState.comment.ifEmpty { null }
         )
 
-        viewModelScope.launch {
-            if (currentState.legId != null) {
-                repository.updateLeg(leg)
-            } else {
-                repository.insertLeg(leg.copy(id = 0))
-            }
+        if (currentState.legId != null) {
+            repository.updateLeg(leg)
+        } else {
+            repository.insertLeg(leg.copy(id = 0))
         }
-
-        return leg
     }
 
     fun deleteLeg() {
@@ -1245,7 +1270,8 @@ class LegEditViewModel(
     private var depSunset: Long? = null
     private var arrSunrise: Long? = null
     private var arrSunset: Long? = null
-
+    private val hasSweepData: Boolean
+        get() = flightEvents.isNotEmpty() || offBlockIsDay != null || takeoffIsDay != null
     private var flightEvents: List<MovingSunriseCalculator.SunEvent> = emptyList()
     private var offBlockIsDay: Boolean? = null
     private var takeoffIsDay: Boolean? = null

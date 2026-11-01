@@ -1,8 +1,8 @@
 package com.my.striptologbook.utils
 
+import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.io.BufferedReader
 
 data class CsvData(
     val headers: List<String>,
@@ -25,20 +25,21 @@ object CsvImporter {
 
         // Detect delimiter from the first non-empty line.
         // Strip a leading UTF-8 BOM if present (Excel and some editors add one).
-        val rawHeaderLine = lines.firstOrNull { it.isNotBlank() }
-            ?: throw IllegalArgumentException("No header found")
+        val headerIndex = lines.indexOfFirst { it.isNotBlank() }
+        if (headerIndex < 0) throw IllegalArgumentException("No header found")
+        val rawHeaderLine = lines[headerIndex]
         val headerLine = rawHeaderLine.removePrefix("\uFEFF")
         val delimiter = detectDelimiter(headerLine)
 
         // Parse header
         val headers = parseCsvLine(headerLine, delimiter)
-        if (headers.isEmpty()) {
+        if (headers.all { it.isEmpty() }) {
             throw IllegalArgumentException("No headers found in CSV")
         }
 
         // Parse data rows
         val rows = mutableListOf<List<String>>()
-        for (i in 1 until lines.size) {
+        for (i in headerIndex + 1 until lines.size) {
             val line = lines[i]
             if (line.isBlank()) continue
             val row = parseCsvLine(line, delimiter)

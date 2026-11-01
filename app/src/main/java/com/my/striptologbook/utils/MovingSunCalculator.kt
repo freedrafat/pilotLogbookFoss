@@ -1,9 +1,22 @@
 package com.my.striptologbook.utils
 
-import android.util.Log
 import com.my.striptologbook.data.AirportDataManager
-import java.util.*
-import kotlin.math.*
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
+import kotlin.math.abs
+import kotlin.math.acos
+import kotlin.math.asin
+import kotlin.math.atan
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
 
 object MovingSunriseCalculator {
 
@@ -23,15 +36,10 @@ object MovingSunriseCalculator {
      */
     fun computeSolarElevation(latDeg: Double, lonDeg: Double, timeMillis: Long): Double {
 
-        Log.d("TimeDebug", "computeSolarElevation: lat=$latDeg, lon=$lonDeg, timeMillis=$timeMillis, formatted=${formatDateUtc(timeMillis)}")
-
         val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         cal.timeInMillis = timeMillis
         val dayOfYear = cal.get(Calendar.DAY_OF_YEAR)
         val hourUTC = cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60.0 + cal.get(Calendar.SECOND) / 3600.0
-
-        Log.d("TimeDebug", "  UTC components: dayOfYear=$dayOfYear, hourUTC=$hourUTC")
-
 
         // NOAA Solar Calculator algorithm
         val t = dayOfYear + (hourUTC / 24.0)
@@ -136,11 +144,6 @@ object MovingSunriseCalculator {
 
         // 6. Sort by time for the final route (this is the chronological order)
         val sortedRoute = routePoints.sortedBy { it.timeUTC }
-
-        Log.d("TimeDebug", "Final sorted route (${sortedRoute.size} points):")
-        sortedRoute.forEachIndexed { idx, wp ->
-            Log.d("TimeDebug", "  $idx: lat=${wp.latitude}, lon=${wp.longitude}, time=${wp.timeUTC} (${formatDateUtc(wp.timeUTC!!)})")
-        }
 
         // 7. Run the minute‑by‑minute scanning loop over the segmented path
         return computeEventsOnRoute(sortedRoute, elevationMeters)
@@ -428,8 +431,6 @@ object MovingSunriseCalculator {
 
         var t = route.first().timeUTC!!
         var segmentIdx = 0
-
-        Log.d("TimeDebug", "computeEventsOnRoute: totalDuration=$totalDuration ms, firstTime=${route.first().timeUTC} (${formatDateUtc(route.first().timeUTC!!)}), lastTime=${route.last().timeUTC} (${formatDateUtc(route.last().timeUTC!!)})")
 
         while (t <= route.last().timeUTC!!) {
             // Advance segment index if needed

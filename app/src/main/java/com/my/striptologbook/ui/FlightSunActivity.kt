@@ -513,8 +513,11 @@ class FlightSunActivity : AppCompatActivity() {
             updateCode: (String) -> Unit
         ) {
             autoComplete.threshold = 0
-            autoComplete.adapter =
-                ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, emptyList<String>())
+            autoComplete.adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                emptyList<String>()
+            )
 
             autoComplete.addTextChangedListener(object : TextWatcher {
                 private var lastQuery = ""

@@ -18,7 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import com.my.striptologbook.data.*
+import com.my.striptologbook.data.Leg
+import com.my.striptologbook.data.LogicOperator
+import com.my.striptologbook.data.SearchCondition
+import com.my.striptologbook.data.SearchFields
+import com.my.striptologbook.data.SearchOperator
+import com.my.striptologbook.data.SearchQuery
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.formatDateOnly
@@ -228,6 +233,10 @@ class LegListActivity : BaseActivity() {
                 else -> false
             }
             return if (condition.operator == SearchOperator.NOT_EQ) !isEmpty else isEmpty
+        }
+
+        if (legValue == null) {
+            return condition.operator == SearchOperator.NOT_EQ
         }
 
         val isNegated = condition.operator == SearchOperator.NOT_EQ

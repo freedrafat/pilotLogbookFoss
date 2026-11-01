@@ -1,10 +1,7 @@
 package com.my.striptologbook.ui
 
-import androidx.appcompat.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
-import android.widget.*
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.widget.Toolbar
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -12,30 +9,39 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.formatDateOnly
-import com.my.striptologbook.utils.showCustomDatePicker
-import kotlinx.coroutines.launch
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import androidx.core.content.ContextCompat
 import com.my.striptologbook.data.AirportDataManager
-import com.my.striptologbook.utils.normalizeDuration
-import com.my.striptologbook.utils.normalizeTime
-
-import android.content.Intent
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import com.my.striptologbook.data.DefaultFields
+import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.MovingSunriseCalculator
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.extractTimeOnly
+import com.my.striptologbook.utils.formatDateOnly
+import com.my.striptologbook.utils.normalizeDuration
+import com.my.striptologbook.utils.normalizeTime
+import com.my.striptologbook.utils.showCustomDatePicker
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.Date
-
-import com.my.striptologbook.utils.InsetsHelper
 
 class LegEditActivity : BaseActivity() {
 
@@ -163,11 +169,6 @@ class LegEditActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = if (legId == null) "Add Leg" else "Edit Leg"
-
-        // -------- ScrollView and focus / IME handling -------------
-        val scrollView = findViewById<ScrollView>(R.id.scroll_view)
-        InsetsHelper.attachScrollToFocusedView(this, scrollView)
-        InsetsHelper.applyImeBottomPaddingToRoot(this)
 
         setupListeners()
         setupAutosuggest()
@@ -596,7 +597,7 @@ class LegEditActivity : BaseActivity() {
 
         etSunset.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                Log.d("LegEditActivity_sun", "Sunset lost focus, raw='${etSunrise.text}'")
+                Log.d("LegEditActivity_sun", "Sunset lost focus, raw='${etSunset.text}'")
                 val raw = etSunset.text.toString()
                 val normalized = normalizeTime(raw)
                 val currentStateValue = viewModel.state.value.sunsetTimeStr
@@ -609,6 +610,7 @@ class LegEditActivity : BaseActivity() {
                         etSunset.setText(normalized)
                     }
                     viewModel.updateSunsetTimeStr(normalized)
+                    viewModel.clearSunData()                    // ← ADD
                     markFieldAsWarning(etSunset, false)
                     viewModel.recalculateTimestamps()
                     viewModel.recalcBlockDuration()
@@ -997,19 +999,25 @@ class LegEditActivity : BaseActivity() {
                 return@setOnClickListener  // stay on the page
             }
 
-            // 3. All clear – save and finish
-            viewModel.saveLeg()
+            // 3. Save (suspend), then navigate on success
+            lifecycleScope.launch {
+                try {
+                    viewModel.saveLeg()
 
-            // 4. Decide navigation behavior
-            if (isImportFromExternal) {
-                // Launch the main leg list activity in a new task (the logbook app's own task)
-                val intent = Intent(this, LegListActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-                finish()
-            } else {
-                // Normal internal navigation – just finish and return to previous screen
-                finish()
+                    if (isImportFromExternal) {
+                        val intent = Intent(this@LegEditActivity, LegListActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        startActivity(intent)
+                    }
+                    finish()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this@LegEditActivity,
+                        "Save failed: ${e.message ?: "Unknown error"}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
 
@@ -1152,7 +1160,7 @@ class LegEditActivity : BaseActivity() {
                                 android.R.layout.simple_dropdown_item_1line,
                                 fixedList
                             )
-                            autoComplete.setAdapter(adapter)
+                            autoComplete.adapter = adapter
                             autoComplete.showDropDown()
                         }
                     }
@@ -1161,6 +1169,7 @@ class LegEditActivity : BaseActivity() {
 
             autoComplete.addTextChangedListener(object : TextWatcher {
                 private var lastQuery = ""
+                private var fetchJob: Job? = null
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
@@ -1194,7 +1203,7 @@ class LegEditActivity : BaseActivity() {
                                 android.R.layout.simple_dropdown_item_1line,
                                 filtered
                             )
-                            autoComplete.setAdapter(adapter)
+                            autoComplete.adapter = adapter
                             autoComplete.showDropDown()
                         } else {
                             autoComplete.dismissDropDown()
@@ -1208,9 +1217,12 @@ class LegEditActivity : BaseActivity() {
                     if (query.length >= 2 && query != lastQuery) {
                         lastQuery = query
                         Log.d("LegEditActivity", "afterTextChanged: query length >=2 and changed, fetching suggestions for '$query'")
-                        lifecycleScope.launch {
+                        fetchJob?.cancel()
+                        fetchJob = lifecycleScope.launch {
                             try {
                                 val suggestions = suggestionFunction(query)
+                                // Drop results if a newer query has been typed while we were suspended
+                                if (query != lastQuery) return@launch
                                 Log.d("LegEditActivity", "suggestionFunction result for '$query': $suggestions")
                                 if (suggestions.isNotEmpty()) {
                                     val adapter = ArrayAdapter(
@@ -1218,23 +1230,28 @@ class LegEditActivity : BaseActivity() {
                                         android.R.layout.simple_dropdown_item_1line,
                                         suggestions
                                     )
-                                    autoComplete.setAdapter(adapter)
+                                    autoComplete.adapter = adapter
                                     autoComplete.showDropDown()
                                     Log.d("LegEditActivity", "Adapter set and dropdown shown")
                                 } else {
                                     autoComplete.dismissDropDown()
                                     Log.d("LegEditActivity", "No suggestions, dropdown dismissed")
                                 }
+                            } catch (e: CancellationException) {
+                                throw e
                             } catch (e: Exception) {
                                 Log.e("LegEditActivity", "Error fetching suggestions", e)
                             }
                         }
                     } else if (query.isEmpty()) {
+                        lastQuery = ""
+                        fetchJob?.cancel()
                         autoComplete.dismissDropDown()
                         Log.d("LegEditActivity", "query empty, dismissed dropdown")
                     } else {
                         Log.d("LegEditActivity", "query length < 2 or same as last, skipping fetch")
                     }
+
                     updateFunction(query)
                     updatedFlag = true
                 }
@@ -1510,7 +1527,7 @@ class LegEditActivity : BaseActivity() {
         if (sunriseSuggestions.isNotEmpty()) {
             Log.d("LegEditActivity_sun", "Setting sunrise adapter with suggestions: $sunriseSuggestions")
             val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, sunriseSuggestions)
-            etSunrise.setAdapter(adapter)
+            etSunrise.adapter = adapter
             etSunrise.threshold = 0
         } else {
             Log.d("LegEditActivity_sun", "Sunrise suggestions are empty")
@@ -1518,7 +1535,7 @@ class LegEditActivity : BaseActivity() {
         if (sunsetSuggestions.isNotEmpty()) {
             Log.d("LegEditActivity_sun", "Setting sunset adapter with suggestions: $sunsetSuggestions")
             val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, sunsetSuggestions)
-            etSunset.setAdapter(adapter)
+            etSunset.adapter = adapter
             etSunset.threshold = 0
         } else {
             Log.d("LegEditActivity_sun", "Sunset suggestions are empty")
