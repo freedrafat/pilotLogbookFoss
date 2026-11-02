@@ -281,7 +281,7 @@ class SearchActivity : BaseActivity() {
                         android.R.layout.simple_dropdown_item_1line,
                         boolList
                     )
-                    autoComplete.adapter = adapter
+                    autoComplete.setAdapter(adapter)
                     autoComplete.showDropDown()
                 }
             }
@@ -301,7 +301,7 @@ class SearchActivity : BaseActivity() {
                             android.R.layout.simple_dropdown_item_1line,
                             filtered
                         )
-                        autoComplete.adapter = adapter
+                        autoComplete.setAdapter(adapter)
                         autoComplete.showDropDown()
                     } else {
                         autoComplete.dismissDropDown()
@@ -356,7 +356,7 @@ class SearchActivity : BaseActivity() {
                                 android.R.layout.simple_dropdown_item_1line,
                                 suggestions
                             )
-                            autoComplete.adapter = adapter
+                            autoComplete.setAdapter(adapter)
                             autoComplete.showDropDown()
                         } else {
                             autoComplete.dismissDropDown()

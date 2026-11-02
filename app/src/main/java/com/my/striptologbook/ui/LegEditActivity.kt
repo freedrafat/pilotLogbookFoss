@@ -1163,7 +1163,7 @@ class LegEditActivity : BaseActivity() {
                                 android.R.layout.simple_dropdown_item_1line,
                                 fixedList
                             )
-                            autoComplete.adapter = adapter
+                            autoComplete.setAdapter(adapter)
                             autoComplete.showDropDown()
                         }
                     }
@@ -1206,7 +1206,7 @@ class LegEditActivity : BaseActivity() {
                                 android.R.layout.simple_dropdown_item_1line,
                                 filtered
                             )
-                            autoComplete.adapter = adapter
+                            autoComplete.setAdapter(adapter)
                             autoComplete.showDropDown()
                         } else {
                             autoComplete.dismissDropDown()
@@ -1233,7 +1233,7 @@ class LegEditActivity : BaseActivity() {
                                         android.R.layout.simple_dropdown_item_1line,
                                         suggestions
                                     )
-                                    autoComplete.adapter = adapter
+                                    autoComplete.setAdapter(adapter)
                                     autoComplete.showDropDown()
                                     Log.d("LegEditActivity", "Adapter set and dropdown shown")
                                 } else {
@@ -1386,7 +1386,7 @@ class LegEditActivity : BaseActivity() {
             }
         }
 
-        autoComplete.adapter = adapter
+        autoComplete.setAdapter(adapter)
         autoComplete.setOnItemClickListener { parent, _, position, _ ->
             val selected = parent.getItemAtPosition(position) as Airport
             autoComplete.setText(selected.icao)
@@ -1582,7 +1582,7 @@ class LegEditActivity : BaseActivity() {
         if (sunriseSuggestions.isNotEmpty()) {
             Log.d("LegEditActivity_sun", "Setting sunrise adapter with suggestions: $sunriseSuggestions")
             val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, sunriseSuggestions)
-            etSunrise.adapter = adapter
+            etSunrise.setAdapter(adapter)
             etSunrise.threshold = 0
         } else {
             Log.d("LegEditActivity_sun", "Sunrise suggestions are empty")
@@ -1590,7 +1590,7 @@ class LegEditActivity : BaseActivity() {
         if (sunsetSuggestions.isNotEmpty()) {
             Log.d("LegEditActivity_sun", "Setting sunset adapter with suggestions: $sunsetSuggestions")
             val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, sunsetSuggestions)
-            etSunset.adapter = adapter
+            etSunset.setAdapter(adapter)
             etSunset.threshold = 0
         } else {
             Log.d("LegEditActivity_sun", "Sunset suggestions are empty")

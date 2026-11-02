@@ -260,7 +260,7 @@ class AirportEditorActivity : BaseActivity() {
             }
         }
 
-        autoCompleteSearch.adapter = adapter
+        autoCompleteSearch.setAdapter(adapter)
         autoCompleteSearch.threshold = 1
         autoCompleteSearch.setOnItemClickListener { parent, _, position, _ ->
             val selected = parent.getItemAtPosition(position) as Airport

@@ -556,7 +556,7 @@ class FlightSunActivity : AppCompatActivity() {
                 }
             }
 
-            autoComplete.adapter = adapter
+            autoComplete.setAdapter(adapter)
             autoComplete.setOnItemClickListener { parent, _, position, _ ->
                 val selected = parent.getItemAtPosition(position) as Airport
                 autoComplete.setText(selected.icao)
