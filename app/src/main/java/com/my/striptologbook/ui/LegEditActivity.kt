@@ -14,6 +14,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Filter
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -29,6 +30,7 @@ import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
 import com.my.striptologbook.data.AirportDataManager
+import com.my.striptologbook.data.AirportDataManager.Airport
 import com.my.striptologbook.data.DefaultFields
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.MovingSunriseCalculator
@@ -120,6 +122,7 @@ class LegEditActivity : BaseActivity() {
     }
 
     private lateinit var fixedPositionList: List<String>
+    private lateinit var airportManager: AirportDataManager
     private lateinit var fixedCategoryList: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,7 +134,7 @@ class LegEditActivity : BaseActivity() {
         // ---- ViewModel and defaults
         val legId = intent.getLongExtra("legId", -1).takeIf { it != -1L }
 
-        val airportManager = AirportDataManager.getInstance(this)
+        airportManager = AirportDataManager.getInstance(this)
         val app = application as LogbookApplication
         val prefs = PreferencesManager.getInstance(this)
         fixedPositionList = prefs.getCustomPositionList()
@@ -1328,17 +1331,69 @@ class LegEditActivity : BaseActivity() {
             fixedList = fixedCategoryList
         )
 
-        setupAutoComplete(
-            actDeparture,
-            { query -> viewModel.searchIcaoDeparture(query) },
-            { viewModel.updateIcaoDeparture(it) }
-        )
+        setupAirportAutosuggest(actDeparture) { viewModel.updateIcaoDeparture(it) }
+        setupAirportAutosuggest(actDestination) { viewModel.updateIcaoDestination(it) }
 
-        setupAutoComplete(
-            actDestination,
-            { query -> viewModel.searchIcaoDestination(query) },
-            { viewModel.updateIcaoDestination(it) }
-        )
+    }
+
+    private fun setupAirportAutosuggest(
+        autoComplete: AutoCompleteTextView,
+        updateFunction: (String) -> Unit
+    ) {
+        autoComplete.threshold = 1
+
+        val adapter = object : ArrayAdapter<Airport>(
+            this,
+            android.R.layout.simple_dropdown_item_1line
+        ) {
+            override fun getFilter(): Filter {
+                return object : Filter() {
+                    override fun performFiltering(constraint: CharSequence?): FilterResults {
+                        val results = FilterResults()
+                        if (constraint.isNullOrEmpty()) {
+                            results.values = emptyList<Airport>()
+                            results.count = 0
+                            return results
+                        }
+                        val filtered = airportManager.searchAirports(constraint.toString())
+                        results.values = filtered
+                        results.count = filtered.size
+                        return results
+                    }
+
+                    override fun publishResults(
+                        constraint: CharSequence?,
+                        results: FilterResults?
+                    ) {
+                        clear()
+                        if (results?.values != null) {
+                            @Suppress("UNCHECKED_CAST")
+                            addAll(results.values as List<Airport>)
+                        }
+                        notifyDataSetChanged()
+                    }
+                }
+            }
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val airport = getItem(position)
+                if (airport != null) {
+                    (view as TextView).text =
+                        "${airport.icao} - ${airport.iata} - ${airport.city} - ${airport.name}"
+                }
+                return view
+            }
+        }
+
+        autoComplete.adapter = adapter
+        autoComplete.setOnItemClickListener { parent, _, position, _ ->
+            val selected = parent.getItemAtPosition(position) as Airport
+            autoComplete.setText(selected.icao)
+            updateFunction(selected.icao)
+            autoComplete.clearFocus()
+            autoComplete.dismissDropDown()
+        }
     }
 
     private fun observeState() {

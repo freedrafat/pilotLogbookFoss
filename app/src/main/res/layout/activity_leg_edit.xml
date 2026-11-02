@@ -346,12 +346,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Departure (ICAO)"
+                        android:text="Departure field"
                         android:textAppearance="@style/TextAppearance.AppCompat.Label" />
 
                     <AutoCompleteTextView
                         android:id="@+id/act_departure"
                         style="@style/EditTextStyle"
+                        android:dropDownWidth="match_parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapCharacters"
@@ -366,11 +367,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Destination (ICAO)"
+                        android:text="Destination field"
                         android:textAppearance="@style/TextAppearance.AppCompat.Label" />
                     <AutoCompleteTextView
                         android:id="@+id/act_destination"
                         style="@style/EditTextStyle"
+                        android:dropDownWidth="match_parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapCharacters"

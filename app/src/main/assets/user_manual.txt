@@ -36,7 +36,7 @@ The Logbook & Flight Tools app is designed for pilots who need to:
 
   • Record flight legs with all relevant details (airports, times,
     crew, aircraft, etc.).
-  • Automatically calculate block time, flight time, night time and
+  • Automatically calculate block time, flight time, nighttime and
     day time based on sunrise and sunset.
   • Automatically set takeoff and landing counts when you act as
     pilot flying.
@@ -44,7 +44,7 @@ The Logbook & Flight Tools app is designed for pilots who need to:
     into account the aircraft's changing position.
   • Manage a local airport database with IATA and ICAO codes, names,
     coordinates, elevation and timezone.
-  • Customise how each leg card looks in the logbook list, using the
+  • Customize how each leg card looks in the logbook list, using the
     Leg Items feature (section 11.5).
   • Record your flight experience accumulated before you started
     using the app, using the Opening Balance feature (section 14).
@@ -137,7 +137,7 @@ The editor contains many fields. Below is an explanation of each:
 
   • Position – your role on this leg. Suggested values are PIC, SIC,
     AugCrew, Dual and Instructor, but you can type any other value.
-    When the field is empty and you tap it, the list of suggested
+    When the field is empty, and you tap it, the list of suggested
     values appears. As soon as you type one character, the list is
     filtered to entries containing that character. From two characters
     on, the app switches to its database suggestions and shows values
@@ -147,7 +147,7 @@ The editor contains many fields. Below is an explanation of each:
   • Category – the operating category of the leg. Suggested values are
     "Multi Pilot", "Single Pilot SE", "Single Pilot ME", "Helicopter"
     and "Glider", but you can type any other value. The suggestion
-    behaviour is exactly the same as for Position.
+ behavior is exactly the same as for Position.
 
   • PIC Name – Pilot in Command name.
   • SIC Name – Second in Command name.
@@ -157,12 +157,12 @@ The editor contains many fields. Below is an explanation of each:
   • Registration – aircraft registration (for example, "D-ABCD").
     When you leave the field, the app looks up the most recently used
     Type for that registration and fills in the Type field
-    automatically. You can overwrite the Type afterwards.
+    automatically. You can overwrite the Type afterward.
 
   • Type – aircraft type (for example, "A320"). When you leave the
     field, the app looks up the most recently used Category for that
     Type and fills in the Category field automatically. You can
-    overwrite the Category afterwards.
+    overwrite the Category afterward.
 
   • Departure – departure airport (IATA or ICAO code).
   • Destination – arrival airport (IATA or ICAO code).
@@ -206,7 +206,7 @@ The editor contains many fields. Below is an explanation of each:
 
   • Comment – any additional notes. If you also fill Jumpseat 1, the
     PDF logbook will print the jumpseat occupant on a second line
-    labelled "J/S: ...".
+    labeled "J/S: ...".
 
 4.3. Auto-Calculations
 ──────────────────────
@@ -245,7 +245,7 @@ The app automatically computes many fields to save you time.
 ─────────────────
 
   • Time fields accept "HH:MM" (for example, "14:30") or "HHMM" (for
-    example, "1430"). The app normalises your input to "HH:MM".
+    example, "1430"). The app normalizes your input to "HH:MM".
   • Duration fields accept "H:MM" (for example, "2:30") or "HHMM" (for
     example, "230" for 2 hours and 30 minutes). The app formats
     it as "H:MM".
@@ -435,7 +435,7 @@ The Month/Year view always shows your whole logbook; it does not use
 the date filter from the Leg List. It always includes the Opening
 Balance.
 
-5.5. Customising the Leg Cards
+5.5. Customizing the Leg Cards
 ──────────────────────────────
 
 Each leg in the list is displayed as a small card with four lines of
@@ -687,8 +687,8 @@ verified, the operation is blocked.
        file you copied from another phone).
     5. The app clears the legs table and inserts all legs from
        the backup. The Opening Balance is replaced only if the
-       backup file contains an Opening Balance section. Old-
-       format backups restore legs only and leave the Opening
+       backup file contains an Opening Balance section. Old-format
+       backups restore legs only and leave the Opening
        Balance untouched.
 
 8.3. Deleting All Data
@@ -734,7 +734,7 @@ Settings → Opening Balance (section 14).
     of data rows, and one entry per column of the CSV. For each
     column, a dropdown lets you choose which app field that column
     should fill. Columns from a CSV produced by this app are
-    matched automatically. For columns you do not want to import,
+    matched automatically. For columns, you do not want to import,
     leave the dropdown on "Ignore".
 
     When the columns are mapped the way you want, tap Import. The
@@ -780,7 +780,7 @@ printed page can be adjusted before exporting.
 
   • Header, left: "Owner: <name>". Hidden when the owner name is
     empty.
-  • Header, centre: "Pilot Logbook".
+  • Header, center: "Pilot Logbook".
   • Header, right: the date range of the legs printed on that page.
   • Table header with two rows.
   • One row per leg.
@@ -795,7 +795,7 @@ printed page can be adjusted before exporting.
   • Merged Remarks cell across the three totals rows containing the
     certification sentence, your signature if set, and your name at
     the bottom.
-  • Page number at the bottom centre of the page.
+  • Page number at the bottom center of the page.
 
 The Opening Balance (section 14) is never printed as a leg row. It
 only contributes to the running totals. Because of this, the very
@@ -804,7 +804,7 @@ prior experience. For a From-To range, the Opening Balance is added
 in full, regardless of whether its own start and end dates fall
 inside the chosen range.
 
-This behaviour applies to all three export ranges: All, From-To, and
+This behavior applies to all three export ranges: All, From-To, and
 Last N pages. For a From-To range, the Opening Balance is added in
 full, regardless of whether its own start and end dates fall inside
 the chosen range.
@@ -814,7 +814,7 @@ the chosen range.
 
 This mode prints only the most recent N pages of your logbook, but the
 pages keep the numbers and the running totals they would have in the
-full logbook. For example, if your logbook currently fills 20 pages
+full logbook. For example, if your logbook currently fills 20 pages,
 and you export the last 3, the resulting PDF contains pages numbered
 18/20, 19/20 and 20/20. Each of those pages contains exactly the rows,
 the totals and the page number that it would have if you exported the
@@ -835,7 +835,7 @@ screen lets you control:
 
   • Rows per page – 13, 15, 18, 20 or 25. Default 18.
   • PDF font – Sans-serif, Serif or Monospace.
-  • Alternate row background – shades every other leg row light grey.
+  • Alternate row background – shades every other leg row light gray.
   • Owner name – printed in the header and at the bottom of the
     Remarks cell.
   • Signature – tap Set Signature and sign on the screen. Tap Set
@@ -924,7 +924,7 @@ default is 37000 feet.
 11.5. Leg Items
 ───────────────
 
-The Leg Items screen lets you customise the four lines of information
+The Leg Items screen lets you customize the four lines of information
 shown on every leg card in the Leg List. It does not change the leg
 data itself, and it does not affect the PDF export.
 
@@ -1073,7 +1073,7 @@ the flow is the same from the moment the update is confirmed:
          download continues in the background, and a system
          notification shows its progress.
       4. When the download finishes, the system notification
-         changes to completed. Tap it to open the file. Your
+         changes to complete. Tap it to open the file. Your
          device's installer (or Files app) opens and offers to
          install the update.
 
@@ -1283,9 +1283,9 @@ Search
   • My search for a specific time returns legs on every date – this
     is by design. A time-only timestamp condition compares the time
     of day, ignoring the date.
-  • Not-equals does not include legs whose field is empty – known
-    limitation. Add a second condition for the same field with equals
-    and an empty value, and use OR logic.
+  • Not-equals includes legs whose field is empty. To exclude empty
+    fields, add a second condition for the same field with not-equals
+    and an empty value, and use AND logic.
 
 Statistics
   • A statistic is missing from the By Type view – check that it is
@@ -1416,7 +1416,7 @@ information, nor does it send any data to external servers.
 
   Signature in the backup
     Your signature image is stored inside the JSON file. On
-    restore it is written to the app's internal storage and set
+    restore, it is written to the app's internal storage and set
     as your current signature automatically.
 
 ───────────────────────────────────────────────────────────────────────

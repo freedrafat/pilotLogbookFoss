@@ -432,15 +432,19 @@ public class AirportDataManager {
         String lowerQuery = query.toLowerCase().trim();
         if (iataAirportMap.isEmpty() && icaoAirportMap.isEmpty()) loadData();
 
+        boolean searchCityAndName = lowerQuery.length() >= 3;
+
         Set<Airport> unique = new HashSet<>();
         unique.addAll(iataAirportMap.values());
         unique.addAll(icaoAirportMap.values());
 
         for (Airport airport : unique) {
-            if (airport.iata != null && airport.iata.toLowerCase().contains(lowerQuery) ||
-                    airport.icao != null && airport.icao.toLowerCase().contains(lowerQuery) ||
-                    airport.city != null && airport.city.toLowerCase().contains(lowerQuery) ||
-                    airport.name != null && airport.name.toLowerCase().contains(lowerQuery)) {
+            boolean matches =
+                    (airport.iata != null && airport.iata.toLowerCase().startsWith(lowerQuery)) ||
+                            (airport.icao != null && airport.icao.toLowerCase().startsWith(lowerQuery)) ||
+                            (searchCityAndName && airport.city != null && airport.city.toLowerCase().contains(lowerQuery)) ||
+                            (searchCityAndName && airport.name != null && airport.name.toLowerCase().contains(lowerQuery));
+            if (matches) {
                 results.add(airport);
             }
         }

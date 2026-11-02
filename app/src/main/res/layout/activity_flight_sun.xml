@@ -129,6 +129,7 @@
                     <AutoCompleteTextView
                         android:id="@+id/et_departure"
                         style="@style/EditTextStyle"
+                        android:dropDownWidth="wrap_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapCharacters"
@@ -203,6 +204,7 @@
                     <AutoCompleteTextView
                         android:id="@+id/et_destination"
                         style="@style/EditTextStyle"
+                        android:dropDownWidth="match_parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapCharacters"

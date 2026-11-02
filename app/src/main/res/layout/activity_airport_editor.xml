@@ -29,6 +29,7 @@
         <AutoCompleteTextView
             android:id="@+id/autoCompleteSearch"
             style="@style/EditTextStyle"
+            android:dropDownWidth="match_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Search by IATA, ICAO, city or name"

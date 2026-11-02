@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Filter
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -28,6 +29,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.R
 import com.my.striptologbook.data.AirportDataManager
+import com.my.striptologbook.data.AirportDataManager.Airport
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.MovingSunriseCalculator
 import com.my.striptologbook.utils.PreferencesManager
@@ -44,7 +46,6 @@ import com.my.striptologbook.utils.showCustomDatePicker
 import com.my.striptologbook.utils.toMinutesOrNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.Date
 import java.util.TimeZone
@@ -506,65 +507,66 @@ class FlightSunActivity : AppCompatActivity() {
         }
     }
 
-    // ----- Autosuggest for Airport Codes (new) -----
+    // ----- Autosuggest for Airport Codes -----
     private fun setupAirportAutosuggest() {
-        fun setupAutoComplete(
-            autoComplete: AutoCompleteTextView,
-            updateCode: (String) -> Unit
-        ) {
-            autoComplete.threshold = 0
-            autoComplete.adapter = ArrayAdapter(
+        fun setupAutoComplete(autoComplete: AutoCompleteTextView) {
+            autoComplete.threshold = 1
+
+            val adapter = object : ArrayAdapter<Airport>(
                 this,
-                android.R.layout.simple_dropdown_item_1line,
-                emptyList<String>()
-            )
-
-            autoComplete.addTextChangedListener(object : TextWatcher {
-                private var lastQuery = ""
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                override fun afterTextChanged(s: Editable?) {
-                    val query = s.toString().trim()
-                    if (!autoComplete.hasFocus()) return
-                    if (query.isEmpty()) {
-                        autoComplete.dismissDropDown()
-                        return
-                    }
-                    if (query == lastQuery) return
-                    lastQuery = query
-
-                    // Run search on background thread, update UI on main
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val suggestions = airportManager.searchAirportCodes(query)
-                        withContext(Dispatchers.Main) {
-                            Log.d("FlightSun", "Suggestions for $query: $suggestions")
-                            if (suggestions.isNotEmpty()) {
-                                val adapter = ArrayAdapter(
-                                    this@FlightSunActivity,
-                                    android.R.layout.simple_dropdown_item_1line,
-                                    suggestions
-                                )
-                                autoComplete.adapter = adapter
-                                autoComplete.showDropDown()
-                            } else {
-                                autoComplete.dismissDropDown()
+                android.R.layout.simple_dropdown_item_1line
+            ) {
+                override fun getFilter(): Filter {
+                    return object : Filter() {
+                        override fun performFiltering(constraint: CharSequence?): FilterResults {
+                            val results = FilterResults()
+                            if (constraint.isNullOrEmpty()) {
+                                results.values = emptyList<Airport>()
+                                results.count = 0
+                                return results
                             }
+                            val filtered = airportManager.searchAirports(constraint.toString())
+                            results.values = filtered
+                            results.count = filtered.size
+                            return results
+                        }
+
+                        override fun publishResults(
+                            constraint: CharSequence?,
+                            results: FilterResults?
+                        ) {
+                            clear()
+                            if (results?.values != null) {
+                                @Suppress("UNCHECKED_CAST")
+                                addAll(results.values as List<Airport>)
+                            }
+                            notifyDataSetChanged()
                         }
                     }
                 }
-            })
 
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = super.getView(position, convertView, parent)
+                    val airport = getItem(position)
+                    if (airport != null) {
+                        (view as TextView).text =
+                            "${airport.icao} - ${airport.iata} - ${airport.city} - ${airport.name}"
+                    }
+                    return view
+                }
+            }
+
+            autoComplete.adapter = adapter
             autoComplete.setOnItemClickListener { parent, _, position, _ ->
-                val selected = parent.getItemAtPosition(position) as String
-                autoComplete.setText(selected)
-                updateCode(selected)
+                val selected = parent.getItemAtPosition(position) as Airport
+                autoComplete.setText(selected.icao)
                 autoComplete.clearFocus()
                 autoComplete.dismissDropDown()
             }
         }
 
-        setupAutoComplete(actDepartureIATA) { /* no extra storage needed */ }
-        setupAutoComplete(actDestinationIATA) { /* no extra storage needed */ }
+        setupAutoComplete(actDepartureIATA)
+        setupAutoComplete(actDestinationIATA)
     }
 
     // ----- Helper to guarantee arrival > departure -----
