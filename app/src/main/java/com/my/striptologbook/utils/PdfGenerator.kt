@@ -12,6 +12,7 @@ import com.my.striptologbook.data.LegTotals
 import com.my.striptologbook.data.PDF_PAGE_HEIGHT
 import com.my.striptologbook.data.PDF_PAGE_WIDTH
 import com.my.striptologbook.data.PdfLayoutConfig
+import androidx.core.graphics.toColorInt
 
 object PdfGenerator {
 
@@ -35,7 +36,7 @@ object PdfGenerator {
     }
 
     private val altRowPaint = Paint().apply {
-        color = Color.parseColor("#F2F2F2"); style = Paint.Style.FILL; isAntiAlias = true
+        color = "#F2F2F2".toColorInt(); style = Paint.Style.FILL; isAntiAlias = true
     }
     private enum class Align { CENTER, LEFT }
 
@@ -660,6 +661,253 @@ object PdfGenerator {
         }
         if (current.isNotEmpty()) lines.add(current.toString())
         return if (lines.isEmpty()) listOf(text) else lines
+    }
+
+    fun generateFiltered(
+        legs: List<Leg>,
+        ownerName: String,
+        headerRightLabel: String,
+        rowsPerPage: Int,
+        config: PdfLayoutConfig,
+        title: String = "Pilot Logbook"
+    ): ByteArray {
+        val document = PdfDocument()
+        val groups = buildGroups()
+        val flatCols = groups.flatMap { it.subCols }
+
+        val contentWidth = PDF_PAGE_WIDTH - config.marginLeft - config.marginRight
+        val declared = config.columnWidths()
+        val declaredSum = declared.sum()
+        val scale = if (declaredSum > 0f) contentWidth / declaredSum else 1f
+        val widths = FloatArray(declared.size) { declared[it] * scale }
+
+        val titleSize   = config.titleTextSize   * scale
+        val headerSize  = config.headerTextSize  * scale
+        val bodySize    = config.bodyTextSize    * scale
+        val remarksSize = config.remarksTextSize * scale
+
+        val tf = resolveTypeface(config.fontFamily)
+        val headerBlockHeight = config.headerRowHeight * 2f
+
+        val availableForRows =
+            PDF_PAGE_HEIGHT - config.marginTop - config.titleHeight - headerBlockHeight -
+                    config.marginBottom - config.pageNumArea
+
+        val maxRows = ((availableForRows / MIN_ROW_HEIGHT) - 3).toInt().coerceAtLeast(1)
+        val effectiveRows = rowsPerPage.coerceIn(1, maxRows)
+        val legRowsPerPage = effectiveRows + 3
+        val rowHeight = availableForRows / legRowsPerPage.toFloat()
+
+        val sortedLegs = legs.sortedBy { it.offBlock ?: 0L }
+        val generatedAt = formatDateUtc(System.currentTimeMillis())
+
+        val pageSizes = paginateFiltered(sortedLegs.size, legRowsPerPage)
+        var offset = 0
+        val pages = pageSizes.map { size ->
+            val slice = sortedLegs.subList(offset, offset + size).toList()
+            offset += size
+            slice
+        }
+        val totalPages = pages.size
+
+        // Total over ALL filtered legs — not just the last page's legs.
+        var filteredTotals = LegTotals()
+        for (leg in sortedLegs) filteredTotals += LegTotals.fromLeg(leg)
+
+        val contentTop = config.marginTop + config.titleHeight + headerBlockHeight
+        val tableLeft  = config.marginLeft
+        val tableRight = config.marginLeft + widths.sum()
+        val tableTop   = config.marginTop + config.titleHeight
+
+        if (pages.isEmpty()) {
+            val info = PdfDocument.PageInfo.Builder(
+                PDF_PAGE_WIDTH.toInt(), PDF_PAGE_HEIGHT.toInt(), 1
+            ).create()
+            val page = document.startPage(info)
+            val p = Paint().apply {
+                textSize = 12f; color = Color.BLACK; typeface = tf; isAntiAlias = true
+            }
+            page.canvas.drawText("No legs to export",
+                config.marginLeft, config.marginTop + 20f, p)
+            document.finishPage(page)
+        } else {
+            pages.forEachIndexed { index, pageLegs ->
+                val isLast = index == totalPages - 1
+                val pageNum = index + 1
+                val info = PdfDocument.PageInfo.Builder(
+                    PDF_PAGE_WIDTH.toInt(), PDF_PAGE_HEIGHT.toInt(), pageNum
+                ).create()
+                val page = document.startPage(info)
+                val c = page.canvas
+
+                drawFilteredHeader(c, title, ownerName, headerRightLabel,
+                    config, titleSize, tf)
+                drawColumnHeaders(c, groups, widths, config, headerSize,
+                    tableLeft, tf)
+                drawRows(c, pageLegs, flatCols, widths, contentTop, rowHeight,
+                    bodySize, remarksSize, tableLeft, tf, config.alternateRowBackground)
+
+                // Total row always occupies the last slot on the last page,
+                // regardless of how many legs that page actually carries.
+                val totalTopY = contentTop + (legRowsPerPage - 1) * rowHeight
+                val bodyVerticalsBottom = if (isLast) totalTopY
+                else contentTop + legRowsPerPage * rowHeight
+
+                if (isLast) {
+                    drawFilteredTotalRow(
+                        canvas = c,
+                        groups = groups,
+                        widths = widths,
+                        leftEdge = tableLeft,
+                        topY = totalTopY,
+                        rowHeight = rowHeight,
+                        bodySize = bodySize,
+                        tf = tf,
+                        totals = filteredTotals
+                    )
+                }
+
+                drawHeaderGroupBorders(c, groups, widths, tableTop,
+                    tableTop + config.headerRowHeight, tableLeft)
+                drawBodyBorders(c, groups, widths,
+                    tableTop + config.headerRowHeight, bodyVerticalsBottom, tableLeft)
+
+                c.drawLine(tableLeft, tableTop, tableRight, tableTop, exteriorPaint)
+
+                drawFilteredFooter(c, pageNum, totalPages, generatedAt, config, tf)
+
+                document.finishPage(page)
+            }
+        }
+
+        val out = java.io.ByteArrayOutputStream()
+        document.writeTo(out)
+        document.close()
+        return out.toByteArray()
+    }
+
+    /**
+     * Splits [totalLegs] across pages. Non-last pages hold up to [capacity]
+     * legs; the last page holds at most [capacity] - 1 legs so one slot
+     * remains for the total row. When the naive packing would leave a full
+     * last page, one extra page is added and legs are distributed evenly.
+     */
+    private fun paginateFiltered(totalLegs: Int, capacity: Int): List<Int> {
+        if (totalLegs <= 0) return emptyList()
+        if (totalLegs <= capacity - 1) return listOf(totalLegs)
+
+        // Pages: P such that (P - 1) * capacity + (capacity - 1) >= totalLegs
+        //       ⇔ P * capacity >= totalLegs + 1
+        val pageCount = (totalLegs + 1 + capacity - 1) / capacity
+
+        val result = MutableList(pageCount) { capacity }
+        result[pageCount - 1] = totalLegs - (pageCount - 1) * capacity
+        return result
+    }
+
+    private fun drawFilteredHeader(
+        canvas: Canvas, title: String, ownerName: String, rightLabel: String,
+        config: PdfLayoutConfig, titleSize: Float, tf: Typeface
+    ) {
+        val baseline = config.marginTop + titleSize + 2f
+
+        val left = Paint().apply {
+            color = Color.BLACK; textSize = titleSize - 1f
+            typeface = tf; isAntiAlias = true
+        }
+        if (ownerName.isNotBlank())
+            canvas.drawText("Owner: $ownerName", config.marginLeft, baseline, left)
+
+        val mid = Paint().apply {
+            color = Color.BLACK; textSize = titleSize
+            typeface = Typeface.create(tf, Typeface.BOLD)
+            textAlign = Paint.Align.CENTER; isAntiAlias = true
+        }
+        canvas.drawText(title, PDF_PAGE_WIDTH / 2f, baseline, mid)
+
+        val right = Paint().apply {
+            color = Color.BLACK; textSize = titleSize - 1f
+            typeface = tf; textAlign = Paint.Align.RIGHT; isAntiAlias = true
+        }
+        if (rightLabel.isNotEmpty())
+            canvas.drawText(rightLabel, PDF_PAGE_WIDTH - config.marginRight, baseline, right)
+    }
+
+    private fun drawFilteredTotalRow(
+        canvas: Canvas, groups: List<ColGroup>, widths: FloatArray,
+        leftEdge: Float, topY: Float, rowHeight: Float,
+        bodySize: Float, tf: Typeface, totals: LegTotals
+    ) {
+        val xPos = FloatArray(widths.size + 1)
+        xPos[0] = leftEdge
+        for (i in widths.indices) xPos[i + 1] = xPos[i] + widths[i]
+        val tableRight = xPos[widths.size]
+
+        val text = Paint().apply {
+            color = Color.BLACK; textSize = bodySize
+            typeface = tf; isAntiAlias = true
+        }
+        val boldText = Paint().apply {
+            color = Color.BLACK; textSize = bodySize
+            typeface = Typeface.create(tf, Typeface.BOLD); isAntiAlias = true
+        }
+
+        val baseline = topY + (rowHeight + bodySize) / 2f - 1f
+
+        // "Total" label right-aligned so it ends just before column 7
+        val label = "Total"
+        val lw = boldText.measureText(label)
+        canvas.drawText(label, xPos[FIRST_DATA_COL] - lw - 4f, baseline, boldText)
+
+        // Values in columns FIRST_DATA_COL..LAST_DATA_COL;
+        // valueForColumn returns "" for empty columns and for zero/null sums.
+        for (colIdx in FIRST_DATA_COL..LAST_DATA_COL) {
+            val v = valueForColumn(colIdx, totals)
+            if (v.isNotEmpty()) {
+                val vw = text.measureText(v)
+                val cx = xPos[colIdx] + (widths[colIdx] - vw) / 2f
+                canvas.drawText(v, cx, baseline, text)
+            }
+        }
+
+        // Top and bottom borders — sectionPaint, matching the existing totals
+        // block in "All" mode.
+        canvas.drawLine(leftEdge, topY, tableRight, topY, sectionPaint)
+        canvas.drawLine(leftEdge, topY + rowHeight, tableRight, topY + rowHeight, sectionPaint)
+
+        // Verticals: left exterior at xPos[0], then from FIRST_DATA_COL to the
+        // right edge with the group/column rule. Nothing between columns 1..6,
+        // so the label area is clean — same as the existing totals block.
+        val groupBoundaries = mutableSetOf<Int>()
+        groupBoundaries.add(0)
+        var idx = 0
+        for (g in groups) {
+            idx += g.subCols.size
+            groupBoundaries.add(idx)
+        }
+
+        canvas.drawLine(xPos[0], topY, xPos[0], topY + rowHeight, exteriorPaint)
+        for (i in FIRST_DATA_COL..widths.size) {
+            val paint = if (i in groupBoundaries) exteriorPaint else columnPaint
+            canvas.drawLine(xPos[i], topY, xPos[i], topY + rowHeight, paint)
+        }
+    }
+
+    private fun drawFilteredFooter(
+        canvas: Canvas, pageNum: Int, totalPages: Int,
+        generatedAt: String, config: PdfLayoutConfig, tf: Typeface
+    ) {
+        val p = Paint().apply {
+            color = Color.DKGRAY; textSize = 7f
+            typeface = tf; isAntiAlias = true
+        }
+        p.textAlign = Paint.Align.CENTER
+        canvas.drawText("Page $pageNum / $totalPages",
+            PDF_PAGE_WIDTH / 2f, PDF_PAGE_HEIGHT - 5f, p)
+
+        p.textAlign = Paint.Align.RIGHT
+        canvas.drawText(generatedAt,
+            PDF_PAGE_WIDTH - config.marginRight, PDF_PAGE_HEIGHT - 5f, p)
     }
 
 }

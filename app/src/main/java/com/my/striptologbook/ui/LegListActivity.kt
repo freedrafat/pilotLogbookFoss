@@ -34,6 +34,14 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.TimeZone
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.documentfile.provider.DocumentFile
+import com.my.striptologbook.utils.ExportRangeDialogHelper
+import com.my.striptologbook.utils.FileManager
+import com.my.striptologbook.utils.WorkDirectoryState
+
 class LegListActivity : BaseActivity() {
 
     private lateinit var viewModel: LegViewModel
@@ -47,6 +55,10 @@ class LegListActivity : BaseActivity() {
     private lateinit var btnSearch: ImageButton
     private lateinit var btnStatistics: ImageButton
     private lateinit var filterRow: View
+    private lateinit var btnExport: ImageButton
+    private lateinit var exportViewModel: ExportImportViewModel
+    private var currentLegs: List<Leg> = emptyList()
+    private var pendingExport: PendingExport? = null
 
     private var searchQuery: String? = null
     private var isSearchMode = false
@@ -55,6 +67,27 @@ class LegListActivity : BaseActivity() {
 
     private var toolbarTitle: String? = "Legs List"
     private var toolbarSearchTitle: String? = "Search Results"
+
+    private enum class PendingExport { ALL_PDF, FILTERED_PDF }
+
+    private val workDirPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { uri: Uri? ->
+        val action = pendingExport
+        pendingExport = null
+        if (uri == null || action == null) return@registerForActivityResult
+        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
+            Toast.makeText(this,
+                "Failed to persist permission. Please try again.",
+                Toast.LENGTH_LONG).show()
+            return@registerForActivityResult
+        }
+        when (val state = FileManager.resolveWorkDirectory(this)) {
+            is WorkDirectoryState.Ready -> dispatchPendingExport(action, state.folder)
+            else -> Toast.makeText(this, "Work directory not available.",
+                Toast.LENGTH_LONG).show()
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +125,7 @@ class LegListActivity : BaseActivity() {
         rvLegs = findViewById(R.id.rv_legs)
         btnFilter = findViewById(R.id.btn_filter)
         btnSearch = findViewById(R.id.btn_search)
+        btnExport = findViewById(R.id.btn_export)
         btnStatistics = findViewById(R.id.btn_statistics)
         filterRow = findViewById(R.id.filter_row)
 
@@ -117,21 +151,27 @@ class LegListActivity : BaseActivity() {
         val app = application as LogbookApplication
         val factory = LegListViewModelFactory(app.repository)
         viewModel = ViewModelProvider(this, factory)[LegViewModel::class.java]
+        exportViewModel = ExportImportViewModel(app.repository)
 
         // Intent extras
         searchQuery = intent.getStringExtra("searchQuery")
         isSearchMode = !searchQuery.isNullOrEmpty()
 
         // Update UI for search mode
+        supportActionBar?.title = if (isSearchMode) toolbarSearchTitle else toolbarTitle
+        filterRow.visibility = View.VISIBLE
         if (isSearchMode) {
-            supportActionBar?.title = toolbarSearchTitle
-            filterRow.visibility = View.GONE
+            btnFilter.visibility = View.GONE
+            btnSearch.visibility = View.GONE
+            btnStatistics.visibility = View.GONE
         } else {
-            supportActionBar?.title = toolbarTitle
-            filterRow.visibility = View.VISIBLE
+            btnFilter.visibility = View.VISIBLE
+            btnSearch.visibility = View.VISIBLE
+            btnStatistics.visibility = View.VISIBLE
         }
 
         // Listeners
+        btnExport.setOnClickListener { showExportDialog() }
         btnFilter.setOnClickListener { showFilterDropdown() }
         btnSearch.setOnClickListener {
             startActivity(Intent(this, SearchActivity::class.java))
@@ -139,6 +179,30 @@ class LegListActivity : BaseActivity() {
         btnStatistics.setOnClickListener { showStatisticsDialog() }
 
         // Observe ViewModel
+        lifecycleScope.launch {
+            exportViewModel.result.collect { result ->
+                when (result) {
+                    is ExportImportResult.Success -> {
+                        Toast.makeText(
+                            this@LegListActivity,
+                            "Operation completed successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        exportViewModel.consumeResult()
+                    }
+                    is ExportImportResult.Error -> {
+                        Toast.makeText(
+                            this@LegListActivity,
+                            result.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        exportViewModel.consumeResult()
+                    }
+                    null -> {}
+                }
+            }
+        }
+
         lifecycleScope.launch {
             viewModel.legs.collectLatest { allLegs ->
                 updateList(allLegs)
@@ -149,6 +213,7 @@ class LegListActivity : BaseActivity() {
             viewModel.filteredLegs.collectLatest { filtered ->
                 if (!isSearchMode) {
                     adapter.submitList(filtered)
+                    currentLegs = filtered
                     updateSummary(filtered)
                 }
             }
@@ -204,6 +269,7 @@ class LegListActivity : BaseActivity() {
                 allLegs
             }
             adapter.submitList(filtered)
+            currentLegs = filtered
             updateSummary(filtered)
         }
     }
@@ -506,6 +572,105 @@ class LegListActivity : BaseActivity() {
         tvBlockNight.text = formatDuration(blockNight)
         tvLegCount.text = legs.size.toString()
         tvSimTime.text = formatDuration(simTime)
+    }
+
+    private fun showExportDialog() {
+        if (currentLegs.isEmpty()) {
+            Toast.makeText(this, "No legs to export", Toast.LENGTH_SHORT).show()
+            return
+        }
+        android.app.AlertDialog.Builder(this)
+            .setTitle("Export")
+            .setItems(arrayOf("Export CSV", "Export PDF")) { _, which ->
+                when (which) {
+                    0 -> Toast.makeText(this,
+                        "CSV export coming soon", Toast.LENGTH_SHORT).show()
+                    1 -> exportPdf()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun exportPdf() {
+        val isAllMode = !isSearchMode && viewModel.currentFilter.value == FilterType.ALL
+        ensureWorkDirThenExport(
+            if (isAllMode) PendingExport.ALL_PDF else PendingExport.FILTERED_PDF
+        )
+    }
+
+    private fun ensureWorkDirThenExport(action: PendingExport) {
+        when (val state = FileManager.resolveWorkDirectory(this)) {
+            WorkDirectoryState.NotSet -> {
+                Toast.makeText(this,
+                    "Please select a work directory first",
+                    Toast.LENGTH_SHORT).show()
+                pendingExport = action
+                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+            }
+            WorkDirectoryState.Invalid -> {
+                PreferencesManager.getInstance(this).setBackupFolderUri(null)
+                Toast.makeText(this,
+                    "Work directory unavailable. Please select it again.",
+                    Toast.LENGTH_LONG).show()
+                pendingExport = action
+                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+            }
+            is WorkDirectoryState.Ready -> dispatchPendingExport(action, state.folder)
+        }
+    }
+
+    private fun dispatchPendingExport(action: PendingExport, folder: DocumentFile) {
+        when (action) {
+            PendingExport.ALL_PDF -> doExportAllPdf(folder)
+            PendingExport.FILTERED_PDF -> doExportFilteredPdf(folder)
+        }
+    }
+
+    private fun doExportAllPdf(folder: DocumentFile) {
+        ExportRangeDialogHelper.show(this) { range, rows, owner, sig, cfg ->
+            exportViewModel.exportPdfToFolder(
+                contentResolver = contentResolver,
+                folder = folder,
+                range = range,
+                rowsPerPage = rows,
+                ownerName = owner,
+                signature = sig,
+                config = cfg
+            )
+        }
+    }
+
+    private fun doExportFilteredPdf(folder: DocumentFile) {
+        val headerRightLabel = if (isSearchMode) {
+            "filtered Legs"
+        } else {
+            computeFilterRangeLabel(viewModel.currentFilter.value)
+        }
+        val prefs = PreferencesManager.getInstance(this)
+        exportViewModel.exportPdfFiltered(
+            contentResolver = contentResolver,
+            folder = folder,
+            legs = currentLegs,
+            ownerName = prefs.getPdfOwnerName(),
+            headerRightLabel = headerRightLabel,
+            rowsPerPage = prefs.getPdfRowsPerPage(),
+            config = prefs.getPdfLayoutConfig()
+        )
+    }
+
+    private fun computeFilterRangeLabel(filter: FilterType): String {
+        val (start, end) = when (filter) {
+            FilterType.CUSTOM -> viewModel.customStartDate.value to viewModel.customEndDate.value
+            FilterType.ALL -> null to null
+            else -> viewModel.getDateRangeForFilter(filter)
+        }
+        return when {
+            start != null && end != null -> "${formatDateOnly(start)} – ${formatDateOnly(end)}"
+            start != null -> "From ${formatDateOnly(start)}"
+            end != null -> "Till ${formatDateOnly(end)}"
+            else -> "All"
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

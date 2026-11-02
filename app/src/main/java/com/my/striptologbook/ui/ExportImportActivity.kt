@@ -1,16 +1,11 @@
 package com.my.striptologbook.ui
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,13 +18,10 @@ import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.WorkDirectoryState
-import com.my.striptologbook.utils.getDateAtMidnight
-import com.my.striptologbook.utils.showCustomDatePicker
+import com.my.striptologbook.utils.ExportRangeDialogHelper
 import kotlinx.coroutines.launch
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+
 
 class ExportImportActivity : BaseActivity() {
 
@@ -188,7 +180,17 @@ class ExportImportActivity : BaseActivity() {
     }
 
     private fun doExportPdf(folder: DocumentFile) {
-        showDateRangeDialog(folder)
+        ExportRangeDialogHelper.show(this) { range, rows, owner, sig, cfg ->
+            viewModel.exportPdfToFolder(
+                contentResolver = contentResolver,
+                folder = folder,
+                range = range,
+                rowsPerPage = rows,
+                ownerName = owner,
+                signature = sig,
+                config = cfg
+            )
+        }
     }
 
     private fun doImportCsv(folder: DocumentFile) {
@@ -226,92 +228,92 @@ class ExportImportActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showDateRangeDialog(folder: DocumentFile) {
-        val ctx: Context = this
-        val view = layoutInflater.inflate(R.layout.dialog_date_range, null)
-        val rgAll        = view.findViewById<RadioButton>(R.id.rb_all)
-        val rgCustom     = view.findViewById<RadioButton>(R.id.rb_custom_range)
-        val rgLastPages  = view.findViewById<RadioButton>(R.id.rb_last_pages)
-        val btnFrom      = view.findViewById<Button>(R.id.btn_from_date)
-        val btnTo        = view.findViewById<Button>(R.id.btn_to_date)
-        val datesRow     = view.findViewById<View>(R.id.layout_dates)
-        val lastPagesRow = view.findViewById<View>(R.id.layout_last_pages)
-        val etLastPages  = view.findViewById<EditText>(R.id.et_last_pages_count)
-
-        var fromDate: Long? = null
-        var toDate: Long? = null
-
-        fun refreshRows() {
-            datesRow.visibility     = if (rgCustom.isChecked)    View.VISIBLE else View.GONE
-            lastPagesRow.visibility = if (rgLastPages.isChecked) View.VISIBLE else View.GONE
-        }
-        rgAll.isChecked = true
-        refreshRows()
-        rgAll.setOnCheckedChangeListener { _, _ -> refreshRows() }
-        rgCustom.setOnCheckedChangeListener { _, _ -> refreshRows() }
-        rgLastPages.setOnCheckedChangeListener { _, _ -> refreshRows() }
-
-        btnFrom.setOnClickListener {
-            showCustomDatePicker(ctx, fromDate) { picked ->
-                fromDate = getDateAtMidnight(picked)
-                btnFrom.text = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-                    .format(Date(fromDate))
-            }
-        }
-        btnTo.setOnClickListener {
-            showCustomDatePicker(ctx, toDate) { picked ->
-                toDate = getDateAtMidnight(picked) + 86_399_000L
-                btnTo.text = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-                    .format(Date(toDate))
-            }
-        }
-
-        AlertDialog.Builder(this)
-            .setTitle("Export PDF – range")
-            .setView(view)
-            .setPositiveButton("Generate") { _, _ ->
-                val range: DateRange = when {
-                    rgLastPages.isChecked -> {
-                        val n = etLastPages.text.toString().trim().toIntOrNull() ?: 0
-                        if (n < 1) {
-                            Toast.makeText(this, "Enter a page count of at least 1",
-                                Toast.LENGTH_SHORT).show()
-                            return@setPositiveButton
-                        }
-                        DateRange.LastPages(n)
-                    }
-                    rgCustom.isChecked -> {
-                        val f = fromDate ?: return@setPositiveButton
-                        val t = toDate ?: return@setPositiveButton
-                        if (f > t) {
-                            Toast.makeText(this, "From date must be before To date",
-                                Toast.LENGTH_SHORT).show()
-                            return@setPositiveButton
-                        }
-                        DateRange.Custom(f, t)
-                    }
-                    else -> DateRange.All
-                }
-                val prefs = PreferencesManager.getInstance(this)
-                val rows = prefs.getPdfRowsPerPage()
-                val owner = prefs.getPdfOwnerName()
-                val cfg = prefs.getPdfLayoutConfig()
-                val sig = prefs.getPdfSignaturePath()?.let { path ->
-                    if (File(path).exists()) BitmapFactory.decodeFile(path) else null
-                }
-                viewModel.exportPdfToFolder(
-                    contentResolver = contentResolver,
-                    folder = folder,
-                    range = range,
-                    rowsPerPage = rows,
-                    ownerName = owner,
-                    signature = sig,
-                    config = cfg
-                )
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
+//    private fun showDateRangeDialog(folder: DocumentFile) {
+//        val ctx: Context = this
+//        val view = layoutInflater.inflate(R.layout.dialog_date_range, null)
+//        val rgAll        = view.findViewById<RadioButton>(R.id.rb_all)
+//        val rgCustom     = view.findViewById<RadioButton>(R.id.rb_custom_range)
+//        val rgLastPages  = view.findViewById<RadioButton>(R.id.rb_last_pages)
+//        val btnFrom      = view.findViewById<Button>(R.id.btn_from_date)
+//        val btnTo        = view.findViewById<Button>(R.id.btn_to_date)
+//        val datesRow     = view.findViewById<View>(R.id.layout_dates)
+//        val lastPagesRow = view.findViewById<View>(R.id.layout_last_pages)
+//        val etLastPages  = view.findViewById<EditText>(R.id.et_last_pages_count)
+//
+//        var fromDate: Long? = null
+//        var toDate: Long? = null
+//
+//        fun refreshRows() {
+//            datesRow.visibility     = if (rgCustom.isChecked)    View.VISIBLE else View.GONE
+//            lastPagesRow.visibility = if (rgLastPages.isChecked) View.VISIBLE else View.GONE
+//        }
+//        rgAll.isChecked = true
+//        refreshRows()
+//        rgAll.setOnCheckedChangeListener { _, _ -> refreshRows() }
+//        rgCustom.setOnCheckedChangeListener { _, _ -> refreshRows() }
+//        rgLastPages.setOnCheckedChangeListener { _, _ -> refreshRows() }
+//
+//        btnFrom.setOnClickListener {
+//            showCustomDatePicker(ctx, fromDate) { picked ->
+//                fromDate = getDateAtMidnight(picked)
+//                btnFrom.text = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+//                    .format(Date(fromDate))
+//            }
+//        }
+//        btnTo.setOnClickListener {
+//            showCustomDatePicker(ctx, toDate) { picked ->
+//                toDate = getDateAtMidnight(picked) + 86_399_000L
+//                btnTo.text = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+//                    .format(Date(toDate))
+//            }
+//        }
+//
+//        AlertDialog.Builder(this)
+//            .setTitle("Export PDF – range")
+//            .setView(view)
+//            .setPositiveButton("Generate") { _, _ ->
+//                val range: DateRange = when {
+//                    rgLastPages.isChecked -> {
+//                        val n = etLastPages.text.toString().trim().toIntOrNull() ?: 0
+//                        if (n < 1) {
+//                            Toast.makeText(this, "Enter a page count of at least 1",
+//                                Toast.LENGTH_SHORT).show()
+//                            return@setPositiveButton
+//                        }
+//                        DateRange.LastPages(n)
+//                    }
+//                    rgCustom.isChecked -> {
+//                        val f = fromDate ?: return@setPositiveButton
+//                        val t = toDate ?: return@setPositiveButton
+//                        if (f > t) {
+//                            Toast.makeText(this, "From date must be before To date",
+//                                Toast.LENGTH_SHORT).show()
+//                            return@setPositiveButton
+//                        }
+//                        DateRange.Custom(f, t)
+//                    }
+//                    else -> DateRange.All
+//                }
+//                val prefs = PreferencesManager.getInstance(this)
+//                val rows = prefs.getPdfRowsPerPage()
+//                val owner = prefs.getPdfOwnerName()
+//                val cfg = prefs.getPdfLayoutConfig()
+//                val sig = prefs.getPdfSignaturePath()?.let { path ->
+//                    if (File(path).exists()) BitmapFactory.decodeFile(path) else null
+//                }
+//                viewModel.exportPdfToFolder(
+//                    contentResolver = contentResolver,
+//                    folder = folder,
+//                    range = range,
+//                    rowsPerPage = rows,
+//                    ownerName = owner,
+//                    signature = sig,
+//                    config = cfg
+//                )
+//            }
+//            .setNegativeButton("Cancel", null)
+//            .show()
+//    }
 
     private fun launchExternalCsvPicker() {
         externalCsvLauncher.launch(arrayOf("*/*"))

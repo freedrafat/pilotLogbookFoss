@@ -32,6 +32,16 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/btn_export"
+                style="@style/IconButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Export"
+                android:src="@android:drawable/ic_menu_save" />
+
+            <ImageButton
                 android:id="@+id/btn_search"
                 style="@style/IconButtonStyle"
                 android:layout_width="0dp"

@@ -229,6 +229,11 @@ object FileManager {
         return "logbook_${dateStr}.pdf"
     }
 
+    fun suggestFilteredPdfFileName(): String {
+        val dateStr = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
+        return "logbook_filtered_${dateStr}.pdf"
+    }
+
 // ---------- Work directory ----------
 
     /**

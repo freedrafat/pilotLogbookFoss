@@ -138,7 +138,7 @@ class LegViewModel(private val repository: LegRepository) : ViewModel() {
      * Computes the date range (start, end) for a non‑CUSTOM filter.
      * All times are in UTC milliseconds at midnight.
      */
-    private fun getDateRangeForFilter(filter: FilterType): Pair<Long?, Long?> {
+    fun getDateRangeForFilter(filter: FilterType): Pair<Long?, Long?> {
         val todayMidnight = getTodayMidnight()
         return when (filter) {
             FilterType.LAST_7_DAYS -> todayMidnight - 6 * 24 * 60 * 60 * 1000L to todayMidnight

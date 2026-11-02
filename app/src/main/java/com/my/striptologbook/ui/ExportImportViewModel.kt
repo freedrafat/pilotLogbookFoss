@@ -162,6 +162,46 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
         }
     }
 
+    // ------------------- Export PDF (filtered) -------------------
+    fun exportPdfFiltered(
+        contentResolver: ContentResolver,
+        folder: DocumentFile,
+        legs: List<Leg>,
+        ownerName: String,
+        headerRightLabel: String,
+        rowsPerPage: Int,
+        config: com.my.striptologbook.data.PdfLayoutConfig
+    ) {
+        viewModelScope.launch {
+            try {
+                if (legs.isEmpty()) {
+                    _result.value = ExportImportResult.Error("No legs to export")
+                    return@launch
+                }
+                val bytes = withContext(Dispatchers.Default) {
+                    PdfGenerator.generateFiltered(
+                        legs = legs,
+                        ownerName = ownerName,
+                        headerRightLabel = headerRightLabel,
+                        rowsPerPage = rowsPerPage,
+                        config = config,
+                        title = "Pilot Logbook"
+                    )
+                }
+                FileManager.writeBytesToWorkDir(
+                    contentResolver = contentResolver,
+                    folder = folder,
+                    mimeType = "application/pdf",
+                    fileName = FileManager.suggestFilteredPdfFileName(),
+                    bytes = bytes
+                )
+                _result.value = ExportImportResult.Success
+            } catch (e: Exception) {
+                _result.value = ExportImportResult.Error("PDF generation failed: ${e.message}")
+            }
+        }
+    }
+
     fun deleteAllLegs() {
         viewModelScope.launch {
             try {
