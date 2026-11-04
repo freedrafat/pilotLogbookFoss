@@ -38,7 +38,7 @@ abstract class AppDatabase : RoomDatabase() {
                         `acType` TEXT,
                         `position` TEXT,
                         `category` TEXT,
-                        `comment` TEXT,
+                        `remarks` TEXT,
                         `blockTimeTotal` INTEGER,
                         `blockTimeNight` INTEGER,
                         `blockTimeDay` INTEGER,

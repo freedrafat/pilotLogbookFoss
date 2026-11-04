@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 
-
 /**
  * Represents a single flight leg (logbook entry).
  *
@@ -35,12 +34,12 @@ data class Leg(
 
     // Booleans (optional – use null for "not set")
     val isSimulator: Boolean? = null,
-    val pilotFlying: Boolean? = null,
+    val isPilotFlying: Boolean? = null,
 
     // Optional timestamp fields
     val offBlock: Long?,   // UTC milliseconds
-    val takeoffTime: Long? = null,
-    val landingTime: Long? = null,
+    val takeoff: Long? = null,
+    val landing: Long? = null,
     val onBlock: Long?,    // UTC milliseconds
     val sunrise: Long? = null,
     val sunset: Long? = null,
@@ -68,6 +67,6 @@ data class Leg(
     // Instrument approaches (ICAO/EASA + FAA)
     val numberInstrumentApproaches: Int? = null,
 
-    // Free‑text comment
-    val comment: String? = null
+    // Free‑text remarks
+    val remarks: String? = null
 )

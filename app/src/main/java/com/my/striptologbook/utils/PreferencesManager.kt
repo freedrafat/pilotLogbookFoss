@@ -88,6 +88,7 @@ class PreferencesManager private constructor(context: Context) {
         private const val KEY_PDF_SIGNATURE_PATH = "pdf_signature_path"
 
         private const val KEY_PDF_LAYOUT_CONFIG = "pdf_layout_config"
+        private const val KEY_CSV_EXPORT_FORMAT = "csv_export_format"
 
     }
 
@@ -423,6 +424,21 @@ class PreferencesManager private constructor(context: Context) {
     fun setPdfLayoutConfigRaw(raw: String?) {
         if (raw == null) prefs.edit { remove(KEY_PDF_LAYOUT_CONFIG) }
         else prefs.edit { putString(KEY_PDF_LAYOUT_CONFIG, raw) }
+    }
+
+    fun getCsvExportFormat(): com.my.striptologbook.data.CsvExportFormat {
+        val json = prefs.getString(KEY_CSV_EXPORT_FORMAT, null)
+            ?: return com.my.striptologbook.data.CsvExportFormat.DEFAULT
+        return try {
+            kotlinx.serialization.json.Json.decodeFromString(json)
+        } catch (_: Exception) {
+            com.my.striptologbook.data.CsvExportFormat.DEFAULT
+        }
+    }
+
+    fun setCsvExportFormat(config: com.my.striptologbook.data.CsvExportFormat) {
+        val json = kotlinx.serialization.json.Json.encodeToString(config)
+        prefs.edit { putString(KEY_CSV_EXPORT_FORMAT, json) }
     }
 
     /**

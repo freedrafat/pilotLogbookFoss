@@ -83,7 +83,7 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
         }
     }
 
-    // ------------------- Export CSV -------------------
+    // ------------------- Export CSV (Export/Import screen) -------------------
     fun exportToCsv(contentResolver: ContentResolver, folder: DocumentFile) {
         viewModelScope.launch {
             try {
@@ -98,6 +98,40 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
                     folder = folder,
                     mimeType = "text/csv",
                     fileName = FileManager.suggestExportFileName(),
+                    content = csv
+                )
+                _result.value = ExportImportResult.Success
+            } catch (e: Exception) {
+                _result.value = ExportImportResult.Error("Export failed: ${e.message}")
+            }
+        }
+    }
+
+    // ------------------- Export CSV (Leg List) -------------------
+    fun exportCsvLegList(
+        contentResolver: ContentResolver,
+        folder: DocumentFile,
+        legs: List<Leg>,
+        config: com.my.striptologbook.data.CsvExportFormat,
+        useFilteredName: Boolean
+    ) {
+        viewModelScope.launch {
+            try {
+                if (legs.isEmpty()) {
+                    _result.value = ExportImportResult.Error("No legs to export")
+                    return@launch
+                }
+                val csv = FileManager.serializeLegsToCsv(config, legs)
+                val fileName = if (useFilteredName) {
+                    FileManager.suggestFilteredCsvFileName()
+                } else {
+                    FileManager.suggestExportFileName()
+                }
+                FileManager.writeTextToWorkDir(
+                    contentResolver = contentResolver,
+                    folder = folder,
+                    mimeType = "text/csv",
+                    fileName = fileName,
                     content = csv
                 )
                 _result.value = ExportImportResult.Success

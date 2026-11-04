@@ -47,14 +47,14 @@ object SearchFields {
         StringField("category", "Category") { it.category },
         StringField("icaoDeparture", "Departure ICAO") { it.icaoDeparture },
         StringField("icaoDestination", "Destination ICAO") { it.icaoDestination },
-        StringField("comment", "Comment") { it.comment },
+        StringField("remarks", "remarks") { it.remarks },
         // Boolean
         BooleanField("isSimulator", "Simulator") { it.isSimulator },
-        BooleanField("pilotFlying", "Pilot Flying") { it.pilotFlying },
+        BooleanField("isPilotFlying", "Pilot Flying") { it.isPilotFlying },
         // Timestamp
         TimestampField("offBlock", "Off Block") { it.offBlock },
-        TimestampField("takeoffTime", "Takeoff Time") { it.takeoffTime },
-        TimestampField("landingTime", "Landing Time") { it.landingTime },
+        TimestampField("takeoff", "Takeoff") { it.takeoff },
+        TimestampField("landing", "Landing") { it.landing },
         TimestampField("onBlock", "On Block") { it.onBlock },
         TimestampField("sunrise", "Sunrise") { it.sunrise },
         TimestampField("sunset", "Sunset") { it.sunset },

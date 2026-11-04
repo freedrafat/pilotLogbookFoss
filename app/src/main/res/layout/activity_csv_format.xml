@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_app_toolbar" />
+
+    <!-- Card 1: header -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CSV format"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Card 2: scrollable controls -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Format -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Format"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_format_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rb_format_pdf_columns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Format 1 — PDF columns" />
+
+                <RadioButton
+                    android:id="@+id/rb_format_raw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Format 2 — raw database values" />
+
+                <RadioButton
+                    android:id="@+id/rb_format_formatted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Format 3 — formatted database values" />
+
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="@color/colorPrimary" />
+
+            <!-- Date format -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date format"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/sp_date_format"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="@color/colorPrimary" />
+
+            <!-- Duration format -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duration format"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/sp_duration_format"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="@color/colorPrimary" />
+
+            <!-- Simulator -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Simulator"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cb_include_simulator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Include simulator legs" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="@color/colorPrimary" />
+
+            <!-- Optional columns -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Optional columns (Format 3 only)"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cb_include_takeoff_landing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Takeoff and landing times + 3 flight duration columns" />
+
+            <CheckBox
+                android:id="@+id/cb_include_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Day duration columns" />
+
+            <CheckBox
+                android:id="@+id/cb_include_number_to_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Takeoffs Day" />
+
+            <CheckBox
+                android:id="@+id/cb_include_number_to_night"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Takeoffs Night" />
+
+            <CheckBox
+                android:id="@+id/cb_include_number_to_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Takeoffs Total" />
+
+            <CheckBox
+                android:id="@+id/cb_include_number_ldg_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Landings Day" />
+
+            <CheckBox
+                android:id="@+id/cb_include_number_ldg_night"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Landings Night" />
+
+            <CheckBox
+                android:id="@+id/cb_include_number_ldg_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Landings Total" />
+
+            <CheckBox
+                android:id="@+id/cb_include_number_instrument_approaches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Instrument Approaches" />
+
+            <CheckBox
+                android:id="@+id/cb_include_is_pilot_flying"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pilot Flying" />
+
+            <CheckBox
+                android:id="@+id/cb_include_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remarks" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Card 3: footer -->
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_restore_defaults_csv_format"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Restore defaults" />
+
+        <Button
+            android:id="@+id/btn_save_csv_format"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save" />
+
+    </LinearLayout>
+
+</LinearLayout>

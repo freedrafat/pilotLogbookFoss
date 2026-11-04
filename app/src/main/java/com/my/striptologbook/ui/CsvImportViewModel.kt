@@ -81,7 +81,7 @@ enum class LegField(val displayName: String) {
     IFR_DAY("IFR Day"),
     NUMBER_INSTRUMENT_APPROACHES("Instrument Approaches"),
 
-    PILOT_FLYING("Pilot Flying"),
+    IS_PILOT_FLYING("Pilot Flying"),
     // Counters
     NUMBER_TO_DAY("# TO Day"),
     NUMBER_TO_NIGHT("# TO Night"),
@@ -90,7 +90,7 @@ enum class LegField(val displayName: String) {
     NUMBER_LDG_NIGHT("# LDG Night"),
     NUMBER_LDG_TOTAL("# LDG Total"),
 
-    COMMENT("Comment")
+    REMARKS("Comment")
 }
 
 data class CsvImportState(
@@ -141,8 +141,8 @@ private val APP_EXPORT_HEADER_TO_FIELD: Map<String, LegField> = mapOf(
     "icaoDeparture"              to LegField.ICAO_DEPARTURE,
     "icaoDestination"            to LegField.ICAO_DESTINATION,
     "offBlock"                   to LegField.OFF_BLOCK_DATETIME,
-    "takeoffTime"                to LegField.TAKEOFF_DATETIME,
-    "landingTime"                to LegField.LANDING_DATETIME,
+    "takeoff"                to LegField.TAKEOFF_DATETIME,
+    "landing"                to LegField.LANDING_DATETIME,
     "onBlock"                    to LegField.ON_BLOCK_DATETIME,
     "sunrise"                    to LegField.SUNRISE_DATETIME,
     "sunset"                     to LegField.SUNSET_DATETIME,
@@ -163,8 +163,8 @@ private val APP_EXPORT_HEADER_TO_FIELD: Map<String, LegField> = mapOf(
     "numberLdgNight"             to LegField.NUMBER_LDG_NIGHT,
     "numberLdgTotal"             to LegField.NUMBER_LDG_TOTAL,
     "numberInstrumentApproaches" to LegField.NUMBER_INSTRUMENT_APPROACHES,
-    "pilotFlying"                to LegField.PILOT_FLYING,
-    "comment"                    to LegField.COMMENT
+    "isPilotFlying"                to LegField.IS_PILOT_FLYING,
+    "remarks"                    to LegField.REMARKS
 )
 
 
@@ -646,8 +646,8 @@ class CsvImportViewModel(
 
                 offBlock = offBlockTs,
                 onBlock = onBlockFinal,
-                takeoffTime = takeoffFinal,
-                landingTime = landingFinal,
+                takeoff = takeoffFinal,
+                landing = landingFinal,
 
                 sunrise = sunriseTs,
                 sunset = sunsetTs,
@@ -672,14 +672,14 @@ class CsvImportViewModel(
                     LegField.NUMBER_INSTRUMENT_APPROACHES
                 ),
 
-                pilotFlying = parseBooleanWithError(fieldValues[LegField.PILOT_FLYING]),
+                isPilotFlying = parseBooleanWithError(fieldValues[LegField.IS_PILOT_FLYING]),
                 numberToDay = parseIntWithError(fieldValues[LegField.NUMBER_TO_DAY], LegField.NUMBER_TO_DAY),
                 numberToNight = parseIntWithError(fieldValues[LegField.NUMBER_TO_NIGHT], LegField.NUMBER_TO_NIGHT),
                 numberToTotal = parseIntWithError(fieldValues[LegField.NUMBER_TO_TOTAL], LegField.NUMBER_TO_TOTAL),
                 numberLdgDay = parseIntWithError(fieldValues[LegField.NUMBER_LDG_DAY], LegField.NUMBER_LDG_DAY),
                 numberLdgNight = parseIntWithError(fieldValues[LegField.NUMBER_LDG_NIGHT], LegField.NUMBER_LDG_NIGHT),
                 numberLdgTotal = parseIntWithError(fieldValues[LegField.NUMBER_LDG_TOTAL], LegField.NUMBER_LDG_TOTAL),
-                comment = fieldValues[LegField.COMMENT]?.ifEmpty { null }
+                remarks = fieldValues[LegField.REMARKS]?.ifEmpty { null }
             )
 
             return Pair(leg, null)

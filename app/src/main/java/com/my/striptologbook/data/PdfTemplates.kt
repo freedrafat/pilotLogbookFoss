@@ -13,7 +13,7 @@ object PdfTemplates {
         "blockTimeTotal",
         "flightTimeTotal",
         "numberLdgTotal",
-        "comment"
+        "remarks"
     )
 
     val EASA: List<String> = listOf(
@@ -41,6 +41,6 @@ object PdfTemplates {
         "numberLdgNight",
         "numberLdgTotal",
         "simulatorTime",
-        "comment"
+        "remarks"
     )
 }

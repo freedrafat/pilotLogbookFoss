@@ -53,17 +53,6 @@
             android:layout_height="wrap_content"
             android:text="Export Logbook as PDF (ICAO/EASA)" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
-        <Button
-            android:id="@+id/btn_format_pdf"
-            style="@style/PrimaryButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Format PDF" />
-
     </LinearLayout>
 
     <!-- CSV Section -->

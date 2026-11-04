@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import com.my.striptologbook.R
+import com.my.striptologbook.data.CsvDateFormat
+import com.my.striptologbook.data.CsvDurationFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -267,6 +269,35 @@ fun formatDuration(minutes: Int): String {
     val hours = minutes / 60
     val mins = minutes % 60
     return "$hours:${String.format("%02d", mins)}"
+}
+
+fun formatDateWith(timestamp: Long, format: CsvDateFormat): String {
+    val pattern = when (format) {
+        CsvDateFormat.DD_MM_YYYY -> "dd.MM.yyyy"
+        CsvDateFormat.DDMMYYYY -> "ddMMyyyy"
+        CsvDateFormat.YYYY_MM_DD -> "yyyy-MM-dd"
+        CsvDateFormat.DD_SLASH_MM_SLASH_YYYY -> "dd/MM/yyyy"
+        CsvDateFormat.MM_SLASH_DD_SLASH_YYYY -> "MM/dd/yyyy"
+        CsvDateFormat.D_MMM_YYYY -> "d MMM yyyy"
+        CsvDateFormat.YYYYMMDD -> "yyyyMMdd"
+    }
+    val sdf = SimpleDateFormat(pattern, Locale.US)
+    sdf.timeZone = TimeZone.getTimeZone("UTC")
+    return sdf.format(Date(timestamp))
+}
+
+fun formatDurationWith(minutes: Int, format: CsvDurationFormat): String {
+    return when (format) {
+        CsvDurationFormat.H_MM -> formatDuration(minutes)
+        CsvDurationFormat.MINUTES -> minutes.toString()
+        CsvDurationFormat.DECIMAL_HOURS ->
+            String.format(Locale.US, "%.2f", minutes / 60.0)
+        CsvDurationFormat.HH_MM_SS -> {
+            val h = minutes / 60
+            val m = minutes % 60
+            String.format(Locale.US, "%02d:%02d:00", h, m)
+        }
+    }
 }
 
 fun getDateAtMidnight(timestamp: Long): Long {

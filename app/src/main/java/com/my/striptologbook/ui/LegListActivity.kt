@@ -68,7 +68,7 @@ class LegListActivity : BaseActivity() {
     private var toolbarTitle: String? = "Legs List"
     private var toolbarSearchTitle: String? = "Search Results"
 
-    private enum class PendingExport { ALL_PDF, FILTERED_PDF }
+    private enum class PendingExport { ALL_PDF, FILTERED_PDF, ALL_CSV, FILTERED_CSV }
 
     private val workDirPickerLauncher = registerForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
@@ -583,8 +583,7 @@ class LegListActivity : BaseActivity() {
             .setTitle("Export")
             .setItems(arrayOf("Export CSV", "Export PDF")) { _, which ->
                 when (which) {
-                    0 -> Toast.makeText(this,
-                        "CSV export coming soon", Toast.LENGTH_SHORT).show()
+                    0 -> exportCsv()
                     1 -> exportPdf()
                 }
             }
@@ -596,6 +595,13 @@ class LegListActivity : BaseActivity() {
         val isAllMode = !isSearchMode && viewModel.currentFilter.value == FilterType.ALL
         ensureWorkDirThenExport(
             if (isAllMode) PendingExport.ALL_PDF else PendingExport.FILTERED_PDF
+        )
+    }
+
+    private fun exportCsv() {
+        val isAllMode = !isSearchMode && viewModel.currentFilter.value == FilterType.ALL
+        ensureWorkDirThenExport(
+            if (isAllMode) PendingExport.ALL_CSV else PendingExport.FILTERED_CSV
         )
     }
 
@@ -624,6 +630,8 @@ class LegListActivity : BaseActivity() {
         when (action) {
             PendingExport.ALL_PDF -> doExportAllPdf(folder)
             PendingExport.FILTERED_PDF -> doExportFilteredPdf(folder)
+            PendingExport.ALL_CSV -> doExportCsv(folder, useFilteredName = false)
+            PendingExport.FILTERED_CSV -> doExportCsv(folder, useFilteredName = true)
         }
     }
 
@@ -656,6 +664,17 @@ class LegListActivity : BaseActivity() {
             headerRightLabel = headerRightLabel,
             rowsPerPage = prefs.getPdfRowsPerPage(),
             config = prefs.getPdfLayoutConfig()
+        )
+    }
+
+    private fun doExportCsv(folder: DocumentFile, useFilteredName: Boolean) {
+        val config = PreferencesManager.getInstance(this).getCsvExportFormat()
+        exportViewModel.exportCsvLegList(
+            contentResolver = contentResolver,
+            folder = folder,
+            legs = currentLegs,
+            config = config,
+            useFilteredName = useFilteredName
         )
     }
 

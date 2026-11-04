@@ -72,7 +72,7 @@ object LegRowRenderer {
         val b = value as? Boolean ?: false
         return when (fieldId) {
             "isSimulator" -> if (b) "Simu." else ""
-            "pilotFlying" -> if (b) "PF"    else "PM"
+            "isPilotFlying" -> if (b) "PF"    else "PM"
             else          -> ""
         }
     }

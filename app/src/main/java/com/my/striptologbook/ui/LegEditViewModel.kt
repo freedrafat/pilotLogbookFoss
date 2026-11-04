@@ -54,7 +54,7 @@ class LegEditViewModel(
             flightNumber = defaultFields.flightNumberPrefix,
             icaoDeparture = defaultFields.icaoDeparture,
             icaoDestination = defaultFields.icaoDestination,
-            comment = defaultFields.comment
+            remarks = defaultFields.comment
         )
 
         // --- Tri-state: isSimulator ---
@@ -72,10 +72,10 @@ class LegEditViewModel(
             // "none": leave as-is
         }
 
-        // --- Tri-state: pilotFlying ---
+        // --- Tri-state: isPilotFlying ---
         when (defaultFields.pilotFlyingDefault) {
-            "true" -> state = state.copy(pilotFlying = true)
-            "false" -> state = state.copy(pilotFlying = false)
+            "true" -> state = state.copy(isPilotFlying = true)
+            "false" -> state = state.copy(isPilotFlying = false)
             // "none": leave as-is
         }
 
@@ -162,24 +162,24 @@ class LegEditViewModel(
         _state.update { it.copy(offBlockTime = value) }
     }
 
-    fun updateTakeoffTimeStr(value: String) {
-        _state.update { it.copy(takeoffTimeStr = value) }
+    fun updateTakeoffTime(value: String) {
+        _state.update { it.copy(takeoffTime = value) }
     }
 
-    fun updateLandingTimeStr(value: String) {
-        _state.update { it.copy(landingTimeStr = value) }
+    fun updateLandingTime(value: String) {
+        _state.update { it.copy(landingTime = value) }
     }
 
     fun updateOnBlockTime(value: String) {
         _state.update { it.copy(onBlockTime = value) }
     }
 
-    fun updateSunriseTimeStr(value: String) {
-        _state.update { it.copy(sunriseTimeStr = value) }
+    fun updateSunriseTime(value: String) {
+        _state.update { it.copy(sunriseTime = value) }
     }
 
-    fun updateSunsetTimeStr(value: String) {
-        _state.update { it.copy(sunsetTimeStr = value) }
+    fun updateSunsetTime(value: String) {
+        _state.update { it.copy(sunsetTime = value) }
     }
 
     fun updateSimulatorTime(value: String) {
@@ -242,12 +242,12 @@ class LegEditViewModel(
     }
 
     fun updatePilotFlying(value: Boolean?) {
-        _state.update { it.copy(pilotFlying = value) }
+        _state.update { it.copy(isPilotFlying = value) }
         autoFillInstrumentApproaches()
     }
 
-    fun updateComment(value: String) {
-        _state.update { it.copy(comment = value) }
+    fun updateRemarks(value: String) {
+        _state.update { it.copy(remarks = value) }
     }
 
     // ---------- Date ----------
@@ -294,7 +294,7 @@ class LegEditViewModel(
         val offBlockTimestamp = if (offBlockMinutes != null) base + (offBlockMinutes * 60 * 1000L) else null
 
         // Takeoff
-        val takeoffMinutes = timeStringToMinutes(currentState.takeoffTimeStr)
+        val takeoffMinutes = timeStringToMinutes(currentState.takeoffTime)
         var takeoffTimestamp = if (takeoffMinutes != null && offBlockTimestamp != null) {
             base + (takeoffMinutes * 60 * 1000L)
         } else null
@@ -308,7 +308,7 @@ class LegEditViewModel(
         }
 
         // Landing
-        val landingMinutes = timeStringToMinutes(currentState.landingTimeStr)
+        val landingMinutes = timeStringToMinutes(currentState.landingTime)
         var landingTimestamp = if (landingMinutes != null && takeoffTimestamp != null) {
             val takeoffDate = getDateAtMidnight(takeoffTimestamp)
             takeoffDate + (landingMinutes * 60 * 1000L)
@@ -342,17 +342,17 @@ class LegEditViewModel(
         }
 
         // Sunrise and sunset (string to Long)
-        val sunriseMinutes = timeStringToMinutes(currentState.sunriseTimeStr)
+        val sunriseMinutes = timeStringToMinutes(currentState.sunriseTime)
         val sunriseTimestamp = if (sunriseMinutes != null) base + (sunriseMinutes * 60 * 1000L) else null
 
-        val sunsetMinutes = timeStringToMinutes(currentState.sunsetTimeStr)
+        val sunsetMinutes = timeStringToMinutes(currentState.sunsetTime)
         val sunsetTimestamp = if (sunsetMinutes != null) base + (sunsetMinutes * 60 * 1000L) else null
 
         _state.update {
             it.copy(
                 offBlock = offBlockTimestamp,
-                takeoffTime = takeoffTimestamp,
-                landingTime = landingTimestamp,
+                takeoff = takeoffTimestamp,
+                landing = landingTimestamp,
                 onBlock = onBlockTimestamp,
                 sunrise = sunriseTimestamp,
                 sunset = sunsetTimestamp
@@ -475,8 +475,8 @@ class LegEditViewModel(
             // Sweep data from the Night button takes priority.
             val off = state.offBlock ?: return
             val on = state.onBlock ?: return
-            val takeoff = state.takeoffTime ?: return
-            val landing = state.landingTime ?: return
+            val takeoff = state.takeoff ?: return
+            val landing = state.landing ?: return
 
             val fullEvents = buildBlockEvents(off, takeoff, landing, on)
             val nightMinutes = computeNightMinutes(fullEvents, off, on, offBlockIsDay)
@@ -487,10 +487,10 @@ class LegEditViewModel(
             }
             _state.update { it.copy(blockTimeNight = nightStr) }
             recalcBlockDay()
-        } else if (state.sunriseTimeStr.isNotEmpty() || state.sunsetTimeStr.isNotEmpty()) {
+        } else if (state.sunriseTime.isNotEmpty() || state.sunsetTime.isNotEmpty()) {
             // No sweep data — fall back to the legacy static calculation.
             when {
-                state.sunriseTimeStr.isNotEmpty() && state.sunsetTimeStr.isNotEmpty() ->
+                state.sunriseTime.isNotEmpty() && state.sunsetTime.isNotEmpty() ->
                     computeBlockNightTotalTwoEntrys()
 
                 else ->
@@ -501,8 +501,8 @@ class LegEditViewModel(
             // the original code ran this sweep body unconditionally in that case.
             val off = state.offBlock ?: return
             val on = state.onBlock ?: return
-            val takeoff = state.takeoffTime ?: return
-            val landing = state.landingTime ?: return
+            val takeoff = state.takeoff ?: return
+            val landing = state.landing ?: return
 
             val fullEvents = buildBlockEvents(off, takeoff, landing, on)
             val nightMinutes = computeNightMinutes(fullEvents, off, on, offBlockIsDay)
@@ -521,8 +521,8 @@ class LegEditViewModel(
         val off = currentState.offBlock ?: return
         val on = currentState.onBlock ?: return
 
-        val sunriseStr = currentState.sunriseTimeStr
-        val sunsetStr = currentState.sunsetTimeStr
+        val sunriseStr = currentState.sunriseTime
+        val sunsetStr = currentState.sunsetTime
         if (sunriseStr.isEmpty() || sunsetStr.isEmpty()) {
             return
         }
@@ -560,8 +560,8 @@ class LegEditViewModel(
         val off = currentState.offBlock ?: return
         val on = currentState.onBlock ?: return
 
-        val sunriseStr = currentState.sunriseTimeStr
-        val sunsetStr = currentState.sunsetTimeStr
+        val sunriseStr = currentState.sunriseTime
+        val sunsetStr = currentState.sunsetTime
         val hasSunrise = sunriseStr.isNotEmpty()
         val hasSunset = sunsetStr.isNotEmpty()
 
@@ -623,8 +623,8 @@ class LegEditViewModel(
 
     fun recalcFlightDuration() {
         val currentState = _state.value
-        val takeoff = currentState.takeoffTime
-        val landing = currentState.landingTime
+        val takeoff = currentState.takeoff
+        val landing = currentState.landing
 
         if (takeoff == null || landing == null) {
             _state.update { it.copy(flightTimeTotal = "") }
@@ -646,7 +646,7 @@ class LegEditViewModel(
         computeFlightNightTotal()
 
         // Recalc TO/LDG counts if pilot is flying
-        if (currentState.pilotFlying == true) {
+        if (currentState.isPilotFlying == true) {
             autoFillTakeoffLandingCounts()
         }
 
@@ -661,8 +661,8 @@ class LegEditViewModel(
 
         if (hasSweepData) {
             // Sweep data from the Night button takes priority.
-            val takeoff = state.takeoffTime ?: return
-            val landing = state.landingTime ?: return
+            val takeoff = state.takeoff ?: return
+            val landing = state.landing ?: return
 
             val nightMinutes = computeNightMinutes(flightEvents, takeoff, landing, takeoffIsDay)
             val nightStr = when (nightMinutes) {
@@ -672,10 +672,10 @@ class LegEditViewModel(
             }
             _state.update { it.copy(flightTimeNight = nightStr) }
             recalcFlightDay()
-        } else if (state.sunriseTimeStr.isNotEmpty() || state.sunsetTimeStr.isNotEmpty()) {
+        } else if (state.sunriseTime.isNotEmpty() || state.sunsetTime.isNotEmpty()) {
             // No sweep data — fall back to the legacy static calculation.
             when {
-                state.sunriseTimeStr.isNotEmpty() && state.sunsetTimeStr.isNotEmpty() ->
+                state.sunriseTime.isNotEmpty() && state.sunsetTime.isNotEmpty() ->
                     computeFlightNightTotalTwoEntrys()
 
                 else ->
@@ -683,8 +683,8 @@ class LegEditViewModel(
             }
         } else {
             // Restore original behavior for the "no sweep data, no sun strings" case.
-            val takeoff = state.takeoffTime ?: return
-            val landing = state.landingTime ?: return
+            val takeoff = state.takeoff ?: return
+            val landing = state.landing ?: return
 
             val nightMinutes = computeNightMinutes(flightEvents, takeoff, landing, takeoffIsDay)
             val nightStr = when (nightMinutes) {
@@ -699,11 +699,11 @@ class LegEditViewModel(
 
     private fun computeFlightNightTotalOneEntry() {
         val currentState = _state.value
-        val takeoff = currentState.takeoffTime ?: return
-        val landing = currentState.landingTime ?: return
+        val takeoff = currentState.takeoff ?: return
+        val landing = currentState.landing ?: return
 
-        val sunriseStr = currentState.sunriseTimeStr
-        val sunsetStr = currentState.sunsetTimeStr
+        val sunriseStr = currentState.sunriseTime
+        val sunsetStr = currentState.sunsetTime
         val hasSunrise = sunriseStr.isNotEmpty()
         val hasSunset = sunsetStr.isNotEmpty()
 
@@ -740,11 +740,11 @@ class LegEditViewModel(
 
     private fun computeFlightNightTotalTwoEntrys() {
         val currentState = _state.value
-        val takeoff = currentState.takeoffTime ?: return
-        val landing = currentState.landingTime ?: return
+        val takeoff = currentState.takeoff ?: return
+        val landing = currentState.landing ?: return
 
-        val sunriseStr = currentState.sunriseTimeStr
-        val sunsetStr = currentState.sunsetTimeStr
+        val sunriseStr = currentState.sunriseTime
+        val sunsetStr = currentState.sunsetTime
         if (sunriseStr.isEmpty() || sunsetStr.isEmpty()) {
             return
         }
@@ -822,7 +822,7 @@ class LegEditViewModel(
     fun autoFillInstrumentApproaches() {
         val state = _state.value
         val ifrTotalMin = state.ifrTotal.toMinutesOrNull()
-        val pilotFlying = state.pilotFlying ?: false
+        val pilotFlying = state.isPilotFlying ?: false
 
         if (ifrTotalMin != null && ifrTotalMin > 0 && pilotFlying) {
             // Only fill when currently empty (preserve manual values)
@@ -907,11 +907,11 @@ class LegEditViewModel(
 
     private fun findFirstCandidateForFlight(): Long? {
         val currentState = _state.value
-        val takeoff = currentState.takeoffTime ?: return null
-        val landing = currentState.landingTime ?: return null
+        val takeoff = currentState.takeoff ?: return null
+        val landing = currentState.landing ?: return null
 
-        val sunriseStr = currentState.sunriseTimeStr
-        val sunsetStr = currentState.sunsetTimeStr
+        val sunriseStr = currentState.sunriseTime
+        val sunsetStr = currentState.sunsetTime
         val hasSunrise = sunriseStr.isNotEmpty()
         val hasSunset = sunsetStr.isNotEmpty()
 
@@ -951,7 +951,7 @@ class LegEditViewModel(
         val currentState = _state.value
 
         // --- Pre‑checks ---
-        if (currentState.pilotFlying != true) {
+        if (currentState.isPilotFlying != true) {
             _state.update {
                 it.copy(
                     numberToTotal = "",
@@ -965,8 +965,8 @@ class LegEditViewModel(
             return
         }
 
-        val takeoff = currentState.takeoffTime
-        val landing = currentState.landingTime
+        val takeoff = currentState.takeoff
+        val landing = currentState.landing
         if (takeoff == null || landing == null) {
             _state.update {
                 it.copy(
@@ -1041,8 +1041,8 @@ class LegEditViewModel(
         }
 
         // Crossing found
-        val hasSunrise = currentState.sunriseTimeStr.isNotEmpty()
-        val hasSunset = currentState.sunsetTimeStr.isNotEmpty()
+        val hasSunrise = currentState.sunriseTime.isNotEmpty()
+        val hasSunset = currentState.sunsetTime.isNotEmpty()
 
         if (hasSunrise) {
             _state.update {
@@ -1192,8 +1192,8 @@ class LegEditViewModel(
             icaoDestination = currentState.icaoDestination.ifEmpty { null },
             offBlock = currentState.offBlock,
             onBlock = currentState.onBlock,
-            takeoffTime = currentState.takeoffTime,
-            landingTime = currentState.landingTime,
+            takeoff = currentState.takeoff,
+            landing = currentState.landing,
             sunrise = currentState.sunrise,
             sunset = currentState.sunset,
             blockTimeDay = currentState.blockTimeDay.toMinutesOrNull(),
@@ -1213,8 +1213,8 @@ class LegEditViewModel(
             numberLdgDay = currentState.numberLdgDay.toIntOrNull(),
             numberLdgNight = currentState.numberLdgNight.toIntOrNull(),
             numberLdgTotal = currentState.numberLdgTotal.toIntOrNull(),
-            pilotFlying = currentState.pilotFlying,
-            comment = currentState.comment.ifEmpty { null }
+            isPilotFlying = currentState.isPilotFlying,
+            remarks = currentState.remarks.ifEmpty { null }
         )
 
         if (currentState.legId != null) {

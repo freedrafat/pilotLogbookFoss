@@ -72,6 +72,9 @@ class SettingsActivity : BaseActivity() {
         findViewById<Button>(R.id.btn_opening_balance).setOnClickListener {
             startActivity(Intent(this, OpeningBalanceListActivity::class.java))
         }
+        findViewById<Button>(R.id.btn_export_format).setOnClickListener {
+            startActivity(Intent(this, SettingsExportFormatActivity::class.java))
+        }
     }
 
     override fun onResume() {

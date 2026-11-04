@@ -30,16 +30,16 @@ data class LegEditState(
 
     // Time strings (HH:MM format)
     val offBlockTime: String = "",
-    val takeoffTimeStr: String = "",
-    val landingTimeStr: String = "",
+    val takeoffTime: String = "",
+    val landingTime: String = "",
     val onBlockTime: String = "",
-    val sunriseTimeStr: String = "",
-    val sunsetTimeStr: String = "",
+    val sunriseTime: String = "",
+    val sunsetTime: String = "",
 
     // Computed timestamps (read-only in UI)
     val offBlock: Long? = null,
-    val takeoffTime: Long? = null,
-    val landingTime: Long? = null,
+    val takeoff: Long? = null,
+    val landing: Long? = null,
     val onBlock: Long? = null,
     val sunrise: Long? = null,
     val sunset: Long? = null,
@@ -67,11 +67,11 @@ data class LegEditState(
 
     // Boolean fields
     val isSimulator: Boolean? = null,
-    val pilotFlying: Boolean? = null,
+    val isPilotFlying: Boolean? = null,
     val isIfr: Boolean = true,  // Default true, UI only, not stored in DB
 
     // Comment
-    val comment: String = ""
+    val remarks: String = ""
 ) {
     companion object {
         fun fromLeg(leg: Leg): LegEditState {
@@ -93,14 +93,14 @@ data class LegEditState(
                 icaoDeparture = leg.icaoDeparture ?: "",
                 icaoDestination = leg.icaoDestination ?: "",
                 offBlockTime = extractTimeString(leg.offBlock),
-                takeoffTimeStr = extractTimeString(leg.takeoffTime),
-                landingTimeStr = extractTimeString(leg.landingTime),
+                takeoffTime = extractTimeString(leg.takeoff),
+                landingTime = extractTimeString(leg.landing),
                 onBlockTime = extractTimeString(leg.onBlock),
-                sunriseTimeStr = extractTimeString(leg.sunrise),
-                sunsetTimeStr = extractTimeString(leg.sunset),
+                sunriseTime = extractTimeString(leg.sunrise),
+                sunsetTime = extractTimeString(leg.sunset),
                 offBlock = leg.offBlock,
-                takeoffTime = leg.takeoffTime,
-                landingTime = leg.landingTime,
+                takeoff = leg.takeoff,
+                landing = leg.landing,
                 onBlock = leg.onBlock,
                 sunrise = leg.sunrise,
                 sunset = leg.sunset,
@@ -122,9 +122,9 @@ data class LegEditState(
                 numberLdgNight = leg.numberLdgNight?.toString() ?: "",
                 numberLdgTotal = leg.numberLdgTotal?.toString() ?: "",
                 isSimulator = leg.isSimulator,
-                pilotFlying = leg.pilotFlying,
+                isPilotFlying = leg.isPilotFlying,
                 isIfr = leg.ifrTotal != null || leg.ifrNight != null || leg.ifrDay != null,
-                comment = leg.comment ?: ""
+                remarks = leg.remarks ?: ""
             )
         }
 

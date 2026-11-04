@@ -665,8 +665,8 @@ class LegItemsPreferencesActivity : BaseActivity() {
 
     private fun buildSampleLeg(): Leg = Leg(
         offBlock        = utc(2026, 5, 30, 14, 30),
-        takeoffTime     = utc(2026, 5, 30, 14, 45),
-        landingTime     = utc(2026, 5, 30, 16,  0),
+        takeoff     = utc(2026, 5, 30, 14, 45),
+        landing     = utc(2026, 5, 30, 16,  0),
         onBlock         = utc(2026, 5, 30, 16, 15),
         position        = "PIC",
         picName         = "SELF",
@@ -682,8 +682,8 @@ class LegItemsPreferencesActivity : BaseActivity() {
         icaoDestination = "EGLL",
         blockTimeTotal  = 105,
         blockTimeNight  = 15,
-        pilotFlying     = true,
-        comment         = "Sample comment"
+        isPilotFlying     = true,
+        remarks         = "Sample remarks"
     )
 
     private fun utc(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {

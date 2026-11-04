@@ -98,9 +98,9 @@ data class LegItemLayout(
                         LegRowItem.literal(" / "),
                         LegRowItem.field("blockTimeNight", "duration")
                     ),
-                    // Row 4: comment
+                    // Row 4: remarks
                     listOf(
-                        LegRowItem.field("comment")
+                        LegRowItem.field("remarks")
                     )
                 )
             )

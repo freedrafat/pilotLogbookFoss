@@ -1,6 +1,6 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                       USER MANUAL
-	Logbook & Flight Tools - 20261031
+	Logbook & Flight Tools - 20261104
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Welcome to the Logbook & Flight Tools app. This manual covers every
@@ -36,7 +36,7 @@ The Logbook & Flight Tools app is designed for pilots who need to:
 
   • Record flight legs with all relevant details (airports, times,
     crew, aircraft, etc.).
-  • Automatically calculate block time, flight time, nighttime and
+  • Automatically calculate block time, flight time, night time and
     day time based on sunrise and sunset.
   • Automatically set takeoff and landing counts when you act as
     pilot flying.
@@ -44,7 +44,7 @@ The Logbook & Flight Tools app is designed for pilots who need to:
     into account the aircraft's changing position.
   • Manage a local airport database with IATA and ICAO codes, names,
     coordinates, elevation and timezone.
-  • Customize how each leg card looks in the logbook list, using the
+  • Customise how each leg card looks in the logbook list, using the
     Leg Items feature (section 11.5).
   • Record your flight experience accumulated before you started
     using the app, using the Opening Balance feature (section 14).
@@ -100,7 +100,7 @@ grid of buttons:
   • Add New Leg – opens a blank Leg Editor.
   • Flight Sun Events – opens the calculator.
   • Settings – opens the Settings screen (Backup, Export/Import,
-    Preferences, Airports, Updates, Opening Balance).
+    Preferences, Airports, Updates, Opening Balance, Export format).
   • User Manual – opens this manual.
 
 Every other screen has a Home button in the top-right corner of the
@@ -137,7 +137,7 @@ The editor contains many fields. Below is an explanation of each:
 
   • Position – your role on this leg. Suggested values are PIC, SIC,
     AugCrew, Dual and Instructor, but you can type any other value.
-    When the field is empty, and you tap it, the list of suggested
+    When the field is empty and you tap it, the list of suggested
     values appears. As soon as you type one character, the list is
     filtered to entries containing that character. From two characters
     on, the app switches to its database suggestions and shows values
@@ -147,7 +147,7 @@ The editor contains many fields. Below is an explanation of each:
   • Category – the operating category of the leg. Suggested values are
     "Multi Pilot", "Single Pilot SE", "Single Pilot ME", "Helicopter"
     and "Glider", but you can type any other value. The suggestion
- behavior is exactly the same as for Position.
+    behaviour is exactly the same as for Position.
 
   • PIC Name – Pilot in Command name.
   • SIC Name – Second in Command name.
@@ -157,12 +157,12 @@ The editor contains many fields. Below is an explanation of each:
   • Registration – aircraft registration (for example, "D-ABCD").
     When you leave the field, the app looks up the most recently used
     Type for that registration and fills in the Type field
-    automatically. You can overwrite the Type afterward.
+    automatically. You can overwrite the Type afterwards.
 
   • Type – aircraft type (for example, "A320"). When you leave the
     field, the app looks up the most recently used Category for that
     Type and fills in the Category field automatically. You can
-    overwrite the Category afterward.
+    overwrite the Category afterwards.
 
   • Departure – departure airport (IATA or ICAO code).
   • Destination – arrival airport (IATA or ICAO code).
@@ -206,7 +206,7 @@ The editor contains many fields. Below is an explanation of each:
 
   • Comment – any additional notes. If you also fill Jumpseat 1, the
     PDF logbook will print the jumpseat occupant on a second line
-    labeled "J/S: ...".
+    labelled "J/S: ...".
 
 4.3. Auto-Calculations
 ──────────────────────
@@ -245,7 +245,7 @@ The app automatically computes many fields to save you time.
 ─────────────────
 
   • Time fields accept "HH:MM" (for example, "14:30") or "HHMM" (for
-    example, "1430"). The app normalizes your input to "HH:MM".
+    example, "1430"). The app normalises your input to "HH:MM".
   • Duration fields accept "H:MM" (for example, "2:30") or "HHMM" (for
     example, "230" for 2 hours and 30 minutes). The app formats
     it as "H:MM".
@@ -398,6 +398,11 @@ To exclude empty fields, add a second condition for the same field with not-equa
 Search never includes the Opening Balance. Only actual legs are
 filtered.
 
+The results screen has an export icon in the top bar. Tapping it
+offers "Export CSV" (not yet implemented) or "Export PDF". Exporting
+from the search results produces a PDF that contains only the legs
+currently shown. See section 10.5.
+
 5.4. Statistics
 ───────────────
 
@@ -435,7 +440,7 @@ The Month/Year view always shows your whole logbook; it does not use
 the date filter from the Leg List. It always includes the Opening
 Balance.
 
-5.5. Customizing the Leg Cards
+5.5. Customising the Leg Cards
 ──────────────────────────────
 
 Each leg in the list is displayed as a small card with four lines of
@@ -687,8 +692,8 @@ verified, the operation is blocked.
        file you copied from another phone).
     5. The app clears the legs table and inserts all legs from
        the backup. The Opening Balance is replaced only if the
-       backup file contains an Opening Balance section. Old-format
-       backups restore legs only and leave the Opening
+       backup file contains an Opening Balance section. Old-
+       format backups restore legs only and leave the Opening
        Balance untouched.
 
 8.3. Deleting All Data
@@ -734,7 +739,7 @@ Settings → Opening Balance (section 14).
     of data rows, and one entry per column of the CSV. For each
     column, a dropdown lets you choose which app field that column
     should fill. Columns from a CSV produced by this app are
-    matched automatically. For columns, you do not want to import,
+    matched automatically. For columns you do not want to import,
     leave the dropdown on "Ignore".
 
     When the columns are mapped the way you want, tap Import. The
@@ -750,6 +755,45 @@ Settings → Opening Balance (section 14).
 
     CSV import creates legs only. It never creates Opening
     Balance rows.
+
+9.3. Export CSV from the Leg List
+
+    The export icon in the Leg List's top bar offers two actions:
+    "Export CSV" and "Export PDF".
+
+    "Export CSV" produces a CSV of the legs currently shown —
+    filtered by the active filter, or by the search conditions if
+    you are on a search-results screen.
+
+    Unlike the Export CSV button on the Export/Import screen (which
+    always writes the whole logbook in a fixed format), the Leg
+    List's CSV format is configurable. Open Settings → Export
+    format → Format CSV to choose:
+
+      • Format 1 — PDF columns. 24 columns matching the printed
+        logbook layout. Export-only; the resulting file is not
+        importable.
+      • Format 2 — raw database values. Every timestamp as raw
+        milliseconds, every duration as integer minutes, every
+        field as stored. Includes simulator legs.
+      • Format 3 — formatted database values. One date column plus
+        four time-of-day columns for the four timestamps, and
+        durations formatted as you choose. Legs with
+        "isSimulator = true" are excluded unless you tick the
+        "Include simulator legs" checkbox.
+
+    You can also choose the date format (seven options) and the
+    duration format (four options). Save stores the choices; they
+    apply to every subsequent Leg List export until you change
+    them.
+
+    The filename depends on the filter:
+      • Filter = All → logbook_export_<date>.csv
+      • Any other filter, or a search result →
+        logbook_filtered_<date>.csv
+
+    If the current filter or search produces no legs, the export
+    is blocked with a short message.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 10. PDF LOGBOOK EXPORT
@@ -780,7 +824,7 @@ printed page can be adjusted before exporting.
 
   • Header, left: "Owner: <name>". Hidden when the owner name is
     empty.
-  • Header, center: "Pilot Logbook".
+  • Header, centre: "Pilot Logbook".
   • Header, right: the date range of the legs printed on that page.
   • Table header with two rows.
   • One row per leg.
@@ -795,7 +839,7 @@ printed page can be adjusted before exporting.
   • Merged Remarks cell across the three totals rows containing the
     certification sentence, your signature if set, and your name at
     the bottom.
-  • Page number at the bottom center of the page.
+  • Page number at the bottom centre of the page.
 
 The Opening Balance (section 14) is never printed as a leg row. It
 only contributes to the running totals. Because of this, the very
@@ -804,7 +848,7 @@ prior experience. For a From-To range, the Opening Balance is added
 in full, regardless of whether its own start and end dates fall
 inside the chosen range.
 
-This behavior applies to all three export ranges: All, From-To, and
+This behaviour applies to all three export ranges: All, From-To, and
 Last N pages. For a From-To range, the Opening Balance is added in
 full, regardless of whether its own start and end dates fall inside
 the chosen range.
@@ -814,7 +858,7 @@ the chosen range.
 
 This mode prints only the most recent N pages of your logbook, but the
 pages keep the numbers and the running totals they would have in the
-full logbook. For example, if your logbook currently fills 20 pages,
+full logbook. For example, if your logbook currently fills 20 pages
 and you export the last 3, the resulting PDF contains pages numbered
 18/20, 19/20 and 20/20. Each of those pages contains exactly the rows,
 the totals and the page number that it would have if you exported the
@@ -835,7 +879,7 @@ screen lets you control:
 
   • Rows per page – 13, 15, 18, 20 or 25. Default 18.
   • PDF font – Sans-serif, Serif or Monospace.
-  • Alternate row background – shades every other leg row light gray.
+  • Alternate row background – shades every other leg row light grey.
   • Owner name – printed in the header and at the bottom of the
     Remarks cell.
   • Signature – tap Set Signature and sign on the screen. Tap Set
@@ -857,6 +901,42 @@ name, or signature. Tap Save to keep your changes.
 
 The Leg Items customization (section 11.5) affects only the on-screen
 Leg List; it does not change the PDF layout.
+
+
+10.5. Exporting from the Leg List
+─────────────────────────────────
+
+    The export icon in the Leg List's top bar offers "Export CSV"
+    (not yet implemented) and "Export PDF".
+
+    When the current filter is All, "Export PDF" behaves exactly as
+    Export PDF on the Export/Import screen: it opens the range
+    dialog (All / From-To / Last N pages), then produces the standard
+    logbook PDF with totals rows, the certification sentence and
+    your signature. The filename is logbook_<date>.pdf.
+
+    When the current filter is anything other than All, or when you
+    are on a search-results screen, "Export PDF" produces a
+    "filtered" PDF that contains only the legs currently shown:
+
+      • Header: Owner (left), "Pilot Logbook" (centre), and either
+        the filter's date range or the literal text "filtered Legs"
+        (on search results) on the right.
+      • Two-row column header, identical to the standard logbook PDF.
+      • Body: rows per page plus three additional leg rows per page.
+      • Last page: one row fewer than the other pages, plus a single
+        "Total" row showing the durations and counts summed across
+        every filtered leg.
+      • No certification sentence, no signature, and no owner name at
+        the bottom.
+      • Footer: "Page N / M" (relative to this export) and the date
+        and time the PDF was generated.
+
+    The filename is logbook_filtered_<date>.pdf.
+
+    If no legs match the current filter or search, the export is
+    blocked with a short message.
+
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 11. PREFERENCES
@@ -924,7 +1004,7 @@ default is 37000 feet.
 11.5. Leg Items
 ───────────────
 
-The Leg Items screen lets you customize the four lines of information
+The Leg Items screen lets you customise the four lines of information
 shown on every leg card in the Leg List. It does not change the leg
 data itself, and it does not affect the PDF export.
 
@@ -1073,7 +1153,7 @@ the flow is the same from the moment the update is confirmed:
          download continues in the background, and a system
          notification shows its progress.
       4. When the download finishes, the system notification
-         changes to complete. Tap it to open the file. Your
+         changes to completed. Tap it to open the file. Your
          device's installer (or Files app) opens and offers to
          install the update.
 
@@ -1181,6 +1261,8 @@ server. Your privacy is fully respected.
     file the app creates for you:
       • logbook_backup_*.json – logbook backups.
       • logbook_export_*.csv – CSV exports.
+      • logbook_filtered_*.csv – CSV exports of a filter or search
+        result (Leg List export icon only).
       • logbook_*.pdf – PDF exports.
       • logbook_prefs_*.json – settings backups.
 
@@ -1264,6 +1346,19 @@ Backup and CSV
   • CSV import blocked – if the app cannot create and verify a backup
     of your current logbook before importing, the import will not
     start.
+  • The CSV from the Leg List export icon does not look the same as
+    the one from the Export/Import screen – this is by design.
+    Export/Import always produces the fixed 39-column format with
+    ISO timestamps. Leg List produces a CSV whose format you control
+    in Settings → Export format → Format CSV. See section 9.3.
+  • My CSV has separate date and time columns – Format 3 is
+    selected. Switch to Format 2 (raw) in Settings → Export
+    format → Format CSV for a single column per timestamp, or use
+    Format 1 for the PDF-like 24-column layout.
+  • Legs with "isSimulator = true" are missing from my Leg List CSV
+    – the "Include simulator legs" checkbox is off. Turn it on in
+    Settings → Export format → Format CSV, or select Format 2 (raw),
+    which always includes simulator legs.
 
 PDF
   • PDF fonts look different from what I chose – if the font file is
@@ -1276,8 +1371,20 @@ PDF
     legs. If you enter a number greater than the total pages your
     logbook currently fills, the whole logbook is printed.
   • The first page's total from previous page is not zero – this is
-    by design. If you have recorded an Opening Balance, it appears in
-    that row.
+    by design. If you have recorded an Opening Balance, it appears
+    in that row.
+  • Export PDF from the Leg List produces a different PDF than
+    Export PDF from the Export/Import screen – this is by design.
+    When the current filter is All, the Leg List reuses the
+    Export/Import flow. When the filter is anything else, or when
+    you are on search results, a "filtered" PDF is produced. See
+    section 10.5.
+  • The filtered PDF has no certification sentence, no signature and
+    no owner name – by design; those elements belong to the standard
+    logbook PDF only.
+  • The filtered PDF ends with a "Total" row – it shows the sum of
+    the duration and count columns across every filtered leg, not
+    just the legs on the last page.
 
 Search
   • My search for a specific time returns legs on every date – this
@@ -1363,10 +1470,14 @@ information, nor does it send any data to external servers.
         or Restore Settings
       • Settings → App Update, if an update is found
 
-    A folder picker opens at your Downloads folder. Tap "Use
-    this folder" to accept, or navigate elsewhere first. The app
-    creates a subfolder named PilotLogbookFoss inside the folder
-    you pick. All logbook files live there.
+    A single folder, called the Work Directory, receives every
+    file the app creates for you:
+      • logbook_backup_*.json – logbook backups.
+      • logbook_export_*.csv – CSV exports.
+      • logbook_*.pdf – PDF exports (All filter).
+      • logbook_filtered_*.pdf – PDF exports of a filter or search
+        result.
+      • logbook_prefs_*.json – settings backups.
 
   How to change it
     Open Settings → Work Directory. The picker opens at your
@@ -1416,7 +1527,7 @@ information, nor does it send any data to external servers.
 
   Signature in the backup
     Your signature image is stored inside the JSON file. On
-    restore, it is written to the app's internal storage and set
+    restore it is written to the app's internal storage and set
     as your current signature automatically.
 
 ───────────────────────────────────────────────────────────────────────

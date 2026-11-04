@@ -89,14 +89,14 @@ object PdfGenerator {
             SubCol("PIC") { l ->
                 if (l.position in setOf("PIC", "SPIC", "PICUS")) fmtDur(l.blockTimeTotal) else ""
             },
-            SubCol("Co-pilot") { l -> if (l.position == "SIC") fmtDur(l.blockTimeTotal) else "" },
+            SubCol("SIC") { l -> if (l.position == "SIC") fmtDur(l.blockTimeTotal) else "" },
             SubCol("Dual") { l -> if (l.position == "Dual") fmtDur(l.blockTimeTotal) else "" },
             SubCol("Instructor") { l -> if (l.position == "Instructor") fmtDur(l.blockTimeTotal) else "" }
         )),
         ColGroup("FSTD", listOf(SubCol("Total") { fmtDur(it.simulatorTime) })),
         ColGroup("Remarks", listOf(SubCol("", Align.LEFT) { leg ->
             val parts = mutableListOf<String>()
-            leg.comment?.takeIf { it.isNotBlank() }?.let { parts.add(it) }
+            leg.remarks?.takeIf { it.isNotBlank() }?.let { parts.add(it) }
             leg.jumpseat1?.takeIf { it.isNotBlank() }?.let { parts.add("J/S: $it") }
             parts.joinToString("\n")
         }))

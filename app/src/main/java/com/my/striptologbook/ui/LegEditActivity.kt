@@ -345,8 +345,8 @@ class LegEditActivity : BaseActivity() {
                 }
 
                 // Update legacy sunrise/sunset fields (UI only)
-                viewModel.updateSunriseTimeStr(newSunrise?.let { extractTimeOnly(it) } ?: "")
-                viewModel.updateSunsetTimeStr(newSunset?.let { extractTimeOnly(it) } ?: "")
+                viewModel.updateSunriseTime(newSunrise?.let { extractTimeOnly(it) } ?: "")
+                viewModel.updateSunsetTime(newSunset?.let { extractTimeOnly(it) } ?: "")
                 viewModel.updateSunriseTimestamp(newSunrise)
                 viewModel.updateSunsetTimestamp(newSunset)
 
@@ -474,7 +474,7 @@ class LegEditActivity : BaseActivity() {
             if (!hasFocus) {
                 val raw = etTakeoff.text.toString()
                 val normalized = normalizeTime(raw)
-                val currentStateValue = viewModel.state.value.takeoffTimeStr
+                val currentStateValue = viewModel.state.value.takeoffTime
 
                 if (normalized == "invalid") {
                     // Invalid input: revert, show warning, and regain focus
@@ -485,7 +485,7 @@ class LegEditActivity : BaseActivity() {
                     if (normalized != raw) {
                         etTakeoff.setText(normalized)
                     }
-                    viewModel.updateTakeoffTimeStr(normalized)
+                    viewModel.updateTakeoffTime(normalized)
 
                     markFieldAsWarning(etTakeoff, false)
 
@@ -503,7 +503,7 @@ class LegEditActivity : BaseActivity() {
             if (!hasFocus) {
                 val raw = etLanding.text.toString()
                 val normalized = normalizeTime(raw)
-                val currentStateValue = viewModel.state.value.landingTimeStr
+                val currentStateValue = viewModel.state.value.landingTime
 
                 if (normalized == "invalid") {
                     // Invalid input: revert, show warning, and regain focus
@@ -516,7 +516,7 @@ class LegEditActivity : BaseActivity() {
                     }
                     markFieldAsWarning(etLanding, false)
 
-                    viewModel.updateLandingTimeStr(normalized)
+                    viewModel.updateLandingTime(normalized)
 
                     viewModel.recalculateTimestamps()
                     viewModel.recalcBlockDuration()
@@ -562,7 +562,7 @@ class LegEditActivity : BaseActivity() {
                 Log.d("LegEditActivity_sun", "Sunrise lost focus, raw='${etSunrise.text}'")
                 val raw = etSunrise.text.toString()
                 val normalized = normalizeTime(raw)
-                val currentStateValue = viewModel.state.value.sunriseTimeStr
+                val currentStateValue = viewModel.state.value.sunriseTime
 
                 if (normalized == "invalid") {
                     etSunrise.setText(currentStateValue)
@@ -571,11 +571,11 @@ class LegEditActivity : BaseActivity() {
                     if (normalized != raw) {
                         etSunrise.setText(normalized)
                     }
-                    viewModel.updateSunriseTimeStr(normalized)
+                    viewModel.updateSunriseTime(normalized)
                     viewModel.clearSunData()
                     markFieldAsWarning(etSunrise, false)
                     viewModel.recalculateTimestamps()
-                    Log.d(TAG, "New state: sunrise=${viewModel.state.value.sunriseTimeStr}, sunset=${viewModel.state.value.sunsetTimeStr}")
+                    Log.d(TAG, "New state: sunrise=${viewModel.state.value.sunriseTime}, sunset=${viewModel.state.value.sunsetTime}")
 
                     viewModel.recalcBlockDuration()
                     viewModel.recalcFlightDuration()
@@ -603,7 +603,7 @@ class LegEditActivity : BaseActivity() {
                 Log.d("LegEditActivity_sun", "Sunset lost focus, raw='${etSunset.text}'")
                 val raw = etSunset.text.toString()
                 val normalized = normalizeTime(raw)
-                val currentStateValue = viewModel.state.value.sunsetTimeStr
+                val currentStateValue = viewModel.state.value.sunsetTime
 
                 if (normalized == "invalid") {
                     etSunset.setText(currentStateValue)
@@ -612,7 +612,7 @@ class LegEditActivity : BaseActivity() {
                     if (normalized != raw) {
                         etSunset.setText(normalized)
                     }
-                    viewModel.updateSunsetTimeStr(normalized)
+                    viewModel.updateSunsetTime(normalized)
                     viewModel.clearSunData()                    // ← ADD
                     markFieldAsWarning(etSunset, false)
                     viewModel.recalculateTimestamps()
@@ -650,8 +650,8 @@ class LegEditActivity : BaseActivity() {
             Log.d(TAG, "Airports: dep='$depAirport', arr='$arrAirport'")
 
             val state = viewModel.state.value
-            var depTime = state.takeoffTime ?: state.offBlock
-            var arrTime = state.landingTime ?: state.onBlock
+            var depTime = state.takeoff ?: state.offBlock
+            var arrTime = state.landing ?: state.onBlock
             Log.d(TAG, "Raw timestamps: dep=$depTime, arr=$arrTime")
 
             // Fill missing with fallback
@@ -960,9 +960,9 @@ class LegEditActivity : BaseActivity() {
         etComment.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val raw = etComment.text.toString()
-                val currentStateValue = viewModel.state.value.comment
+                val currentStateValue = viewModel.state.value.remarks
                 if (raw != currentStateValue) {
-                    viewModel.updateComment(raw)
+                    viewModel.updateRemarks(raw)
                 }
             }
         }
@@ -1127,7 +1127,7 @@ class LegEditActivity : BaseActivity() {
         cbSimulator.visibility = if (isEditing) View.VISIBLE else View.GONE
 
         // insApp-To-Ldg layout visibility
-        val isFlying = viewModel.state.value.pilotFlying ?: false
+        val isFlying = viewModel.state.value.isPilotFlying ?: false
         cbPilotFlying.visibility = if (isEditing) View.VISIBLE else View.GONE
         instAppLayout.visibility = if (isFlying) View.VISIBLE else View.GONE
         toLayout.visibility = if (isFlying) View.VISIBLE else View.GONE
@@ -1428,10 +1428,10 @@ class LegEditActivity : BaseActivity() {
                 // Time fields (update only if not focused)
                 setTextIfNotFocused(etOffBlock, state.offBlockTime)
                 setTextIfNotFocused(etOnBlock, state.onBlockTime)
-                setTextIfNotFocused(etTakeoff, state.takeoffTimeStr)
-                setTextIfNotFocused(etLanding, state.landingTimeStr)
-                setTextIfNotFocused(etSunrise, state.sunriseTimeStr)
-                setTextIfNotFocused(etSunset, state.sunsetTimeStr)
+                setTextIfNotFocused(etTakeoff, state.takeoffTime)
+                setTextIfNotFocused(etLanding, state.landingTime)
+                setTextIfNotFocused(etSunrise, state.sunriseTime)
+                setTextIfNotFocused(etSunset, state.sunsetTime)
 
                 // Duration fields (update only if not focused)
                 setTextIfNotFocused(etBlockTotal, state.blockTimeTotal)
@@ -1455,11 +1455,11 @@ class LegEditActivity : BaseActivity() {
                 setTextIfNotFocused(etLdgTotal, state.numberLdgTotal)
 
                 // Comment (update only if not focused)
-                setTextIfNotFocused(etComment, state.comment)
+                setTextIfNotFocused(etComment, state.remarks)
 
                 // Booleans
                 cbSimulator.isChecked = state.isSimulator ?: false
-                cbPilotFlying.isChecked = state.pilotFlying ?: false
+                cbPilotFlying.isChecked = state.isPilotFlying ?: false
                 cbIfr.isChecked = state.isIfr
 
                 // Delete button visibility
@@ -1487,23 +1487,7 @@ class LegEditActivity : BaseActivity() {
         if (dateMillis != -1L) {
             Log.d("LegEditActivity", "dateMillis: $dateMillis")
             viewModel.setOffBlockFromTimestamp(dateMillis)
-//            viewModel.setBaseDate(getDateAtMidnight(dateMillis))
         }
-
-//        getString("offBlockTime")?.let {
-//            Log.d("LegEditActivity", "offBlockTime: $it")
-//            viewModel.updateOffBlockTime(it)
-//        }
-
-//        getString("onBlockTime")?.let {
-//            Log.d("LegEditActivity", "onBlockTime: $it")
-//            viewModel.updateOnBlockTime(it)
-//        }
-
-//        val offBlockTime = getString("offBlockTime")
-//        if (!offBlockTime.isNullOrEmpty() && dateMillis != -1L) {
-//            viewModel.recalculateTimestamps()
-//        }
 
         getString("flightNumber")?.let {
             Log.d("LegEditActivity", "flightNumber: $it")
@@ -1566,8 +1550,8 @@ class LegEditActivity : BaseActivity() {
             viewModel.updatePosition(it)
         }
         getString("comment")?.let {
-            Log.d("LegEditActivity", "comment: $it")
-            viewModel.updateComment(it)
+            Log.d("LegEditActivity", "remarks: $it")
+            viewModel.updateRemarks(it)
         }
 
         // Sunrise/Sunset suggestions

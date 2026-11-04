@@ -24,7 +24,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="16dp" />
 
         <Button
             android:id="@+id/btn_work_directory"
@@ -46,7 +46,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="16dp" />
 
         <Button
             android:id="@+id/btn_export_import"
@@ -57,7 +57,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="16dp" />
 
         <Button
             android:id="@+id/btn_airports"
@@ -68,7 +68,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="16dp" />
 
         <Button
             android:id="@+id/btn_updates"
@@ -79,7 +79,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="16dp" />
 
         <Button
             android:id="@+id/btn_opening_balance"
@@ -90,7 +90,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="16dp" />
 
         <Button
             android:id="@+id/btn_preferences"
@@ -99,5 +99,16 @@
             android:layout_height="wrap_content"
             android:text="Preferences" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <Button
+            android:id="@+id/btn_export_format"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Export format" />
+        
     </LinearLayout>
 </LinearLayout>

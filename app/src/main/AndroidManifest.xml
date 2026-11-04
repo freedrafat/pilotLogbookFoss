@@ -31,6 +31,16 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.SettingsExportFormatActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.SettingsActivity" />
+
+        <activity
+            android:name=".ui.CsvFormatActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.SettingsExportFormatActivity" />
+
+        <activity
             android:name=".ui.ManualActivity"
             android:exported="false" />
 
@@ -83,7 +93,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.PdfFormatActivity"
-            android:parentActivityName=".ui.ExportImportActivity" />
+            android:parentActivityName=".ui.SettingsExportFormatActivity" />
         <activity
             android:name=".ui.PreferencesActivity"
             android:exported="false" />
