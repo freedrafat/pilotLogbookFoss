@@ -34,13 +34,10 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.TimeZone
 
-import android.net.Uri
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import com.my.striptologbook.utils.ExportRangeDialogHelper
-import com.my.striptologbook.utils.FileManager
-import com.my.striptologbook.utils.WorkDirectoryState
+import com.my.striptologbook.utils.WorkDirGateFlow
 
 class LegListActivity : BaseActivity() {
 
@@ -58,36 +55,13 @@ class LegListActivity : BaseActivity() {
     private lateinit var btnExport: ImageButton
     private lateinit var exportViewModel: ExportImportViewModel
     private var currentLegs: List<Leg> = emptyList()
-    private var pendingExport: PendingExport? = null
-
     private var searchQuery: String? = null
     private var isSearchMode = false
     private var customStart: Long? = null
     private var customEnd: Long? = null
-
+    private lateinit var workDirGate: WorkDirGateFlow
     private var toolbarTitle: String? = "Legs List"
     private var toolbarSearchTitle: String? = "Search Results"
-
-    private enum class PendingExport { ALL_PDF, FILTERED_PDF, ALL_CSV, FILTERED_CSV }
-
-    private val workDirPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
-    ) { uri: Uri? ->
-        val action = pendingExport
-        pendingExport = null
-        if (uri == null || action == null) return@registerForActivityResult
-        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
-            Toast.makeText(this,
-                "Failed to persist permission. Please try again.",
-                Toast.LENGTH_LONG).show()
-            return@registerForActivityResult
-        }
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            is WorkDirectoryState.Ready -> dispatchPendingExport(action, state.folder)
-            else -> Toast.makeText(this, "Work directory not available.",
-                Toast.LENGTH_LONG).show()
-        }
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,13 +77,6 @@ class LegListActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = if (isSearchMode) toolbarSearchTitle else toolbarTitle
-
-        // plus button click listener
-//        val btnAddLeg: ImageButton = findViewById(R.id.btn_add_leg)
-//        btnAddLeg.setOnClickListener {
-//            startActivity(Intent(this, LegEditActivity::class.java))
-//        }
-
 
         ViewCompat.setOnApplyWindowInsetsListener(spacer) { view, insets ->
             val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
@@ -152,6 +119,8 @@ class LegListActivity : BaseActivity() {
         val factory = LegListViewModelFactory(app.repository)
         viewModel = ViewModelProvider(this, factory)[LegViewModel::class.java]
         exportViewModel = ExportImportViewModel(app.repository)
+
+        workDirGate = WorkDirGateFlow(this)
 
         // Intent extras
         searchQuery = intent.getStringExtra("searchQuery")
@@ -593,45 +562,17 @@ class LegListActivity : BaseActivity() {
 
     private fun exportPdf() {
         val isAllMode = !isSearchMode && viewModel.currentFilter.value == FilterType.ALL
-        ensureWorkDirThenExport(
-            if (isAllMode) PendingExport.ALL_PDF else PendingExport.FILTERED_PDF
-        )
+        if (isAllMode) {
+            workDirGate.runOrPick { folder -> doExportAllPdf(folder) }
+        } else {
+            workDirGate.runOrPick { folder -> doExportFilteredPdf(folder) }
+        }
     }
 
     private fun exportCsv() {
         val isAllMode = !isSearchMode && viewModel.currentFilter.value == FilterType.ALL
-        ensureWorkDirThenExport(
-            if (isAllMode) PendingExport.ALL_CSV else PendingExport.FILTERED_CSV
-        )
-    }
-
-    private fun ensureWorkDirThenExport(action: PendingExport) {
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            WorkDirectoryState.NotSet -> {
-                Toast.makeText(this,
-                    "Please select a work directory first",
-                    Toast.LENGTH_SHORT).show()
-                pendingExport = action
-                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-            WorkDirectoryState.Invalid -> {
-                PreferencesManager.getInstance(this).setBackupFolderUri(null)
-                Toast.makeText(this,
-                    "Work directory unavailable. Please select it again.",
-                    Toast.LENGTH_LONG).show()
-                pendingExport = action
-                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-            is WorkDirectoryState.Ready -> dispatchPendingExport(action, state.folder)
-        }
-    }
-
-    private fun dispatchPendingExport(action: PendingExport, folder: DocumentFile) {
-        when (action) {
-            PendingExport.ALL_PDF -> doExportAllPdf(folder)
-            PendingExport.FILTERED_PDF -> doExportFilteredPdf(folder)
-            PendingExport.ALL_CSV -> doExportCsv(folder, useFilteredName = false)
-            PendingExport.FILTERED_CSV -> doExportCsv(folder, useFilteredName = true)
+        workDirGate.runOrPick { folder ->
+            doExportCsv(folder, useFilteredName = !isAllMode)
         }
     }
 

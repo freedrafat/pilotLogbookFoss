@@ -1,6 +1,5 @@
 package com.my.striptologbook.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -8,25 +7,24 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.UpdateCheckResult
 import com.my.striptologbook.utils.UpdateChecker
 import com.my.striptologbook.utils.UpdateDownloader
 import com.my.striptologbook.utils.UpdateInfo
-import com.my.striptologbook.utils.WorkDirectoryState
 import com.my.striptologbook.utils.formatDateUtc
 import kotlinx.coroutines.launch
 
 import androidx.documentfile.provider.DocumentFile
 import com.my.striptologbook.utils.VerifiedBackupFlow
+import com.my.striptologbook.utils.WorkDirGateFlow
+import com.my.striptologbook.utils.WorkDirGateFlow.FailureReason
 
 class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
@@ -45,39 +43,7 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
     private var pendingUpdateInfo: UpdateInfo? = null
     private var autoTriggered: Boolean = false
-    private var pendingAction: Boolean = false
-
-    // Folder picker for backup (if no folder set)
-    private val folderPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
-    ) { uri: Uri? ->
-        val action = pendingAction
-        pendingAction = false
-        if (uri == null || !action) {
-            pendingUpdateInfo = null
-            Toast.makeText(this, "Update cancelled", Toast.LENGTH_SHORT).show()
-            btnCheckUpdate.isEnabled = true
-            return@registerForActivityResult
-        }
-        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
-            Toast.makeText(
-                this,
-                "Failed to persist permission. Please try again.",
-                Toast.LENGTH_LONG
-            ).show()
-            pendingUpdateInfo = null
-            btnCheckUpdate.isEnabled = true
-            return@registerForActivityResult
-        }
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            is WorkDirectoryState.Ready -> doBackupThenUpdate(state.folder)
-            else -> {
-                Toast.makeText(this, "Work directory not available.", Toast.LENGTH_LONG).show()
-                pendingUpdateInfo = null
-                btnCheckUpdate.isEnabled = true
-            }
-        }
-    }
+    private lateinit var workDirGate: WorkDirGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +71,8 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
         txtAppVersion.text = "App version: ${getAppVersionName()}"
 
+        workDirGate = WorkDirGateFlow(this)
+
         val prefs = PreferencesManager.getInstance(this)
 
         // ----- Automatic check for updates (master) -----
@@ -122,6 +90,7 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
         updateCheckEveryStartEnabledState()
         refreshLastCheckDate()
+
 
         btnCheckUpdate.setOnClickListener { runManualCheck() }
 
@@ -198,28 +167,20 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
     // ------------------------------------------------------------------------
 
     private fun performBackupAndUpdate() {
-        ensureWorkDirectoryThen { folder -> doBackupThenUpdate(folder) }
-    }
-
-    private fun ensureWorkDirectoryThen(onReady: (DocumentFile) -> Unit) {
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            WorkDirectoryState.NotSet -> {
-                Toast.makeText(this, "Please select a backup folder first", Toast.LENGTH_LONG).show()
-                pendingAction = true
-                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+        workDirGate.runOrPick(
+            onReady = { folder -> doBackupThenUpdate(folder) },
+            onError = { reason ->
+                pendingUpdateInfo = null
+                btnCheckUpdate.isEnabled = true
+                if (reason == FailureReason.CANCELLED) {
+                    Toast.makeText(
+                        this,
+                        "Update cancelled",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-            WorkDirectoryState.Invalid -> {
-                PreferencesManager.getInstance(this).setBackupFolderUri(null)
-                Toast.makeText(
-                    this,
-                    "Backup folder unavailable. Please select it again.",
-                    Toast.LENGTH_LONG
-                ).show()
-                pendingAction = true
-                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-            is WorkDirectoryState.Ready -> onReady(state.folder)
-        }
+        )
     }
 
     private fun doBackupThenUpdate(folder: DocumentFile) {

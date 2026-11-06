@@ -48,7 +48,7 @@
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Preferences" />
+                android:text="Appli. Preferences" />
 
 
             <Space
@@ -61,6 +61,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="PDF/csv export format" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <Button
+                android:id="@+id/btn_settings_backup"
+                style="@style/PrimaryButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Backup / Restore Settings" />
 
             <Space
                 android:layout_width="match_parent"
@@ -100,6 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="App. Update" />
+
 
     </LinearLayout>
 

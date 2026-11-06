@@ -1,38 +1,22 @@
 package com.my.striptologbook.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import com.my.striptologbook.R
 import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
+import com.my.striptologbook.utils.WorkDirGateFlow
 
 class SettingsActivity : BaseActivity() {
 
     private lateinit var txtWorkDirectory: TextView
 
-    private val workDirectoryPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            if (FileManager.persistWorkDirectoryPermission(this, uri)) {
-                Toast.makeText(this, "Work directory set successfully", Toast.LENGTH_SHORT).show()
-                refreshWorkDirectoryDisplay()
-            } else {
-                Toast.makeText(
-                    this,
-                    "Failed to persist permission. Please try again.",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
+    private lateinit var workDirGate: WorkDirGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +34,18 @@ class SettingsActivity : BaseActivity() {
         txtWorkDirectory = findViewById(R.id.txt_work_directory)
         refreshWorkDirectoryDisplay()
 
+        workDirGate = WorkDirGateFlow(this)
+
         // --- Button listeners ---
 
+        findViewById<Button>(R.id.btn_settings_backup).setOnClickListener {
+            startActivity(Intent(this, SettingsBackupActivity::class.java))
+        }
         findViewById<Button>(R.id.btn_work_directory).setOnClickListener {
-            workDirectoryPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+            workDirGate.pickFolder { _ ->
+                Toast.makeText(this, "Work directory set successfully", Toast.LENGTH_SHORT).show()
+                refreshWorkDirectoryDisplay()
+            }
         }
         findViewById<Button>(R.id.btn_preferences).setOnClickListener {
             startActivity(Intent(this, PreferencesActivity::class.java))

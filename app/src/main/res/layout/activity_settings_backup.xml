@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
 
     <include layout="@layout/view_app_toolbar" />
 
@@ -53,18 +54,18 @@
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Save Settings (JSON)" />
+                android:text="Export Settings (JSON)" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="16dp" />
+                android:layout_height="32dp" />
 
             <Button
                 android:id="@+id/btn_restore_settings"
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Restore Settings (JSON)" />
+                android:text="Import Settings (JSON)" />
 
             <Space
                 android:layout_width="match_parent"

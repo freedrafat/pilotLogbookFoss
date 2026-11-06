@@ -16,46 +16,19 @@ import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.R
 import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
-import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.SettingsBackupManager
-import com.my.striptologbook.utils.WorkDirectoryState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 import com.my.striptologbook.utils.OpenFileIntentFactory
+import com.my.striptologbook.utils.WorkDirGateFlow
 
 class SettingsBackupActivity : BaseActivity() {
 
-    private enum class PendingAction { SAVE, RESTORE }
-
     private lateinit var txtWorkDirectory: TextView
-    private var pendingAction: PendingAction? = null
 
-    private val workDirPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
-    ) { uri: Uri? ->
-        val action = pendingAction
-        pendingAction = null
-        if (uri == null || action == null) return@registerForActivityResult
-        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
-            Toast.makeText(
-                this,
-                "Failed to persist permission. Please try again.",
-                Toast.LENGTH_LONG
-            ).show()
-            return@registerForActivityResult
-        }
-        refreshWorkDirectoryDisplay()
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            is WorkDirectoryState.Ready -> when (action) {
-                PendingAction.SAVE -> doSave(state.folder)
-                PendingAction.RESTORE -> doRestore(state.folder)
-            }
-
-            else -> Toast.makeText(this, "Work directory not available.", Toast.LENGTH_LONG).show()
-        }
-    }
+    private lateinit var workDirGate: WorkDirGateFlow
 
     private val externalRestoreLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -92,9 +65,10 @@ class SettingsBackupActivity : BaseActivity() {
 
         txtWorkDirectory = findViewById(R.id.txt_work_directory)
         refreshWorkDirectoryDisplay()
+        workDirGate = WorkDirGateFlow(this)
 
         findViewById<Button>(R.id.btn_save_settings).setOnClickListener {
-            ensureWorkDirectoryThen(PendingAction.SAVE) { folder -> doSave(folder) }
+            workDirGate.runOrPick { folder -> doSave(folder) }
         }
         findViewById<Button>(R.id.btn_restore_settings).setOnClickListener {
             showRestoreConfirmDialog()
@@ -108,30 +82,6 @@ class SettingsBackupActivity : BaseActivity() {
 
     private fun refreshWorkDirectoryDisplay() {
         txtWorkDirectory.text = "Work directory: ${FileManager.workDirectoryDisplayName(this)}"
-    }
-
-    private fun ensureWorkDirectoryThen(action: PendingAction, onReady: (DocumentFile) -> Unit) {
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            WorkDirectoryState.NotSet -> {
-                Toast.makeText(this, "Please select a work directory first", Toast.LENGTH_SHORT)
-                    .show()
-                pendingAction = action
-                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-
-            WorkDirectoryState.Invalid -> {
-                PreferencesManager.getInstance(this).setBackupFolderUri(null)
-                Toast.makeText(
-                    this,
-                    "Work directory unavailable. Please select it again.",
-                    Toast.LENGTH_LONG
-                ).show()
-                pendingAction = action
-                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-
-            is WorkDirectoryState.Ready -> onReady(state.folder)
-        }
     }
 
     private fun doSave(folder: DocumentFile) {
@@ -168,7 +118,7 @@ class SettingsBackupActivity : BaseActivity() {
             .setTitle("Confirm Restore")
             .setMessage("This will replace your current settings with the backup. Continue?")
             .setPositiveButton("Continue") { _, _ ->
-                ensureWorkDirectoryThen(PendingAction.RESTORE) { folder -> doRestore(folder) }
+                workDirGate.runOrPick { folder -> doRestore(folder) }
             }
             .setNegativeButton("Cancel", null)
             .show()

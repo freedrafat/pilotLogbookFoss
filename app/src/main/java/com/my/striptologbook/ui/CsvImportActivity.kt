@@ -15,16 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
-import com.my.striptologbook.utils.PreferencesManager
-import com.my.striptologbook.utils.WorkDirectoryState
 import kotlinx.coroutines.launch
 
-import  android.net.Uri
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import com.my.striptologbook.utils.VerifiedBackupFlow
+import com.my.striptologbook.utils.WorkDirGateFlow
 
 
 class CsvImportActivity : BaseActivity() {
@@ -38,37 +34,7 @@ class CsvImportActivity : BaseActivity() {
     private lateinit var rvMappings: RecyclerView
     private lateinit var btnImport: Button
     private lateinit var btnCancel: Button
-
-
-    private var pendingAction: Boolean = false
-
-    private val workDirPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
-    ) { uri: Uri? ->
-        val action = pendingAction
-        pendingAction = false
-        if (uri == null || !action) {
-            btnImport.isEnabled = true
-            return@registerForActivityResult
-        }
-        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
-            Toast.makeText(
-                this,
-                "Failed to persist permission. Please try again.",
-                Toast.LENGTH_LONG
-            ).show()
-            btnImport.isEnabled = true
-            return@registerForActivityResult
-        }
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            is WorkDirectoryState.Ready -> doBackupThenImport(state.folder)
-            else -> {
-                Toast.makeText(this, "Work directory not available.", Toast.LENGTH_LONG).show()
-                btnImport.isEnabled = true
-            }
-        }
-    }
-
+    private lateinit var workDirGate: WorkDirGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +73,7 @@ class CsvImportActivity : BaseActivity() {
             }
         )
         rvMappings.adapter = adapter
+        workDirGate = WorkDirGateFlow(this)
 
         // Get ViewModel
         val app = application as LogbookApplication
@@ -230,7 +197,10 @@ class CsvImportActivity : BaseActivity() {
             .setTitle("Confirm Import")
             .setMessage("Legs database will be altered. Continue?")
             .setPositiveButton("Continue") { _, _ ->
-                ensureWorkDirectoryThen { folder -> doBackupThenImport(folder) }
+                workDirGate.runOrPick(
+                    onReady = { folder -> doBackupThenImport(folder) },
+                    onError = { btnImport.isEnabled = true }
+                )
             }
             .setNegativeButton("Cancel") { _, _ ->
                 btnImport.isEnabled = true
@@ -239,27 +209,6 @@ class CsvImportActivity : BaseActivity() {
                 btnImport.isEnabled = true
             }
             .show()
-    }
-
-    private fun ensureWorkDirectoryThen(onReady: (DocumentFile) -> Unit) {
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            WorkDirectoryState.NotSet -> {
-                Toast.makeText(this, "Please select a work directory first", Toast.LENGTH_SHORT).show()
-                pendingAction = true
-                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-            WorkDirectoryState.Invalid -> {
-                PreferencesManager.getInstance(this).setBackupFolderUri(null)
-                Toast.makeText(
-                    this,
-                    "Work directory unavailable. Please select it again.",
-                    Toast.LENGTH_LONG
-                ).show()
-                pendingAction = true
-                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-            is WorkDirectoryState.Ready -> onReady(state.folder)
-        }
     }
 
     private fun doBackupThenImport(folder: DocumentFile) {
