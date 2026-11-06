@@ -179,29 +179,29 @@ class LegListActivity : BaseActivity() {
         btnStatistics.setOnClickListener { showStatisticsDialog() }
 
         // Observe ViewModel
-        lifecycleScope.launch {
-            exportViewModel.result.collect { result ->
-                when (result) {
-                    is ExportImportResult.Success -> {
-                        Toast.makeText(
-                            this@LegListActivity,
-                            "Operation completed successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        exportViewModel.consumeResult()
-                    }
-                    is ExportImportResult.Error -> {
-                        Toast.makeText(
-                            this@LegListActivity,
-                            result.message,
-                            Toast.LENGTH_LONG
-                        ).show()
-                        exportViewModel.consumeResult()
-                    }
-                    null -> {}
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            exportViewModel.result.collect { result ->
+//                when (result) {
+//                    is ExportImportResult.Success -> {
+//                        Toast.makeText(
+//                            this@LegListActivity,
+//                            "Operation completed successfully",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                        exportViewModel.consumeResult()
+//                    }
+//                    is ExportImportResult.Error -> {
+//                        Toast.makeText(
+//                            this@LegListActivity,
+//                            result.message,
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                        exportViewModel.consumeResult()
+//                    }
+//                    null -> {}
+//                }
+//            }
+//        }
 
         lifecycleScope.launch {
             viewModel.legs.collectLatest { allLegs ->
@@ -637,15 +637,18 @@ class LegListActivity : BaseActivity() {
 
     private fun doExportAllPdf(folder: DocumentFile) {
         ExportRangeDialogHelper.show(this) { range, rows, owner, sig, cfg ->
-            exportViewModel.exportPdfToFolder(
-                contentResolver = contentResolver,
-                folder = folder,
-                range = range,
-                rowsPerPage = rows,
-                ownerName = owner,
-                signature = sig,
-                config = cfg
-            )
+            lifecycleScope.launch {
+                val r = exportViewModel.exportPdfToFolder(
+                    contentResolver = contentResolver,
+                    folder = folder,
+                    range = range,
+                    rowsPerPage = rows,
+                    ownerName = owner,
+                    signature = sig,
+                    config = cfg
+                )
+                toastResult(r)
+            }
         }
     }
 
@@ -656,26 +659,32 @@ class LegListActivity : BaseActivity() {
             computeFilterRangeLabel(viewModel.currentFilter.value)
         }
         val prefs = PreferencesManager.getInstance(this)
-        exportViewModel.exportPdfFiltered(
-            contentResolver = contentResolver,
-            folder = folder,
-            legs = currentLegs,
-            ownerName = prefs.getPdfOwnerName(),
-            headerRightLabel = headerRightLabel,
-            rowsPerPage = prefs.getPdfRowsPerPage(),
-            config = prefs.getPdfLayoutConfig()
-        )
+        lifecycleScope.launch {
+            val r = exportViewModel.exportPdfFiltered(
+                contentResolver = contentResolver,
+                folder = folder,
+                legs = currentLegs,
+                ownerName = prefs.getPdfOwnerName(),
+                headerRightLabel = headerRightLabel,
+                rowsPerPage = prefs.getPdfRowsPerPage(),
+                config = prefs.getPdfLayoutConfig()
+            )
+            toastResult(r)
+        }
     }
 
     private fun doExportCsv(folder: DocumentFile, useFilteredName: Boolean) {
         val config = PreferencesManager.getInstance(this).getCsvExportFormat()
-        exportViewModel.exportCsvLegList(
-            contentResolver = contentResolver,
-            folder = folder,
-            legs = currentLegs,
-            config = config,
-            useFilteredName = useFilteredName
-        )
+        lifecycleScope.launch {
+            val r = exportViewModel.exportCsvLegList(
+                contentResolver = contentResolver,
+                folder = folder,
+                legs = currentLegs,
+                config = config,
+                useFilteredName = useFilteredName
+            )
+            toastResult(r)
+        }
     }
 
     private fun computeFilterRangeLabel(filter: FilterType): String {
@@ -705,4 +714,20 @@ class LegListActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun toastResult(result: ExportImportResult) {
+        when (result) {
+            is ExportImportResult.Success -> Toast.makeText(
+                this,
+                "Operation completed successfully",
+                Toast.LENGTH_SHORT
+            ).show()
+            is ExportImportResult.Error -> Toast.makeText(
+                this,
+                result.message,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
 }

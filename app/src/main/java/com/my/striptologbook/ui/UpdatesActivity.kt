@@ -2,7 +2,6 @@ package com.my.striptologbook.ui
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -15,7 +14,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.BackupManager
 import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
@@ -25,9 +23,10 @@ import com.my.striptologbook.utils.UpdateDownloader
 import com.my.striptologbook.utils.UpdateInfo
 import com.my.striptologbook.utils.WorkDirectoryState
 import com.my.striptologbook.utils.formatDateUtc
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
+import androidx.documentfile.provider.DocumentFile
+import com.my.striptologbook.utils.VerifiedBackupFlow
 
 class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
@@ -46,30 +45,37 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
     private var pendingUpdateInfo: UpdateInfo? = null
     private var autoTriggered: Boolean = false
+    private var pendingAction: Boolean = false
 
     // Folder picker for backup (if no folder set)
     private val folderPickerLauncher = registerForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
     ) { uri: Uri? ->
-        if (uri != null) {
-            if (FileManager.persistWorkDirectoryPermission(this, uri)) {
-                Toast.makeText(this, "Backup folder set successfully", Toast.LENGTH_SHORT).show()
-                lifecycleScope.launch {
-                    performBackupAndUpdate()
-                }
-            } else {
-                Toast.makeText(
-                    this,
-                    "Failed to persist permission. Please try again.",
-                    Toast.LENGTH_LONG
-                ).show()
-                pendingUpdateInfo = null
-                btnCheckUpdate.isEnabled = true
-            }
-        } else {
+        val action = pendingAction
+        pendingAction = false
+        if (uri == null || !action) {
             pendingUpdateInfo = null
             Toast.makeText(this, "Update cancelled", Toast.LENGTH_SHORT).show()
             btnCheckUpdate.isEnabled = true
+            return@registerForActivityResult
+        }
+        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
+            Toast.makeText(
+                this,
+                "Failed to persist permission. Please try again.",
+                Toast.LENGTH_LONG
+            ).show()
+            pendingUpdateInfo = null
+            btnCheckUpdate.isEnabled = true
+            return@registerForActivityResult
+        }
+        when (val state = FileManager.resolveWorkDirectory(this)) {
+            is WorkDirectoryState.Ready -> doBackupThenUpdate(state.folder)
+            else -> {
+                Toast.makeText(this, "Work directory not available.", Toast.LENGTH_LONG).show()
+                pendingUpdateInfo = null
+                btnCheckUpdate.isEnabled = true
+            }
         }
     }
 
@@ -191,100 +197,70 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
     // Backup + update flow
     // ------------------------------------------------------------------------
 
-    private suspend fun performBackupAndUpdate() {
-        val prefs = PreferencesManager.getInstance(this)
+    private fun performBackupAndUpdate() {
+        ensureWorkDirectoryThen { folder -> doBackupThenUpdate(folder) }
+    }
 
-        val folder = when (val state = FileManager.resolveWorkDirectory(this)) {
+    private fun ensureWorkDirectoryThen(onReady: (DocumentFile) -> Unit) {
+        when (val state = FileManager.resolveWorkDirectory(this)) {
             WorkDirectoryState.NotSet -> {
-                Toast.makeText(this, "Please select a backup folder first", Toast.LENGTH_LONG)
-                    .show()
+                Toast.makeText(this, "Please select a backup folder first", Toast.LENGTH_LONG).show()
+                pendingAction = true
                 folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-                return
             }
-
             WorkDirectoryState.Invalid -> {
-                prefs.setBackupFolderUri(null)
+                PreferencesManager.getInstance(this).setBackupFolderUri(null)
                 Toast.makeText(
                     this,
                     "Backup folder unavailable. Please select it again.",
                     Toast.LENGTH_LONG
                 ).show()
+                pendingAction = true
                 folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-                return
             }
-
-            is WorkDirectoryState.Ready -> state.folder
+            is WorkDirectoryState.Ready -> onReady(state.folder)
         }
+    }
 
-        try {
-            val repository = (application as LogbookApplication).repository
-            val legs = repository.getAllLegsList()
-            val openingBalance = repository.getAllOpeningBalancesList()
-
-            val result = withContext(Dispatchers.IO) {
-                BackupManager.createVerifiedBackup(
-                    legs = legs,
-                    openingBalance = openingBalance,
-                    folder = folder,
-                    contentResolver = contentResolver
-                )
+    private fun doBackupThenUpdate(folder: DocumentFile) {
+        lifecycleScope.launch {
+            val ok = VerifiedBackupFlow.backupThenProceed(
+                activity = this@UpdatesActivity,
+                scope = lifecycleScope,
+                repository = (application as LogbookApplication).repository,
+                folder = folder,
+                contentResolver = contentResolver
+            )
+            if (!ok) {
+                pendingUpdateInfo = null
+                btnCheckUpdate.isEnabled = true
+                Toast.makeText(this@UpdatesActivity, "Update cancelled", Toast.LENGTH_SHORT).show()
+                return@launch
             }
-
-            when (result) {
-                is BackupManager.BackupResult.Verified -> {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        BackupManager.cleanupOldBackups(folder)
-                    }
-
-                    val updateInfo = pendingUpdateInfo
-                    if (updateInfo == null) {
-                        btnCheckUpdate.isEnabled = true
-                        return
-                    }
-
-                    if (autoTriggered) {
-                        // User already accepted on Home — enqueue now.
-                        val id = UpdateDownloader.enqueue(
-                            this@UpdatesActivity,
-                            updateInfo.apkUrl,
-                            updateInfo.fileName
-                        )
-                        if (id == null) {
-                            Toast.makeText(
-                                this@UpdatesActivity,
-                                "Could not start the download. Please try again.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                        pendingUpdateInfo = null
-                        btnCheckUpdate.isEnabled = true
-                    } else {
-                        // Manual flow: show the confirmation dialog.
-                        pendingUpdateInfo = null
-                        showUpdateAvailableDialog(updateInfo)
-                        // Button re-enabled by the fragment's callbacks
-                    }
-                }
-
-                is BackupManager.BackupResult.Failed -> {
+            val updateInfo = pendingUpdateInfo
+            if (updateInfo == null) {
+                btnCheckUpdate.isEnabled = true
+                return@launch
+            }
+            if (autoTriggered) {
+                val id = UpdateDownloader.enqueue(
+                    this@UpdatesActivity,
+                    updateInfo.apkUrl,
+                    updateInfo.fileName
+                )
+                if (id == null) {
                     Toast.makeText(
-                        this,
-                        "Backup failed: ${result.reason}",
+                        this@UpdatesActivity,
+                        "Could not start the download. Please try again.",
                         Toast.LENGTH_LONG
                     ).show()
-                    pendingUpdateInfo = null
-                    btnCheckUpdate.isEnabled = true
                 }
+                pendingUpdateInfo = null
+                btnCheckUpdate.isEnabled = true
+            } else {
+                pendingUpdateInfo = null
+                showUpdateAvailableDialog(updateInfo)
             }
-        } catch (e: Exception) {
-            Log.e("UpdatesActivity", "Backup failed", e)
-            Toast.makeText(
-                this,
-                "Backup failed: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
-            pendingUpdateInfo = null
-            btnCheckUpdate.isEnabled = true
         }
     }
 

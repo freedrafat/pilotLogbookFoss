@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
-import com.my.striptologbook.utils.BackupManager
 import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
 import com.my.striptologbook.utils.WorkDirectoryState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
+import  android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.documentfile.provider.DocumentFile
+import com.my.striptologbook.utils.VerifiedBackupFlow
+
 
 class CsvImportActivity : BaseActivity() {
 
@@ -35,6 +38,37 @@ class CsvImportActivity : BaseActivity() {
     private lateinit var rvMappings: RecyclerView
     private lateinit var btnImport: Button
     private lateinit var btnCancel: Button
+
+
+    private var pendingAction: Boolean = false
+
+    private val workDirPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { uri: Uri? ->
+        val action = pendingAction
+        pendingAction = false
+        if (uri == null || !action) {
+            btnImport.isEnabled = true
+            return@registerForActivityResult
+        }
+        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
+            Toast.makeText(
+                this,
+                "Failed to persist permission. Please try again.",
+                Toast.LENGTH_LONG
+            ).show()
+            btnImport.isEnabled = true
+            return@registerForActivityResult
+        }
+        when (val state = FileManager.resolveWorkDirectory(this)) {
+            is WorkDirectoryState.Ready -> doBackupThenImport(state.folder)
+            else -> {
+                Toast.makeText(this, "Work directory not available.", Toast.LENGTH_LONG).show()
+                btnImport.isEnabled = true
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -192,70 +226,58 @@ class CsvImportActivity : BaseActivity() {
 
     private fun performBackupThenImport() {
         btnImport.isEnabled = false
-
-        val prefs = PreferencesManager.getInstance(this)
-
-        val folder = when (val state = FileManager.resolveWorkDirectory(this)) {
-            WorkDirectoryState.NotSet -> {
-                Toast.makeText(this, "Please set a backup folder first", Toast.LENGTH_LONG).show()
-                btnImport.isEnabled = true
-                return
+        AlertDialog.Builder(this)
+            .setTitle("Confirm Import")
+            .setMessage("Legs database will be altered. Continue?")
+            .setPositiveButton("Continue") { _, _ ->
+                ensureWorkDirectoryThen { folder -> doBackupThenImport(folder) }
             }
+            .setNegativeButton("Cancel") { _, _ ->
+                btnImport.isEnabled = true
+            }
+            .setOnCancelListener {
+                btnImport.isEnabled = true
+            }
+            .show()
+    }
 
+    private fun ensureWorkDirectoryThen(onReady: (DocumentFile) -> Unit) {
+        when (val state = FileManager.resolveWorkDirectory(this)) {
+            WorkDirectoryState.NotSet -> {
+                Toast.makeText(this, "Please select a work directory first", Toast.LENGTH_SHORT).show()
+                pendingAction = true
+                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
+            }
             WorkDirectoryState.Invalid -> {
-                prefs.setBackupFolderUri(null)
+                PreferencesManager.getInstance(this).setBackupFolderUri(null)
                 Toast.makeText(
                     this,
-                    "Backup folder unavailable. Please set it again.",
+                    "Work directory unavailable. Please select it again.",
                     Toast.LENGTH_LONG
                 ).show()
-                btnImport.isEnabled = true
-                return
+                pendingAction = true
+                workDirPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
             }
-
-            is WorkDirectoryState.Ready -> state.folder
+            is WorkDirectoryState.Ready -> onReady(state.folder)
         }
+    }
 
+    private fun doBackupThenImport(folder: DocumentFile) {
         lifecycleScope.launch {
-            try {
-                val repository = (application as LogbookApplication).repository
-                val legs = repository.getAllLegsList()
-                val openingBalance = repository.getAllOpeningBalancesList()
-
-                val result = withContext(Dispatchers.IO) {
-                    BackupManager.createVerifiedBackup(
-                        legs = legs,
-                        openingBalance = openingBalance,
-                        folder = folder,
-                        contentResolver = contentResolver
-                    )
-                }
-
-                when (result) {
-                    is BackupManager.BackupResult.Verified -> {
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            BackupManager.cleanupOldBackups(folder)
-                        }
-                        viewModel.performImport()
-                    }
-                    is BackupManager.BackupResult.Failed -> {
-                        Toast.makeText(
-                            this@CsvImportActivity,
-                            "Backup failed: ${result.reason}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        btnImport.isEnabled = true
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Backup before import failed", e)
-                Toast.makeText(
-                    this@CsvImportActivity,
-                    "Backup failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+            val ok = VerifiedBackupFlow.backupThenProceed(
+                activity = this@CsvImportActivity,
+                scope = lifecycleScope,
+                repository = (application as LogbookApplication).repository,
+                folder = folder,
+                contentResolver = contentResolver
+            )
+            if (ok) {
+                viewModel.performImport()
+            } else {
                 btnImport.isEnabled = true
             }
         }
     }
+
+
 }

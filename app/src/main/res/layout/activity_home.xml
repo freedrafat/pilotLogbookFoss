@@ -2,22 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
 
     <!-- Toolbar -->
     <include layout="@layout/view_app_toolbar" />
 
-
+    <!-- Header Section -->
     <LinearLayout
         android:id="@+id/card_block_summary"
         style="@style/Card.Surface"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            style="@style/Card.Surface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="18dp">
 
             <!-- Line 1: Owner -->
             <LinearLayout
@@ -169,6 +171,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         style="@style/Card.Surface"
         android:layout_width="match_parent"
@@ -196,29 +199,6 @@
             android:layout_height="wrap_content"
             android:text="Add New Leg" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
-
-        <Button
-            android:id="@+id/btn_flight_sun"
-            style="@style/SecondaryButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Flight Sun Events" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
-        <Button
-            android:id="@+id/btn_settings"
-            style="@style/SecondaryButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Settings" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -230,15 +210,37 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/btn_tools"
+            style="@style/PrimaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tools" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        style="@style/Card.Surface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_settings"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings" />
+
+        <Button
             android:id="@+id/btn_user_manual"
             style="@style/PrimaryButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="User Manual" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="8dp" />
 
         <TextView
             android:id="@+id/txtAppVersion"
@@ -249,7 +251,4 @@
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
 </LinearLayout>

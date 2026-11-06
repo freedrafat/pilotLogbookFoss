@@ -2,13 +2,13 @@ package com.my.striptologbook.ui
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
@@ -16,53 +16,28 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
 import com.my.striptologbook.R
+import com.my.striptologbook.data.CsvExportFormat
+import com.my.striptologbook.data.CsvFormatType
 import com.my.striptologbook.utils.BackupManager
 import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
-import com.my.striptologbook.utils.PreferencesManager
-import com.my.striptologbook.utils.WorkDirectoryState
+import com.my.striptologbook.utils.OpenFileIntentFactory
+import com.my.striptologbook.utils.VerifiedBackupFlow
+import com.my.striptologbook.utils.WorkDirGateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class BackupActivity : BaseActivity() {
 
-    private enum class PendingAction { BACKUP, RESTORE }
-
     private lateinit var viewModel: ExportImportViewModel
-
-    private var pendingAction: PendingAction? = null
+    private lateinit var txtWorkDirectory: TextView
+    private lateinit var workDirGate: WorkDirGateFlow
 
     private companion object {
         private const val TAG = "BackupActivity"
     }
 
-    // Work-directory picker (Backup and Restore)
-    private val folderPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocumentTree()
-    ) { uri: Uri? ->
-        val action = pendingAction
-        pendingAction = null
-        if (uri == null || action == null) return@registerForActivityResult
-        if (!FileManager.persistWorkDirectoryPermission(this, uri)) {
-            Toast.makeText(
-                this,
-                "Failed to persist permission. Please try again.",
-                Toast.LENGTH_LONG
-            ).show()
-            return@registerForActivityResult
-        }
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            is WorkDirectoryState.Ready -> when (action) {
-                PendingAction.BACKUP -> doBackup(state.folder)
-                PendingAction.RESTORE -> doRestore(state.folder)
-            }
-
-            else -> Toast.makeText(this, "Work directory not available.", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    // External file picker — restore from anywhere
     private val openFileLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -75,7 +50,31 @@ class BackupActivity : BaseActivity() {
                         Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
                 } catch (_: SecurityException) { }
-                viewModel.restoreFromJson(contentResolver, uri)
+                lifecycleScope.launch {
+                    val r = viewModel.restoreFromJson(contentResolver, uri)
+                    toastResult(r)
+                }
+            }
+        }
+    }
+
+    private val externalCsvLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val uri = result.data?.data
+            if (uri != null) {
+                try {
+                    contentResolver.takePersistableUriPermission(
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                } catch (_: SecurityException) { }
+                startActivity(
+                    Intent(this, CsvImportActivity::class.java).apply {
+                        putExtra("fileUri", uri.toString())
+                    }
+                )
             }
         }
     }
@@ -98,58 +97,49 @@ class BackupActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // -------- Toolbar ------------
 
+        txtWorkDirectory = findViewById(R.id.txt_work_directory)
+        refreshWorkDirectoryDisplay()
+
         // ViewModel
         val app = application as LogbookApplication
         viewModel = ExportImportViewModel(app.repository)
 
-        // Observe result
-        lifecycleScope.launch {
-            viewModel.result.collect { result ->
-                when (result) {
-                    is ExportImportResult.Success -> {
-                        Toast.makeText(this@BackupActivity, "Operation completed successfully", Toast.LENGTH_SHORT).show()
-                        viewModel.consumeResult()
-                    }
-                    is ExportImportResult.Error -> {
-                        Toast.makeText(this@BackupActivity, result.message, Toast.LENGTH_LONG).show()
-                        viewModel.consumeResult()
-                    }
-                    null -> {}
-                }
-            }
-        }
+        // Work-directory gate
+        workDirGate = WorkDirGateFlow(this)
 
         // Buttons
         findViewById<Button>(R.id.btn_backup_json).setOnClickListener { performBackup() }
-        findViewById<Button>(R.id.btn_restore).setOnClickListener { showRestoreConfirmDialog() }
+        findViewById<Button>(R.id.btn_restore_json).setOnClickListener { showRestoreConfirmDialog() }
         findViewById<Button>(R.id.btn_delete_all).setOnClickListener { showDeleteAllConfirmDialog() }
+        findViewById<Button>(R.id.btn_export_csv).setOnClickListener {
+            workDirGate.runOrPick { folder -> doExportCsv(folder) }
+        }
+        findViewById<Button>(R.id.btn_import_csv).setOnClickListener {
+            workDirGate.runOrPick { folder -> doImportCsv(folder) }
+        }
     }
 
-    // ------------------------------------------------------------------------
-    // Work-directory gate (shared by Backup and Restore)
-    // ------------------------------------------------------------------------
+    override fun onResume() {
+        super.onResume()
+        refreshWorkDirectoryDisplay()
+    }
 
-    private fun ensureWorkDirectoryThen(action: PendingAction, onReady: (DocumentFile) -> Unit) {
-        when (val state = FileManager.resolveWorkDirectory(this)) {
-            WorkDirectoryState.NotSet -> {
-                Toast.makeText(this, "Please select a work directory first", Toast.LENGTH_SHORT)
-                    .show()
-                pendingAction = action
-                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
+    private fun refreshWorkDirectoryDisplay() {
+        txtWorkDirectory.text = "Work directory: ${FileManager.workDirectoryDisplayName(this)}"
+    }
 
-            WorkDirectoryState.Invalid -> {
-                PreferencesManager.getInstance(this).setBackupFolderUri(null)
-                Toast.makeText(
-                    this,
-                    "Work directory unavailable. Please select it again.",
-                    Toast.LENGTH_LONG
-                ).show()
-                pendingAction = action
-                folderPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-            }
-
-            is WorkDirectoryState.Ready -> onReady(state.folder)
+    private fun toastResult(result: ExportImportResult) {
+        when (result) {
+            is ExportImportResult.Success -> Toast.makeText(
+                this,
+                "Operation completed successfully",
+                Toast.LENGTH_SHORT
+            ).show()
+            is ExportImportResult.Error -> Toast.makeText(
+                this,
+                result.message,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -158,7 +148,7 @@ class BackupActivity : BaseActivity() {
     // ------------------------------------------------------------------------
 
     private fun performBackup() {
-        ensureWorkDirectoryThen(PendingAction.BACKUP) { folder -> doBackup(folder) }
+        workDirGate.runOrPick { folder -> doBackup(folder) }
     }
 
     private fun doBackup(folder: DocumentFile) {
@@ -216,10 +206,23 @@ class BackupActivity : BaseActivity() {
             .setTitle("Confirm Restore")
             .setMessage("This will replace ALL existing data with the backup. Continue?")
             .setPositiveButton("Continue") { _, _ ->
-                ensureWorkDirectoryThen(PendingAction.RESTORE) { folder -> doRestore(folder) }
+                workDirGate.runOrPick { folder -> doBackupThenRestore(folder) }
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun doBackupThenRestore(folder: DocumentFile) {
+        lifecycleScope.launch {
+            val ok = VerifiedBackupFlow.backupThenProceed(
+                activity = this@BackupActivity,
+                scope = lifecycleScope,
+                repository = (application as LogbookApplication).repository,
+                folder = folder,
+                contentResolver = contentResolver
+            )
+            if (ok) doRestore(folder)
+        }
     }
 
     private fun doRestore(folder: DocumentFile) {
@@ -246,7 +249,10 @@ class BackupActivity : BaseActivity() {
                     )
                 } catch (_: SecurityException) {
                 }
-                viewModel.restoreFromJson(contentResolver, file.uri)
+                lifecycleScope.launch {
+                    val r = viewModel.restoreFromJson(contentResolver, file.uri)
+                    toastResult(r)
+                }
             }
             .setNeutralButton("Browse elsewhere") { _, _ -> launchExternalRestorePicker() }
             .setNegativeButton("Cancel", null)
@@ -254,20 +260,7 @@ class BackupActivity : BaseActivity() {
     }
 
     private fun launchExternalRestorePicker() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/json"
-            putExtra("android.intent.extra.INITIAL_URI", getDownloadsUri())
-        }
-        openFileLauncher.launch(intent)
-    }
-
-    private fun getDownloadsUri(): Uri? {
-        return try {
-            android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI
-        } catch (_: Exception) {
-            null
-        }
+        openFileLauncher.launch(OpenFileIntentFactory.build("application/json"))
     }
 
     // ------------------------------------------------------------------------
@@ -279,10 +272,75 @@ class BackupActivity : BaseActivity() {
             .setTitle("Delete All Data")
             .setMessage("Are you sure you want to delete ALL logbook entries? This action cannot be undone!")
             .setPositiveButton("Delete All") { _, _ ->
-                viewModel.deleteAllLegs()
+                workDirGate.runOrPick { folder -> doBackupThenDeleteAll(folder) }
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun doBackupThenDeleteAll(folder: DocumentFile) {
+        lifecycleScope.launch {
+            val ok = VerifiedBackupFlow.backupThenProceed(
+                activity = this@BackupActivity,
+                scope = lifecycleScope,
+                repository = (application as LogbookApplication).repository,
+                folder = folder,
+                contentResolver = contentResolver
+            )
+            if (ok) {
+                val r = viewModel.deleteAllLogbook()
+                toastResult(r)
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // CSV Export / Import (merged from ExportImportActivity)
+    // ------------------------------------------------------------------------
+
+    private fun doExportCsv(folder: DocumentFile) {
+        lifecycleScope.launch {
+            val legs = (application as LogbookApplication).repository.getAllLegsList()
+            val r = viewModel.exportCsvLegList(
+                contentResolver = contentResolver,
+                folder = folder,
+                legs = legs,
+                config = CsvExportFormat(formatType = CsvFormatType.RAW),
+                useFilteredName = false
+            )
+            toastResult(r)
+        }
+    }
+
+    private fun doImportCsv(folder: DocumentFile) {
+        val csvFiles = FileManager.listWorkDirFilesByExtension(folder, "csv")
+        if (csvFiles.isEmpty()) {
+            AlertDialog.Builder(this)
+                .setTitle("No CSV files found")
+                .setMessage("The work directory contains no CSV files.")
+                .setPositiveButton("Browse elsewhere") { _, _ -> launchExternalCsvPicker() }
+                .setNegativeButton("Cancel", null)
+                .show()
+            return
+        }
+        val names = csvFiles.map { it.name ?: "(unnamed)" }.toTypedArray()
+        AlertDialog.Builder(this)
+            .setTitle("Select CSV to import")
+            .setItems(names) { _, which ->
+                val file = csvFiles[which]
+                startActivity(
+                    Intent(this, CsvImportActivity::class.java).apply {
+                        putExtra("fileUri", file.uri.toString())
+                    }
+                )
+            }
+            .setNeutralButton("Browse elsewhere") { _, _ -> launchExternalCsvPicker() }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun launchExternalCsvPicker() {
+        externalCsvLauncher.launch(OpenFileIntentFactory.build("*/*"))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -23,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+import com.my.striptologbook.utils.OpenFileIntentFactory
+
 class SettingsBackupActivity : BaseActivity() {
 
     private enum class PendingAction { SAVE, RESTORE }
@@ -203,21 +205,16 @@ class SettingsBackupActivity : BaseActivity() {
     }
 
     private fun launchExternalRestorePicker() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/json"
-            putExtra("android.intent.extra.INITIAL_URI", getDownloadsUri())
-        }
-        externalRestoreLauncher.launch(intent)
+        externalRestoreLauncher.launch(OpenFileIntentFactory.build("application/json"))
     }
 
-    private fun getDownloadsUri(): Uri? {
-        return try {
-            android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI
-        } catch (_: Exception) {
-            null
-        }
-    }
+//    private fun getDownloadsUri(): Uri? {
+//        return try {
+//            android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI
+//        } catch (_: Exception) {
+//            null
+//        }
+//    }
 
     private fun applyRestoreFromUri(uri: Uri) {
         lifecycleScope.launch {

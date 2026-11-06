@@ -1,29 +1,29 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                      USER MANUAL
-	Logbook & Flight Tools - 20261104
+                        USER MANUAL
+            Logbook & Flight Tools - 20261105
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Welcome to the Logbook & Flight Tools app. This manual covers every
-feature in detail. All data is stored locally on your device – nothing
-is sent to any server. Your privacy is fully respected.
+feature. All logbook data stays on your device. The only outbound
+network operations are the update check and the airport database
+download; neither sends personal data. See section 14.
 
 TABLE OF CONTENTS
 ─────────────────
-
-1.  Introduction
-2.  Getting Started
-3.  Home Screen & Navigation
-4.  Logbook Legs – Adding & Editing
-5.  Leg List – Viewing, Filtering & Statistics
-6.  Flight Sun Calculator
-7.  Airport Database
-8.  Backup & Restore (JSON)
-9.  CSV Export / Import
-10. PDF Logbook Export
+ 1. Introduction
+ 2. Getting Started
+ 3. Home Screen & Navigation
+ 4. Logbook Legs - Adding & Editing
+ 5. Leg List - Viewing, Filtering & Statistics
+ 6. Flight Sun Calculator
+ 7. Airport Database
+ 8. Backup & Restore (JSON and CSV)
+ 9. PDF ICAO/EASA Logbook Export (Tools -> Export PDF)
+10. Export from the Leg List (PDF and CSV)
 11. Preferences
 12. Updates & Version Management
 13. Opening Balance (Prior Experience)
-14. Files and Data Storage
+14. Files, Data Storage & Privacy
 15. Support & Troubleshooting
 16. Work Directory
 17. Settings Backup / Restore
@@ -32,1504 +32,1331 @@ TABLE OF CONTENTS
 1. INTRODUCTION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The Logbook & Flight Tools app is designed for pilots who need to:
+The Logbook & Flight Tools app is a logbook for pilots who want to:
 
-  • Record flight legs with all relevant details (airports, times,
-    crew, aircraft, etc.).
-  • Automatically calculate block time, flight time, night time and
-    day time based on sunrise and sunset.
-  • Automatically set takeoff and landing counts when you act as
-    pilot flying.
-  • Compute sunrise and sunset events along a flight route, taking
-    into account the aircraft's changing position.
-  • Manage a local airport database with IATA and ICAO codes, names,
-    coordinates, elevation and timezone.
-  • Customise how each leg card looks in the logbook list, using the
-    Leg Items feature (section 11.5).
-  • Record your flight experience accumulated before you started
-    using the app, using the Opening Balance feature (section 14).
-  • Back up and restore your logbook, and export or import data in
-    CSV format for migration from other logbooks.
+  * Record flight legs with all relevant details.
+  * Automatically compute block, flight, night and day times.
+  * Automatically set takeoff and landing counts when pilot flying.
+  * Compute sunrise and sunset along a flight route.
+  * Manage a local airport database (IATA/ICAO).
+  * Customise how each leg card looks in the Leg List.
+  * Record prior flight experience (Opening Balance).
+  * Back up, restore, export and import data.
 
-The app is built for professional and private pilots alike. It is
-intuitive, fast, and respects your data privacy.
+All logbook data is local. See section 14.5 for the two outbound
+network operations and what they send.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 2. GETTING STARTED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-After installing the app, you will see the Home screen. From here you
-can access all main features:
+After installing, you see the Home screen. The top of the screen shows
+a summary of your block times (section 3). Below it are the main
+buttons.
 
-  • Logbook – view and manage your legs.
-  • Flight Sun Calculator – compute sunrise and sunset along routes.
-  • Airports – manage the airport database.
-  • Backup – back up and restore your data.
-  • Export/Import – CSV export and import.
-  • Preferences – adjust settings.
-  • Updates – check for app updates.
-  • User Manual – this documentation.
+Home buttons:
+  * View Logbook - opens the Leg List.
+  * Add New Leg - opens a blank Leg Editor.
+  * Tools - opens the Tools screen (section 3.2).
+  * Settings - opens the Settings screen (section 3.3).
+  * User Manual - this document.
 
+The first time you open an airport-related screen or use the Leg
+Editor, the built-in airport database is copied automatically. You do
+not need to do anything.
 
-The first time you open an airport-related screen or use the Leg Editor,
-the built-in airport database is copied automatically. You do not need
-to do anything.
+To add your first leg, tap "Add New Leg".
 
-To add your first leg, go to the Logbook screen and tap the plus
-button.
-
-If you have flown before using this app, you can record your prior
-experience in the Opening Balance screen, reached from Settings
-(section 14). Once recorded, that prior experience is added to the
-totals shown in the Leg List summary card, in Statistics, and in the
-PDF logbook, without ever appearing as a flight leg.
+If you have flown before using this app, record your prior experience
+in the Opening Balance screen (Tools -> Opening Balance, section 13).
+It contributes to totals in the Leg List, Statistics and the PDF
+logbook, and is never shown as a flight.
 
 Several features save files: JSON backups, CSV exports, PDF exports,
-and settings backups. All of them write to a single folder on your device,
-the Work Directory. You choose the Work Directory once, and the app
-remembers it. See section 16.
+and settings backups. All go to a single folder on your device called
+the Work Directory. You choose it once; the app remembers it. See
+section 16.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 3. HOME SCREEN & NAVIGATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The Home screen provides quick access to all major features through a
-grid of buttons:
-
-  • View Logbook – opens the Leg List.
-  • Add New Leg – opens a blank Leg Editor.
-  • Flight Sun Events – opens the calculator.
-  • Settings – opens the Settings screen (Backup, Export/Import,
-    Preferences, Airports, Updates, Opening Balance, Export format).
-  • User Manual – opens this manual.
-
-Every other screen has a Home button in the top-right corner of the
-top bar, which brings you straight back to the Home screen. The
-Up arrow on the left of the top bar returns you to the previous
-screen.
-
-When the automatic update check (section 12.2) finds a new version, a
-dialog appears on the Home screen asking whether to download it. If
-you tap Download, you are taken to the Updates screen where the
-backup and download take place. If you tap Later, nothing else
-happens.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-4. LOGBOOK LEGS – ADDING & EDITING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The Leg Editor is where you enter all the details of a flight leg.
-
-4.1. Opening the Editor
+3.1 Block times summary
 ───────────────────────
 
-  • To add a new leg: tap the "Add New Leg" button on the Home screen.
-  • To edit an existing leg: tap on any leg in the Leg List.
+The card at the top of the Home screen shows six lines of block time
+totals:
 
-4.2. Fields and What They Mean
-───────────────────────────────
+  * Owner - the owner name set in Settings -> PDF/csv export format
+    -> Format PDF. Hidden when no name is set.
+  * Last 7 days
+  * Last 28 days
+  * Actual month
+  * Actual year
+  * Total - block time across every leg, plus the Opening Balance.
 
-The editor contains many fields. Below is an explanation of each:
+All ranges use UTC. A leg with no Off-Block time is not counted in the
+first four ranges, but is counted in Total.
 
-  • Date – the date of the flight (UTC). Tap to change.
+The summary is refreshed every time you return to Home.
 
-  • Flight Number – the flight number (for example, "LH123").
-
-  • Position – your role on this leg. Suggested values are PIC, SIC,
-    AugCrew, Dual and Instructor, but you can type any other value.
-    When the field is empty and you tap it, the list of suggested
-    values appears. As soon as you type one character, the list is
-    filtered to entries containing that character. From two characters
-    on, the app switches to its database suggestions and shows values
-    you have used before on other legs. You can always type a value
-    that is not in either list.
-
-  • Category – the operating category of the leg. Suggested values are
-    "Multi Pilot", "Single Pilot SE", "Single Pilot ME", "Helicopter"
-    and "Glider", but you can type any other value. The suggestion
-    behaviour is exactly the same as for Position.
-
-  • PIC Name – Pilot in Command name.
-  • SIC Name – Second in Command name.
-  • Cabin Crew – names of cabin crew (optional).
-  • Jumpseat 1 and 2 – names of jumpseat occupants (optional).
-
-  • Registration – aircraft registration (for example, "D-ABCD").
-    When you leave the field, the app looks up the most recently used
-    Type for that registration and fills in the Type field
-    automatically. You can overwrite the Type afterwards.
-
-  • Type – aircraft type (for example, "A320"). When you leave the
-    field, the app looks up the most recently used Category for that
-    Type and fills in the Category field automatically. You can
-    overwrite the Category afterwards.
-
-  • Departure – departure airport (IATA or ICAO code).
-  • Destination – arrival airport (IATA or ICAO code).
-
-  • Off-Block – time when you left the parking position (UTC).
-  • Takeoff – time of takeoff (UTC).
-  • Landing – time of landing (UTC).
-  • On-Block – time when you arrived at the parking position (UTC).
-  • Sunrise and Sunset – times of sunrise and sunset (UTC). These can
-    be entered manually or computed automatically using the Night
-    button (see section 4.5).
-
-  • Block Total – total block time, from Off-Block to On-Block.
-  • Block Night – block time flown during night.
-  • Block Day – block time flown during day, calculated automatically.
-
-  • Flight Total – total flight time, from Takeoff to Landing.
-  • Flight Night – flight time during night.
-  • Flight Day – flight time flown during day, calculated
-    automatically.
-
-  • Simulator Time – time spent in simulator (if Simulator is
-    checked).
-  • IFR Total – total instrument flight time.
-  • IFR Night – instrument flight time during night.
-  • IFR Day – instrument flight time during day, calculated
-    automatically as IFR Total minus IFR Night.
-
-  • Instrument Approaches – the number of instrument approaches you
-    flew on this leg. This value is required by the official logbook
-    formats and appears as its own column in the PDF export. It is
-    filled automatically under two conditions (see section 4.3); you
-    can also overwrite it by hand at any time.
-
-  • Takeoff counts – Day, Night, Total.
-  • Landing counts – Day, Night, Total.
-
-  • Simulator checkbox – check if this is a simulator session.
-  • Pilot Flying checkbox – check if you were the pilot flying.
-  • IFR checkbox – check if the flight was IFR.
-
-  • Comment – any additional notes. If you also fill Jumpseat 1, the
-    PDF logbook will print the jumpseat occupant on a second line
-    labelled "J/S: ...".
-
-4.3. Auto-Calculations
-──────────────────────
-
-The app automatically computes many fields to save you time.
-
-  • Block Total – calculated from Off-Block and On-Block times.
-  • Flight Total – calculated from Takeoff and Landing times.
-  • Block Night and Flight Night – calculated using the most accurate
-    method available: if you have used the Night button to compute
-    sunrise and sunset, the app performs a sweep over all actual sun
-    events along the route to precisely determine night intervals. If
-    you manually enter sunrise and sunset times, the app falls back
-    to the older static day-by-day calculation.
-  • Block Day and Flight Day – derived as Total minus Night.
-  • Takeoff and Landing counts – when you check Pilot Flying, the app
-    sets the totals to 1 and determines whether they were day or night
-    based on the takeoff and landing times.
-  • IFR times – when you check IFR, the IFR Day, Night and Total
-    fields are copied from the corresponding flight times. Every time
-    you manually edit Flight Total or Flight Night while IFR is
-    checked, the IFR values are re-copied from the flight values.
-  • IFR Day – when you manually edit IFR Total or IFR Night, IFR Day
-    is recomputed as IFR Total minus IFR Night.
-  • Instrument Approaches – filled automatically as 1 when IFR Total
-    is greater than zero and Pilot Flying is checked, but only if the
-    field is currently empty. It is cleared when either condition is
-    not met.
-  • Simulator Time – when you check Simulator, the app calculates the
-    simulator time from Off-Block and On-Block, clears the Block,
-    Flight and IFR fields, and clears Instrument Approaches. If you
-    have set a default simulator IFR approach in Preferences, that
-    value is written into Instrument Approaches instead.
-
-4.4. Input Formats
-─────────────────
-
-  • Time fields accept "HH:MM" (for example, "14:30") or "HHMM" (for
-    example, "1430"). The app normalises your input to "HH:MM".
-  • Duration fields accept "H:MM" (for example, "2:30") or "HHMM" (for
-    example, "230" for 2 hours and 30 minutes). The app formats
-    it as "H:MM".
-  • If you enter an invalid value, the field turns yellow. Correct it
-    before saving.
-  • Pressing Enter on the keyboard while a field is focused clears
-    the focus. This applies to every editable field in the Leg Editor.
-    If the field has an automatic lookup attached, the lookup runs at
-    that moment.
-
-The same time and duration rules apply inside the Search value dialog.
-
-4.5. Using the Night Button
-───────────────────────────
-
-The Night button next to Sunrise and Sunset launches the Flight Sun
-Calculator with the current departure airport, destination airport,
-takeoff time and landing time already filled in. It also sends the
-Off-Block and On-Block times so the calculator can use them for
-ground-interval night computation.
-
-After computing the sunrise and sunset events, you can tap Apply to
-Leg. This transfers the moving sunrise and sunset events along the
-flight route, the static sunrise and sunset at the departure and
-arrival airports, and the day or night status at Off-Block, Takeoff,
-Landing and On-Block.
-
-The leg editor then uses this data to recalculate Block Night and
-Flight Night using the sweep-based method, and to automatically set
-the takeoff and landing day or night counts if Pilot Flying is
-checked. The sunrise and sunset fields in the leg are also updated.
-
-If you manually enter sunrise and sunset times instead of using the
-tool, the app falls back to the older static calculation.
-
-4.6. Saving a Leg
+3.2 Tools screen
 ────────────────
 
-  • Tap Save to store the leg in your logbook.
-  • If any field is invalid, you will see a warning. Fix the marked
-    fields and try again.
+Tools hosts the secondary features:
 
-4.7. View Mode vs Edit Mode
-───────────────────────────
+  * Export PDF (ICAO/EASA Logbook) - see section 10.
+  * Sun Events - the Flight Sun Calculator (section 6).
+  * Airports DB - the airport database (section 7).
+  * Backup Logbook - the Backup screen, which holds JSON backup,
+    JSON restore, CSV export, CSV import, and Delete All
+    (sections 8).
+  * Opening Balance (anterior flights) - prior experience (section
+    13).
 
-  • When you open an existing leg, it is in view mode. You can see
-    all fields but cannot change them.
-  • Tap Edit to switch to edit mode, make changes, then tap Save.
-  • Tap Cancel to discard changes and return to view mode.
-  • For a new leg, you are directly in edit mode.
+The bottom of Tools shows the current Work Directory. Change it via
+Settings -> Work Directory.
 
-4.8. Deleting a Leg
-──────────────────
+3.3 Settings screen
+───────────────────
 
-  • In edit mode, you can tap Delete to remove the leg. A
-    confirmation dialog appears to prevent accidental deletion.
+Settings hosts:
 
-4.9. Adding a New Leg: Default Values
-─────────────────────────────────────
+  * Preferences - Default Fields, Custom Lists, Statistics
+    Visibility, Sun Calculator Altitude, Leg Items, and Backup /
+    Restore Settings (section 11).
+  * PDF/csv export format - Format PDF and Format CSV (sections 9
+    and 10).
+  * Work Directory - the folder that receives every file the app
+    writes (section 16).
+  * App. Update - the Updates screen (section 12).
 
-When you open a new, empty leg, some fields are pre-filled with values
-you configured in Preferences (sections 11.1 and 11.2):
+3.4 Back navigation
+───────────────────
 
-  • Position – filled with the default position, if one is configured.
-  • IFR checkbox – set according to the "Default is IFR" preference.
+Every other screen has a Home button in the top-right of the top bar,
+which returns to Home. The Up arrow on the left returns to the
+previous screen.
 
-For an existing leg that you open for editing, your stored values are
-kept. The default position is only applied to new legs.
+When the automatic update check (section 12) finds a new version, a
+dialog appears on Home asking whether to download. Tap Download to go
+to the Updates screen; tap Later to defer.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-5. LEG LIST – VIEWING, FILTERING & STATISTICS
+4. LOGBOOK LEGS - ADDING & EDITING
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The Leg List is the main logbook screen. It shows all your recorded
-legs, sorted by date.
+4.1 Opening the editor
+──────────────────────
 
-5.1. Summary Information
-────────────────────────
+  * New leg: Home -> Add New Leg.
+  * Existing leg: tap a leg in the Leg List.
 
-At the top of the list, you will see:
+4.2 Fields
+──────────
 
-  • Total Block Time (sum of all block times).
-  • Total Block Night Time.
-  • Total Simulator Time.
-  • Number of legs.
+  * Date - flight date (UTC). Tap to change.
+  * Flight Number - e.g. "LH123".
+  * Position - your role. Suggested: PIC, SIC, AugCrew, Dual,
+    Instructor. Empty + focus shows the full list; one character
+    filters it; two or more characters switch to database
+    suggestions from your previous legs. Free text allowed.
+  * Category - suggested: Multi Pilot, Single Pilot SE, Single Pilot
+    ME, Helicopter, Glider. Same suggestion behaviour as Position.
+  * PIC Name / SIC Name / Cabin Crew / Jumpseat 1 / Jumpseat 2.
+  * Registration - leaving the field fills Type from the most recent
+    leg with that registration. Type editable afterwards.
+  * Type - leaving the field fills Category from the most recent leg
+    with that type. Category editable afterwards.
+  * Departure / Destination - IATA or ICAO. Autocomplete from the
+    airport database.
+  * Off-Block / Takeoff / Landing / On-Block (UTC).
+  * Sunrise / Sunset (UTC). Fill manually, or use the Night button
+    (section 4.5).
+  * Block Total / Block Night / Block Day.
+  * Flight Total / Flight Night / Flight Day.
+  * Simulator Time.
+  * IFR Total / IFR Night / IFR Day.
+  * Instrument Approaches.
+  * Takeoff counts: Day, Night, Total.
+  * Landing counts: Day, Night, Total.
+  * Simulator, Pilot Flying, IFR checkboxes.
+  * Comment. If Jumpseat 1 is filled, the PDF prints it as a second
+    line "J/S: ...".
 
-These summaries update automatically based on the current filter.
+4.3 Auto-calculations
+─────────────────────
 
-When the filter is All, the Opening Balance (section 14) is added to
-the Total Block Time, Total Block Night Time and Total Simulator Time.
-The number of legs is never affected by the Opening Balance.
+  * Block Total from Off-Block and On-Block.
+  * Flight Total from Takeoff and Landing.
+  * Block Night and Flight Night use the most accurate method
+    available. If the Night button was used, a sweep over all actual
+    sun events along the route is applied. Otherwise the static
+    day-by-day calculation is used.
+  * Block Day = Total - Night. Same for Flight Day and IFR Day.
+  * Checking Pilot Flying sets the takeoff and landing totals to 1
+    and classifies each as day or night by the takeoff and landing
+    times.
+  * Checking IFR copies Flight values into the IFR fields. Editing
+    Flight Total or Flight Night re-copies them.
+  * Instrument Approaches becomes 1 when IFR Total > 0 and Pilot
+    Flying is checked, but only if the field is empty. It is cleared
+    when either condition is no longer met.
+  * Checking Simulator computes Simulator Time from Off-Block and
+    On-Block, clears the Block, Flight and IFR fields, and clears
+    Instrument Approaches. If a default Simu IFR Approach is set in
+    Preferences, that value is written instead.
 
-When the filter is anything other than All, the Opening Balance is not
-included.
+4.4 Input formats
+─────────────────
 
-5.2. Filtering
-──────────────
+  * Time: "HH:MM" or "HHMM". Normalised to "HH:MM".
+  * Duration: "H:MM" or "HHMM". Formatted as "H:MM".
+  * Invalid values turn yellow. Correct before saving.
+  * Enter on the keyboard clears the field's focus, triggering any
+    lookup or normalisation.
 
-You can filter the list to show only legs from a specific period:
+4.5 The Night button
+────────────────────
 
-  • All – shows every leg.
-  • Last 7 days, Last 28 days – shows legs from the last week or
-    month.
-  • Actual Month – shows legs from the current calendar month.
-  • Previous Month – shows legs from the previous calendar month.
-  • Actual Year – shows legs from the current year.
-  • Custom – lets you pick a start and end date.
+The Night button next to Sunrise and Sunset opens the Flight Sun
+Calculator pre-filled with the current leg's airports, times and
+Off-Block / On-Block. After computing, tap Apply to Leg. The editor
+uses the returned data to recalculate Block Night, Flight Night and
+the takeoff/landing day-night counts. See section 6.
 
-Tap the filter button next to the search icon to change the filter.
+4.6 Save / View / Edit / Delete
+───────────────────────────────
 
-5.3. Searching
-──────────────
+  * Save stores the leg. Invalid fields block save.
+  * Opening an existing leg shows it in view mode. Tap Edit to change.
+  * Cancel in edit mode reverts to view mode (or discards a new leg).
+  * Delete (existing leg, edit mode) shows a confirmation dialog.
 
-Tap the search button to open the advanced search. You build a list of
-conditions, one at a time, and combine them with AND or OR logic.
+4.7 Default values for new legs
+───────────────────────────────
+
+Configured in Preferences -> Default Fields (section 11.1). Only new
+legs are affected.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. LEG LIST - VIEWING, FILTERING & STATISTICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1 Summary information
+───────────────────────
+
+At the top of the list:
+
+  * Total Block Time
+  * Total Block Night Time
+  * Total Simulator Time
+  * Number of legs
+
+When the filter is All, the Opening Balance is added to the three time
+totals. The leg count is never affected by the Opening Balance.
+
+When the filter is anything other than All, the Opening Balance is
+not included.
+
+5.2 Filtering
+─────────────
+
+Filters:
+  * All
+  * Last 7 days
+  * Last 28 days
+  * Actual Month
+  * Previous Month
+  * Actual Year
+  * Custom (start and end date)
+
+Tap the filter button next to the search icon.
+
+5.3 Searching
+─────────────
+
+Tap the search button to open the advanced search. Build a list of
+conditions and combine them with AND or OR.
 
 Building a condition:
 
-  1. Tap an operator button: equals or contains, is not or does not
-     contain, is on or before, is on or after.
-  2. Pick a field from the list. For the ordering operators, only
-     time, duration and number fields are offered.
+  1. Tap an operator: equals or contains, is not or does not contain,
+     is on or before, is on or after.
+  2. Pick a field.
   3. Enter a value.
 
-The value entry differs by field type:
+Value entry by field type:
 
-  • Text fields: type the value. For equals and not-equals,
-    suggestions from your own logbook appear after two characters.
-    You can always type a value that is not in the suggestions.
-  • Boolean fields: choose true or false from the dropdown.
-  • Time fields: a date field and a time field. Tap the date to open
-    a date picker; type the time in "HH:MM" or "HHMM". A Clear button
-    empties both. You can fill only the date, only the time, or both.
-  • Duration fields: type the value in "H:MM" or "HHMM".
+  * Text: type the value. Suggestions from your logbook appear after
+    two characters.
+  * Boolean: choose true or false from a dropdown.
+  * Time: a date field and a time field. Fill only the date, only
+    the time, or both.
+  * Duration: "H:MM" or "HHMM".
 
-Tap OK to add the condition. It appears in the Conditions list with a
-delete button.
+Tap OK to add the condition. Each row has a delete button.
 
-The switch at the bottom selects AND or OR. AND requires every
-condition to be true; OR requires at least one.
+The switch at the bottom selects AND or OR.
 
-Tap Search to open the results. The result screen has a "Search
-Results" title and hides the date filter chips. Tap Back to return to
-the search screen and adjust your conditions.
+Tap Search to open the results. The results screen has a "Search
+Results" title. Tap Back to return to the search screen.
 
-A not-equals condition includes legs whose field is empty (an empty value is treated as "not equal to X").
+A not-equals condition includes legs whose field is empty. To exclude
+empty fields, add a second condition for the same field with
+not-equals and an empty value, combined with AND.
 
-To exclude empty fields, add a second condition for the same field with not-equals and an empty value, and use AND logic.
+Search never includes the Opening Balance.
 
-Search never includes the Opening Balance. Only actual legs are
-filtered.
+5.4 Statistics
+──────────────
 
-The results screen has an export icon in the top bar. Tapping it
-offers "Export CSV" (not yet implemented) or "Export PDF". Exporting
-from the search results produces a PDF that contains only the legs
-currently shown. See section 10.5.
+Tap the statistics button. Two modes:
 
-5.4. Statistics
-───────────────
+  * By Type - one row per statistic, one column per Position, plus a
+    Total column. Which rows appear depends on Preferences ->
+    Statistics Visibility.
+    The Opening Balance always contributes to By Type, regardless of
+    the Leg List filter. Rows with a position contribute to the
+    matching column; rows without a position appear under a Prior
+    column.
 
-Tap the statistics button to view aggregated statistics. Two modes:
+  * By Month/Year - one row per year with Block Total, Block Night,
+    number of legs, and Simulator time. Tap a year to expand into
+    months.
+    The Opening Balance adds a single Prior row that does not expand.
+    Its position depends on the earliest start date you entered. If
+    no start date was entered, it appears at the bottom.
 
-  • By Type – one row per statistic (Block, Block Night, Flight Time,
-    IFR, VFR, counters, and so on), one column per Position, plus a
-    Total column. Which rows are shown depends on your Statistics
-    Visibility preferences (section 11.3).
+The Legs count excludes simulator sessions. Simulator time appears in
+its own column.
 
-    If you have recorded an Opening Balance (section 14), the balance
-    contributes to the By Type view as follows. Rows of the Opening
-    Balance that have a position contribute to the corresponding
-    position column. Rows that have no position appear under a
-    dedicated column named Prior, which is separate from the Unknown
-    column that belongs to legs. The Opening Balance is always
-    included in the By Type view, regardless of the Leg List filter.
+The Month/Year view always shows your whole logbook and always
+includes the Opening Balance.
 
-  • By Month/Year – one row per year with Block Total, Block Night,
-    number of legs, and Simulator time. Tap a year to expand it into
-    one row per month.
+5.5 Customizing leg cards
+─────────────────────────
 
-    If you have recorded an Opening Balance, a single Prior row is
-    added to this list. It shows the totals of every Opening Balance
-    row. It does not expand; it has no months. Its placement depends
-    on the earliest start date you entered for the balance: it
-    appears at the position where its year would fall relative to the
-    year headers. If you did not enter a start date for any balance
-    row, the Prior row is placed at the bottom of the list.
+Preferences -> Leg Items (section 11.5) determines what appears on
+each of the four lines of a leg card.
 
-The Legs count excludes simulator sessions. Simulator time still
-appears in its own column.
+5.6 Export from the Leg List
+────────────────────────────
 
-The Month/Year view always shows your whole logbook; it does not use
-the date filter from the Leg List. It always includes the Opening
-Balance.
+The export icon in the filter row offers two actions:
 
-5.5. Customising the Leg Cards
-──────────────────────────────
+  * Export CSV - produces a CSV of the legs currently shown (filtered
+    list, or search result). The format is the one saved in
+    Settings -> PDF/csv export format -> Format CSV (section 9.3).
+    Filename: logbook_export_*.csv when the filter is All,
+    logbook_filtered_*.csv otherwise.
 
-Each leg in the list is displayed as a small card with four lines of
-information. You can choose which fields appear on each line, in which
-order, and with which separators, using the Leg Items feature. See
-section 11.5 for details. The change applies the next time you open
-the Leg List.
+  * Export PDF - when the filter is All, behaves exactly like Export
+    PDF from Tools (section 10.1). Otherwise produces a "filtered"
+    PDF that contains only the current legs (section 10.5).
+    Filename: logbook_filtered_*.pdf.
+
+If the current filter or search produces no legs, the export is
+blocked with a short message.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 6. FLIGHT SUN CALCULATOR
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The Flight Sun Calculator computes sunrise, sunset, astronomical
-dawn and astronomical dusk along your flight route, taking into
-account the aircraft's changing position and cruise altitude. This
-helps you determine accurate day and night times for the whole
-flight, not just for the departure and arrival points.
+Computes sunrise, sunset, astronomical dawn and dusk along a flight
+route, accounting for the aircraft's changing position and cruise
+altitude.
 
-6.1. When to Use It
-───────────────────
+6.1 Opening
+───────────
 
-Use this tool when you need accurate sun times for a specific flight,
-especially when the flight crosses time zones, spans a long distance,
-or crosses into or out of night.
+  * From the Leg Editor's Night button (pre-filled).
+  * From Tools -> Sun Events.
 
-6.2. How to Open the Calculator
-───────────────────────────────
+6.2 Inputs
+──────────
 
-  • From the Leg Editor, tap the Night button. The calculator is
-    pre-filled with the leg's departure airport, destination, take-off
-    time and landing time, and shows the Off-Block and On-Block times
-    for reference.
-  • From the Home screen, tap Flight Sun Events.
+  * Departure / Destination - autocomplete from the airport database.
+  * T/O Date, T/O Time (UTC).
+  * Ldg Date, Ldg Time (UTC). The app ensures landing is after
+    take-off.
+  * Altitude - cruising altitude in feet. Affects the horizon used
+    for sunrise and sunset.
+  * Off-Block / On-Block (display only, when opened from the Leg
+    Editor).
+  * Waypoints - optional intermediate points.
 
-6.3. Input Fields
-─────────────────
-
-  • Departure and Destination – enter the airport codes. The app
-    autocompletes from the airport database.
-  • T/O Date and T/O Time – the date and time of take-off (UTC).
-  • Ldg Date and Ldg Time – the date and time of landing (UTC). The
-    app ensures landing is after take-off and adjusts dates if needed.
-  • Altitude – the cruising altitude in feet. This affects the
-    horizon used for sunrise and sunset, so a higher altitude results
-    in slightly earlier sunrises and later sunsets.
-  • Off-Block and On-Block (display only) – shown when the calculator
-    was opened from the Leg Editor.
-  • Waypoints – optional intermediate points. See section 6.4.
-
-6.4. Waypoints
-──────────────
-
-Waypoints improve accuracy by telling the calculator where the
-aircraft is at specific moments. Tap Add Waypoint(s) to add a row.
-Each row has three fields:
-
-  • Latitude – for example N45°02.4, S32°06.0, -4512, or 45.04.
-  • Longitude – for example E012°45.3, W075°30.0, -012453, or 12.755.
-  • UTC – the time at that point in "HH:MM" format.
-
-You can fill any combination:
-
-  • Both coordinates and time – the row is a known point at a known
-    time.
-  • Both coordinates, no time – the time is filled in by the
-    calculator from the surrounding times.
-  • Time only, no coordinates – the position is filled in by the
-    calculator along a great-circle arc between the surrounding known
-    points.
-  • Only one coordinate – the missing coordinate field is marked with
-    a yellow warning. Correct it or clear the other one before
-    computing.
-
-Coordinate formats
-  The app accepts many formats for coordinates. You can type decimal
-  degrees (45.04), compact forms (4512 means 45°12'), or hemisphere
-  and degree/minute formats (N45°02.4). A leading minus sign is
-  treated as South or West. If you use a minus sign and a hemisphere
-  letter that contradict each other, the field is marked as invalid.
-
-Time anchoring
-  Every waypoint time is anchored to the take-off date of the flight.
-  If the time you enter is earlier in the day than take-off, one day
-  is added automatically. If the resulting time is still before
-  take-off, or is after landing, the field is marked with a yellow
-  warning. A flight longer than 24 hours cannot be used with waypoint
-  times and produces a warning.
-
-Sorting
-  Once every non-empty waypoint row has a time that you entered
-  yourself, the rows rearrange themselves by time automatically. Rows
-  that are completely empty are removed at that moment.
-
-Removing a waypoint
-  Tap the X button on the right of a row to remove it.
-
-6.5. Computing the Results
-──────────────────────────
-
-Tap Compute Sunrise / Sunset. The app calculates the solar elevation
-at take-off and landing to determine if they are by day or by night,
-scans the entire route minute by minute to find any sunrise, sunset,
-astronomical dawn or astronomical dusk crossings, and interpolates
-the exact time and position of each event. It also displays the
-static sunrise and sunset at the departure and arrival airports for
-the given date.
-
-6.6. Understanding the Results
-──────────────────────────────
-
-  • The results text shows a list of events found, each with its UTC
-    time and the position where it occurred.
-  • It also tells you if Off-Block, Take-off, Landing and On-Block
-    are by day or by night.
-  • Below the results, the static fields show Astro Dawn, Sunrise,
-    Sunset and Astro Dusk at the departure and arrival airports.
-  • Waypoint fields that were filled in by the calculator are shown
-    in a slightly different style to indicate they are temporary.
-    Tap them and leave them to confirm them as your own entries.
-
-6.7. Applying Results to a Leg
-──────────────────────────────
-
-If you opened the calculator from the Leg Editor, you will see an
-Apply to Leg button after computing. Tapping it sends back all moving
-sunrise and sunset events, the static sunrise and sunset at departure
-and arrival airports, and the day or night status for Off-Block,
-Take-off, Landing and On-Block. The leg editor then recalculates
-Block Night and Flight Night using the most accurate method and
-updates the take-off and landing day or night counts.
-
-6.8. Saving and Loading State
-─────────────────────────────
-
-You can save all inputs using the Save State button. Later, you can
-restore them with Load State. The saved data includes the airports,
-dates, times, altitude and all waypoints.
-
-6.9. Clearing
+6.3 Waypoints
 ─────────────
 
-Tap Clear to reset the calculator: airports, times and waypoints are
-cleared, and altitude is set to your default.
+Tap Add Waypoint(s) to add a row. Each row has latitude, longitude,
+and UTC time.
+
+  * Both coordinates and time - known point at a known time.
+  * Both coordinates, no time - the time is interpolated.
+  * Time only - the position is interpolated along the great-circle
+    arc between surrounding known points.
+  * Only one coordinate - the missing coordinate field is marked
+    yellow. Correct it or clear the other before computing.
+
+Coordinate formats: decimal degrees (45.04), compact (4512),
+hemisphere plus degrees/minutes (N45 02.4). A leading minus sign is
+treated as South or West. A contradictory sign and hemisphere letter
+is rejected.
+
+Time anchoring: every waypoint time is anchored to the take-off date.
+If the time is earlier in the day than take-off, one day is added. If
+the result is still before take-off or after landing, the field is
+warned. A flight longer than 24 hours cannot use waypoint times.
+
+Sorting: once every non-empty row has a time you entered, rows
+rearrange by time automatically and empty rows are removed.
+
+Remove a row with the X button on the right.
+
+6.4 Results
+───────────
+
+Tap Compute Sunrise / Sunset. The app determines the day/night status
+at take-off and landing, scans the route minute by minute, and
+interpolates the exact time and position of each crossing.
+
+Results show:
+
+  * Events found, each with UTC time and position.
+  * Day/night status at Off-Block, Takeoff, Landing and On-Block.
+  * Static sunrise, sunset, astronomical dawn and dusk at the
+    departure and arrival airports.
+
+Waypoint fields filled in by the calculator are shown in a slightly
+different style. Tap and leave such a field to confirm it as your
+own.
+
+6.5 Applying results to a leg
+─────────────────────────────
+
+When opened from the Leg Editor, Apply to Leg sends the events, the
+static sunrise/sunset at both airports, and the day/night status back
+to the editor. The editor recalculates Block Night and Flight Night
+and the takeoff/landing counts.
+
+6.6 Save / Load / Clear
+───────────────────────
+
+  * Save State stores the current inputs (airports, dates, times,
+    altitude, waypoints).
+  * Load State restores them.
+  * Clear resets airports, times, waypoints and altitude (to the
+    default).
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 7. AIRPORT DATABASE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The app uses a local airport database that contains IATA and ICAO
-codes, names, cities, countries, coordinates, elevation and timezone.
-This database is used for autocomplete in the Leg Editor and the
-Flight Sun Calculator.
+Reached from Tools -> Airports DB.
 
-7.1. Built-in Database
-──────────────────────
+The app uses a local airport database (IATA, ICAO, name, city,
+country, coordinates, elevation, timezone). It is used for
+autocomplete in the Leg Editor and the Flight Sun Calculator.
+
+7.1 Built-in database
+─────────────────────
 
 A default airport database is included with the app. It is copied to
-internal storage on first launch, so you have a working set of
-airports immediately.
+internal storage on first airport-related use.
 
-7.2. Updating the Database
-──────────────────────────
+7.2 Updating
+────────────
 
-You can manually update to the latest version from the web:
-
-  1. Go to the Airports screen.
+  1. Open the Airports screen.
   2. Tap Update Airport DB.
-  3. The app downloads the latest database.
-  4. After a successful download, the date of the update is shown in
-     the status text.
+  3. The latest database is downloaded.
+  4. The status text shows the download date.
 
-7.3. Managing the Database
-──────────────────────────
+7.3 Managing
+────────────
 
-The Airports screen offers several management options:
-
-  • Edit Airport Database – opens the Airport Editor.
-  • Export Airports – saves the current merged database as a JSON file
-	to your Downloads folder. No save dialog appears; the file is
-	written	directly. The filename is airports_export_<number>.json.
-	A toast confirms the export.
-  • Clear User Modifications – removes all airports you have added,
+  * Edit Airport Database - opens the Airport Editor.
+  * Export Airports - saves the merged database as
+    airports_export_<millis>.json to your Downloads folder. A toast
+    confirms the export.
+  * Clear User Modifications - removes airports you have added,
     edited or deleted.
-  • Delete Entire Database – permanently removes the entire airport
+  * Delete Entire Database - permanently removes the airport
     database.
 
-7.4. Airport Editor
-───────────────────
+7.4 Airport Editor
+──────────────────
 
-The Airport Editor allows you to:
+  * Search - by partial IATA, ICAO, city or name.
+  * Add - fill in fields and tap Save.
+  * Edit - select, tap Edit, modify, tap Save. ICAO cannot be
+    changed; to change it, delete and re-add.
+  * Delete - select, tap Delete, confirm.
 
-  • Search – type a partial IATA, ICAO, city or airport name. Results
-    appear in a dropdown.
-  • Add – fill in the required fields and tap Save.
-  • Edit – select an airport, tap Edit, modify fields, then Save.
-    Note: ICAO cannot be changed. To change ICAO, delete and re-add.
-  • Delete – select an airport, tap Delete, and confirm.
-
-All changes are stored immediately and reflected in autocomplete.
+Changes are stored immediately and reflected in autocomplete.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-8. BACKUP & RESTORE (JSON)
+8. BACKUP & RESTORE (JSON AND CSV)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Backup and Restore works entirely with JSON files and is independent
-of CSV export and import.
+Reached from Tools -> Backup Logbook.
 
-A backup contains your logbook legs and your Opening Balance.
-Restoring an old backup (created before the Opening Balance feature
-existed) restores only the legs and leaves your Opening Balance
-untouched. Restoring a new backup restores both.
-
-8.1. Creating a Backup
-──────────────────────
-
-  1. Go to the Backup screen.
-  2. Select a backup folder using the system folder picker. This
-     folder is remembered.
-  3. Tap Backup. The app creates a JSON file containing all legs with
-     a timestamp.
-  4. The app verifies the backup before considering it complete. It
-     reads the file back, checks that the content is valid, and
-     compares the number of legs with your database.
-  5. The app keeps the 10 most recent backups and deletes older ones
-     automatically.
-
-Your logbook is also backed up automatically before any operation
-that could change your data:
-
-  • Before importing a CSV file (section 9).
-  • Before downloading and installing an app update (section 12).
-
-In both cases the same verification applies. If the backup cannot be
-verified, the operation is blocked.
-
-8.2. Restoring from a Backup
+8.1 Two formats, one purpose
 ────────────────────────────
 
-  8.2. Restoring from a Backup
+The Backup screen saves your logbook, in one of two formats:
 
-    1. In the Backup screen, tap Restore.
-    2. Confirm that you want to replace all current data.
-    3. If your Work Directory contains backup files, a list of
-       them appears, newest first. Pick one.
-       If it does not, a "No backups found" message appears with
-       a "Browse elsewhere" button.
-    4. You can also tap "Browse elsewhere" at any time to pick a
-       backup file from anywhere on your device (for example a
-       file you copied from another phone).
-    5. The app clears the legs table and inserts all legs from
-       the backup. The Opening Balance is replaced only if the
-       backup file contains an Opening Balance section. Old-
-       format backups restore legs only and leave the Opening
-       Balance untouched.
+  * JSON backup - Backup Logbook (JSON). The full backup. Contains
+    every leg and the Opening Balance. Restoring a JSON backup
+    replaces the current data (see section 8.4).
 
-8.3. Deleting All Data
-──────────────────────
+  * CSV backup - Export Logbook (CSV). A human-readable backup of
+    the legs you entered in this app. Contains every leg, in a
+    format that can be opened and edited in any spreadsheet. It
+    does not contain the Opening Balance.
 
-In the Backup screen, there is a Delete All button. This permanently
-removes all logbook legs. A confirmation dialog prevents accidental
-deletion.
+Both formats write their files into the Work Directory (section 16).
 
-The Delete All action removes legs only. Your Opening Balance is not
-removed by this action. To remove the Opening Balance, use
-Settings → Opening Balance (section 14).
+8.2 Creating a JSON backup
+──────────────────────────
+
+  1. Open Tools -> Backup Logbook.
+  2. If no work directory is set, the folder picker opens; after you
+     pick, the flow resumes automatically.
+  3. Tap Backup Logbook (JSON).
+  4. The app creates a JSON file, reads it back, and compares counts.
+  5. The 10 most recent JSON backups are kept. Older ones are
+     deleted automatically.
+
+A verified backup of your current data also runs automatically before
+any operation that could destroy or change it:
+
+  * Before restoring a JSON backup.
+  * Before Delete All.
+  * Before importing a CSV file.
+  * Before downloading an app update.
+
+If the backup cannot be verified, a warning dialog appears: "Old
+database is not saved. Continue anyway?". You choose to continue or
+cancel.
+
+8.3 Creating a CSV backup
+─────────────────────────
+
+  1. Open Tools -> Backup Logbook.
+  2. If no work directory is set, the folder picker opens; after you
+     pick, the flow resumes automatically.
+  3. Tap Export Logbook (CSV).
+  4. The app writes a CSV file directly to the work directory.
+
+Contents:
+
+  * Every leg in the database.
+  * One column per leg field, in database order.
+  * Timestamps in raw milliseconds (for example 1762480600000),
+    which is how the database stores them.
+  * Durations in raw integer minutes.
+  * Booleans as "true", "false", or empty when null.
+
+The CSV is designed to be readable and editable in a spreadsheet.
+You can edit it, inspect the legs, adjust fields.
+
+The CSV backup does not contain the Opening Balance (prior
+experience).
+
+8.4 Restoring a JSON backup
+───────────────────────────
+
+Button: Restore from Backup (JSON). The screen warns: "WARNING: ALL
+old DB will be lost".
+
+  1. Tap Restore from Backup (JSON).
+  2. Confirm "This will replace ALL existing data...".
+  3. If no work directory is set, the folder picker opens; after you
+     pick, the flow resumes.
+  4. A verified backup of your current data runs first. If it cannot
+     be verified, a warning dialog asks whether to continue.
+  5. A list of JSON backups in the work directory appears, newest
+     first. Pick one.
+     If none are found, "No backups found" appears with a "Browse
+     elsewhere" button.
+  6. "Browse elsewhere" opens a system file picker for a one-off
+     external file.
+  7. The app clears the legs table and inserts every leg from the
+     backup. The Opening Balance is replaced only if the file
+     carries an Opening Balance section (as all current backups
+     do).
+
+8.5 Importing a CSV backup
+──────────────────────────
+
+Button: Import Legs (CSV). The screen states: "Legs will be added to
+existing DB".
+
+  1. Tap Import Legs (CSV).
+  2. A confirmation dialog appears: "Legs database will be altered.
+     Continue?".
+  3. If no work directory is set, the folder picker opens; the
+     import resumes after you pick.
+  4. A verified backup of your current data is created first. If it
+     cannot be verified, a warning dialog asks whether to continue.
+  5. A list of CSV files in the work directory appears, newest
+     first. Pick one. "Browse elsewhere" opens a system file picker.
+  6. The CSV Import screen opens. It shows the file name, the
+     number of data rows, and one mapping dropdown per column.
+  7. Files produced by this app are mapped automatically. Adjust
+     any column manually if needed. Leave a column on "Ignore" to
+     skip it.
+  8. Tap Import. The app inserts the rows, then shows a summary:
+     how many were imported, how many were skipped, how many had
+     errors, and a short reason per skipped row (up to 20).
+
+Important: CSV import adds rows to the existing logbook. It does not
+delete, replace or merge. Importing the same file twice produces
+duplicates. To replace the logbook entirely from a CSV backup,
+first clear the logbook (Delete All, section 8.6), then import.
+
+The CSV import does not create or modify the Opening Balance.
+
+8.6 Delete All
+──────────────
+
+Tap Delete All Logbook Datas. A confirmation dialog appears. After
+confirming, the app runs a verified backup (with the same continue-
+anyway warning on failure), then clears both the legs table and the
+Opening Balance.
+
+8.7 Restore behaviour summary
+─────────────────────────────
+
+  * JSON restore replaces legs and Opening Balance.
+  * If a JSON have no Opening Balance part, JSON restore replaces
+  legs only and leaves the Opening Balance untouched.
+  * CSV import adds legs to the existing logbook. It never touches
+    the Opening Balance.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-9. CSV EXPORT / IMPORT
+9. PDF LOGBOOK EXPORT (TOOLS -> EXPORT PDF)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  9.1. Export CSV
+Landscape A4 printable logbook in the ICAO / EASA (AMC1 FCL.050)
+layout. This is the standard logbook PDF. It covers the whole logbook
+(or a chosen range), unlike the filtered PDF from the Leg List (see
+section 10.3).
 
-    Tap Export CSV on the Export/Import screen. The app writes a
-    CSV file directly to your Work Directory. No save dialog
-    appears. The filename is logbook_export_<date>.csv. The file
-    contains a column for Instrument Approaches. Timestamps are
-    written in the standard ISO 8601 format in UTC.
+9.1 Exporting
+─────────────
 
-    CSV export covers legs only. The Opening Balance is not
-    included.
+  1. Tap Export PDF (ICAO/EASA Logbook) on Tools.
+  2. If no work directory is set, the folder picker opens; after you
+     pick, the range dialog appears.
+  3. Choose:
+       * All - every leg.
+       * From - To - legs whose Off-Block date falls in the range.
+       * Last N pages - the last N printed pages.
+  4. Tap Generate. The PDF is written directly to the work directory.
+     Filename: logbook_<date>.pdf. A toast confirms the export.
 
-    If no Work Directory has been set yet, a folder picker
-    opens; after you pick, the export continues automatically.
+9.2 What appears on each page
+─────────────────────────────
 
-9.2. Import CSV
+  * Header left: "Owner: <name>" (hidden when empty).
+  * Header centre: "Pilot Logbook".
+  * Header right: the date range of the legs on that page.
+  * Table header (two rows).
+  * One row per leg.
+  * Three totals rows:
+      1. Total this page.
+      2. Total from previous page (every leg up to the previous
+         printed page, plus the Opening Balance).
+      3. Total time (every leg up to this page, plus the Opening
+         Balance).
+  * Merged Remarks cell containing the certification sentence, your
+    signature if set, and your name.
+  * Page number at the bottom centre.
 
-    Tap Import CSV. If no Work Directory has been set yet, a folder
-    picker opens first; after you pick a folder, the import continues
-    automatically.
+The Opening Balance is never printed as a leg row. It only
+contributes to the running totals, including on the very first
+printed page.
 
-    If your Work Directory contains CSV files, a list of them
-    appears, newest first. Pick the file to import. Tap "Browse
-    elsewhere" to pick a CSV file from anywhere on your device.
+9.3 Last N pages
+────────────────
 
-    The CSV Import screen opens. It shows the file name, the number
-    of data rows, and one entry per column of the CSV. For each
-    column, a dropdown lets you choose which app field that column
-    should fill. Columns from a CSV produced by this app are
-    matched automatically. For columns you do not want to import,
-    leave the dropdown on "Ignore".
-
-    When the columns are mapped the way you want, tap Import. The
-    app first creates and verifies a JSON backup of your current
-    logbook in your Work Directory. The import only starts if that
-    backup succeeds. If the Import button stays disabled, some
-    date or time values in the CSV could not be read; correct
-    those values in the file, then pick the file again.
-
-    When the import finishes, a summary appears: how many rows
-    were imported, how many were skipped, and how many had errors,
-    followed by a short reason for each skipped row.
-
-    CSV import creates legs only. It never creates Opening
-    Balance rows.
-
-9.3. Export CSV from the Leg List
-
-    The export icon in the Leg List's top bar offers two actions:
-    "Export CSV" and "Export PDF".
-
-    "Export CSV" produces a CSV of the legs currently shown —
-    filtered by the active filter, or by the search conditions if
-    you are on a search-results screen.
-
-    Unlike the Export CSV button on the Export/Import screen (which
-    always writes the whole logbook in a fixed format), the Leg
-    List's CSV format is configurable. Open Settings → Export
-    format → Format CSV to choose:
-
-      • Format 1 — PDF columns. 24 columns matching the printed
-        logbook layout. Export-only; the resulting file is not
-        importable.
-      • Format 2 — raw database values. Every timestamp as raw
-        milliseconds, every duration as integer minutes, every
-        field as stored. Includes simulator legs.
-      • Format 3 — formatted database values. One date column plus
-        four time-of-day columns for the four timestamps, and
-        durations formatted as you choose. Legs with
-        "isSimulator = true" are excluded unless you tick the
-        "Include simulator legs" checkbox.
-
-    You can also choose the date format (seven options) and the
-    duration format (four options). Save stores the choices; they
-    apply to every subsequent Leg List export until you change
-    them.
-
-    The filename depends on the filter:
-      • Filter = All → logbook_export_<date>.csv
-      • Any other filter, or a search result →
-        logbook_filtered_<date>.csv
-
-    If the current filter or search produces no legs, the export
-    is blocked with a short message.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-10. PDF LOGBOOK EXPORT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The app produces a printable logbook page in the ICAO and EASA layout
-prescribed by EASA AMC1 FCL.050, in landscape A4. Every aspect of the
-printed page can be adjusted before exporting.
-
-  10.1. Exporting
-
-    1. From the Export/Import screen, tap Export PDF.
-    2. Choose what to include:
-         • All – every leg in the database.
-         • From – To – only legs whose Off-Block date falls
-           inside the chosen dates.
-         • Last N pages – only the last N printed pages.
-    3. Tap Generate. The app builds the PDF and writes it
-       directly to your Work Directory. No save dialog appears.
-       The filename is logbook_<date>.pdf. A toast confirms the
-       export.
-
-    If no Work Directory has been set yet, a folder picker
-    opens first; after you pick, the range dialog appears.
-
-10.2. What Appears on Each Page
-───────────────────────────────
-
-  • Header, left: "Owner: <name>". Hidden when the owner name is
-    empty.
-  • Header, centre: "Pilot Logbook".
-  • Header, right: the date range of the legs printed on that page.
-  • Table header with two rows.
-  • One row per leg.
-  • Three totals rows at the bottom of every page:
-       1. Total this page – the sum of every numeric column for the
-          legs printed on this page.
-       2. Total from previous page – every leg in the database up to
-          the end of the previous printed page, plus the Opening
-          Balance.
-       3. Total time – every leg in the database up to the end of the
-          current page, plus the Opening Balance.
-  • Merged Remarks cell across the three totals rows containing the
-    certification sentence, your signature if set, and your name at
-    the bottom.
-  • Page number at the bottom centre of the page.
-
-The Opening Balance (section 14) is never printed as a leg row. It
-only contributes to the running totals. Because of this, the very
-first printed page's Total from previous page already holds your
-prior experience. For a From-To range, the Opening Balance is added
-in full, regardless of whether its own start and end dates fall
-inside the chosen range.
-
-This behaviour applies to all three export ranges: All, From-To, and
-Last N pages. For a From-To range, the Opening Balance is added in
-full, regardless of whether its own start and end dates fall inside
-the chosen range.
-
-10.3. About Last N Pages
-────────────────────────
-
-This mode prints only the most recent N pages of your logbook, but the
-pages keep the numbers and the running totals they would have in the
-full logbook. For example, if your logbook currently fills 20 pages
-and you export the last 3, the resulting PDF contains pages numbered
-18/20, 19/20 and 20/20. Each of those pages contains exactly the rows,
-the totals and the page number that it would have if you exported the
-whole logbook.
-
-The Total from previous page row on page 18 includes every leg that
-was on pages 1 to 17, plus the Opening Balance, even though those
-pages are not in the file.
+The Last N pages export contains only the most recent N printed
+pages, but each page keeps its numbers, totals and page number as if
+the whole logbook were printed. For example, if your logbook fills 20
+pages and you export the last 3, the resulting PDF contains pages
+18/20, 19/20 and 20/20.
 
 If you enter a number larger than the current page count, the whole
-logbook is printed instead.
+logbook is printed.
 
-10.4. Configuring the PDF Layout
-────────────────────────────────
+9.4 Configuring the PDF layout
+──────────────────────────────
 
-From the same Export/Import screen, tap Format PDF. The settings
-screen lets you control:
+From Settings -> PDF/csv export format -> Format PDF:
 
-  • Rows per page – 13, 15, 18, 20 or 25. Default 18.
-  • PDF font – Sans-serif, Serif or Monospace.
-  • Alternate row background – shades every other leg row light grey.
-  • Owner name – printed in the header and at the bottom of the
-    Remarks cell.
-  • Signature – tap Set Signature and sign on the screen. Tap Set
-    Signature again to replace it, or Remove to delete it.
-  • Page layout – margins, title height, header row height, page
+  * Rows per page - 13, 15, 18, 20 or 25. Default 18.
+  * PDF font - Sans-serif, Serif or Monospace.
+  * Alternate row background.
+  * Owner name (printed in the header and at the bottom of the
+    Remarks cell).
+  * Signature - Set Signature to sign on the screen; Remove to
+    delete.
+  * Page layout - margins, title height, header row height, page
     number area.
-  • Column widths – date, place, time, aircraft model, aircraft
-    registration, duration, name of PIC, count, remarks.
-  • Text sizes – title, header, body, remarks, certification, owner.
-
-Beneath the column widths, the app shows a live scale indicator. The
-scale factor is applied to every column width and every text size, so
-the layout always fits the page edge to edge.
+  * Column widths.
+  * Text sizes.
+  * Live scale indicator.
 
 Set Defaults restores the layout fields (margins, heights, widths,
-text sizes, and font) to the factory values, setting the font to
-Sans-serif. It does not change your selected rows per page, owner
-name, or signature. Tap Save to keep your changes.
+text sizes, font) but not rows per page, owner name or signature.
+Tap Save to keep your changes.
 
-The Leg Items customization (section 11.5) affects only the on-screen
-Leg List; it does not change the PDF layout.
+Leg Items customization affects only the on-screen Leg List; it does
+not change the PDF layout.
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. EXPORT FROM THE LEG LIST (PDF AND CSV)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-10.5. Exporting from the Leg List
-─────────────────────────────────
+The export icon in the Leg List's filter row is for exporting what
+you are currently looking at, in two formats: PDF and CSV. This is
+not a backup (see section 8 for backups).
 
-    The export icon in the Leg List's top bar offers "Export CSV"
-    (not yet implemented) and "Export PDF".
+The exported file always contains exactly the legs currently shown:
 
-    When the current filter is All, "Export PDF" behaves exactly as
-    Export PDF on the Export/Import screen: it opens the range
-    dialog (All / From-To / Last N pages), then produces the standard
-    logbook PDF with totals rows, the certification sentence and
-    your signature. The filename is logbook_<date>.pdf.
+  * In normal mode, the legs matching the active filter.
+  * In search mode, the search results.
 
-    When the current filter is anything other than All, or when you
-    are on a search-results screen, "Export PDF" produces a
-    "filtered" PDF that contains only the legs currently shown:
+If no legs are shown, the export is blocked with a short message.
 
-      • Header: Owner (left), "Pilot Logbook" (centre), and either
-        the filter's date range or the literal text "filtered Legs"
-        (on search results) on the right.
-      • Two-row column header, identical to the standard logbook PDF.
-      • Body: rows per page plus three additional leg rows per page.
-      • Last page: one row fewer than the other pages, plus a single
-        "Total" row showing the durations and counts summed across
-        every filtered leg.
-      • No certification sentence, no signature, and no owner name at
-        the bottom.
-      • Footer: "Page N / M" (relative to this export) and the date
-        and time the PDF was generated.
+10.1 Export CSV (filtered)
+──────────────────────────
 
-    The filename is logbook_filtered_<date>.pdf.
+Tap the export icon, then Export CSV.
 
-    If no legs match the current filter or search, the export is
-    blocked with a short message.
+The format is configurable in Settings -> PDF/csv export format ->
+Format CSV:
 
+  * Format 1 - PDF columns. 24 columns matching the printed logbook
+    layout. Export-only; not importable.
+  * Format 2 - raw database values. Every field as stored.
+    Includes simulator legs.
+  * Format 3 - formatted database values. One date column, four
+    time-of-day columns, durations formatted as you choose.
+
+Date format (7 options) and duration format (4 options) are also
+configurable.
+
+Filename:
+  * logbook_export_*.csv when the filter is All (and not in search
+    mode).
+  * logbook_filtered_*.csv for any other filter, or a search result.
+
+Unlike the Backup CSV (section 8.3), this export:
+
+  * Contains only the current filtered set, not the whole logbook.
+  * Uses the format you configured, not the raw database format.
+
+10.2 Export PDF (filtered)
+──────────────────────────
+
+Tap the export icon, then Export PDF.
+
+When the filter is All (and not in search mode), Export PDF behaves
+exactly as Tools -> Export PDF (section 9.1): same range dialog, same
+standard logbook PDF, filename logbook_<date>.pdf.
+
+When the filter is anything else, or when you are on a
+search-results screen, Export PDF produces a "filtered" PDF
+containing only the legs currently shown:
+
+  * Header: owner (left), "Pilot Logbook" (centre), and either the
+    filter's date range or the literal "filtered Legs" (on search
+    results) on the right.
+  * Two-row column header, identical to the standard logbook PDF.
+  * Body: rows per page plus three additional leg rows per page.
+  * Last page: one row fewer than the other pages, plus a single
+    "Total" row showing the durations and counts summed across
+    every filtered leg.
+  * No certification sentence, no signature, no owner name at the
+    bottom.
+  * Footer: "Page N / M" and the generation timestamp.
+
+Filename: logbook_filtered_<date>.pdf.
+
+10.3 When the filter is All
+───────────────────────────
+
+With the filter set to All, the Leg List's export icon behaves as
+follows:
+
+  * Export CSV produces logbook_export_*.csv, in the format you
+    configured. It still contains every leg.
+  * Export PDF opens the same range dialog as Tools -> Export PDF
+    and produces the standard logbook PDF.
+
+10.4 Summary of formats and purposes
+────────────────────────────────────
+
+  * Backup JSON (section 8.2) - the full backup. Legs + Opening
+    Balance. Restorable.
+  * Backup CSV (section 8.3) - a human-readable, editable backup of
+    the legs. Restorable by import into an empty logbook.
+  * PDF from Tools (section 9) - printable logbook, full or ranged.
+  * Leg List CSV (section 10.1) - filtered export for any purpose.
+    Not a backup.
+  * Leg List PDF (section 10.2) - filtered PDF of the current legs.
+    Not a backup.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 11. PREFERENCES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Access Preferences from the Settings screen.
+Reached from Settings -> Preferences.
 
-11.1. Default Fields
-────────────────────
+11.1 Default Fields
+───────────────────
 
-Default Fields defines the values that a new, empty leg starts with.
-It does not affect existing legs.
+Defines what a new, empty leg starts with. Existing legs are not
+affected.
 
-  • Default is IFR – when checked, the IFR checkbox is ticked for
-    every new leg.
-  • Default Simu IFR Approach – the value written into Instrument
-    Approaches when a leg is a simulator session. The default when
-    never set is 5.
-  • Default Position – the value written into Position for a new leg.
+  * Default is IFR.
+  * Default Simu IFR Approach (default 5).
+  * Default Position.
+  * Default PIC name, SIC name, Cabin Crew, Jumpseat 1 and 2.
+  * Default Registration, Type, Flight Number Prefix, Departure
+    ICAO, Destination ICAO, Comment.
+  * Default off-block now.
+  * Default Simulator (three states: no default, true, false).
+  * Default Pilot Flying (same three states).
 
-Tap Save to store all three settings. They are read when you open a
-new leg.
+Tap Save to store.
 
-11.2. Custom Lists
-──────────────────
-
-Custom Lists lets you edit the suggested values for the Position and
-Category fields in the Leg Editor. The lists are only suggestions: you
-can always type any value in a leg.
-
-The same suggestion lists are used by the Opening Balance editor
-(section 14) for its Position and Category fields.
-
-The screen has two sections, one for Position and one for Category.
-Each section lists one row per value, with a remove button and an Add
-button.
-
-  • Reset to defaults – replaces the rows of the corresponding section
-    with the built-in default list.
-  • Save – trims each value, drops empty rows, and drops duplicates
-    while preserving your order.
-
-The built-in default lists are:
-
-  Position:   PIC, SIC, AugCrew, Dual, Instructor
-  Category:   Multi Pilot, Single Pilot SE, Single Pilot ME,
-              Helicopter, Glider
-
-Changes apply the next time you open the Leg Editor or the Opening
-Balance editor; already-open editors keep the lists they started with.
-
-11.3. Statistics Visibility
-───────────────────────────
-
-You can choose which statistics appear in the By Type statistics view.
-Uncheck any stat you don't want to see – it will be hidden. This does
-not affect the Month/Year view.
-
-11.4. Sun Calculator Default Altitude
-─────────────────────────────────────
-
-Set the default altitude in feet for the Flight Sun Calculator. The
-default is 37000 feet.
-
-11.5. Leg Items
-───────────────
-
-The Leg Items screen lets you customise the four lines of information
-shown on every leg card in the Leg List. It does not change the leg
-data itself, and it does not affect the PDF export.
-
-11.6. Backup / Restore Settings
-───────────────────────────────
-    Access: Preferences → Backup / Restore Settings.
-
-    This screen lets you save all your settings to a single JSON
-    file in your Work Directory, and restore them later. It is
-    separate from the logbook backup (section 8): the logbook
-    backup saves flights and Opening Balance; the settings
-    backup saves preferences.
-
-    Save Settings
-      Reads every preference and writes logbook_prefs_<date>.json
-      to your Work Directory. Includes default field values,
-      custom lists, Leg Items layout, PDF format, statistics
-      visibility, update settings, default altitude, and your
-      signature image (as PNG, stored inside the JSON file).
-
-    Restore Settings
-      Shows a confirm dialog ("This will replace your current
-      settings with the backup. Continue?").
-      After confirming, a list of logbook_prefs_*.json files in
-      your Work Directory appears, newest first. Pick one.
-      You can also tap "Browse elsewhere" to pick a settings
-      file from anywhere on your device.
-
-    What gets replaced
-      The settings that are present in the file overwrite your
-      current values. Settings absent from the file are left
-      untouched. Your Work Directory choice is not changed.
-
-    Signature
-      If the backup includes a signature, it replaces your
-      current signature. If the backup contains no signature,
-      your current signature is removed. If the signature cannot
-      be applied (for example the file is corrupt), the rest of
-      the settings are still restored and a warning appears.
-
-Opening Leg Items
+11.2 Custom Lists
 ─────────────────
 
-From the Settings screen: Preferences → Leg Items.
+Edit the suggested values for Position and Category in the Leg Editor
+and the Opening Balance editor. Only suggestions: you can still type
+any value.
 
-The screen shows:
+Two sections (Position, Category). Each has one row per value, a
+remove button and an Add button.
 
-  • A profile selector at the top.
-  • Buttons to manage profiles: New, Duplicate, Rename, Delete.
-  • Four row editors, one for each line of the leg card.
-  • A live preview card at the bottom.
-  • Restore Default and Save buttons.
+  * Reset to defaults - replaces the section's rows with the built-in
+    list.
+  * Save - trims each value, drops empty rows, drops duplicates while
+    preserving your order.
 
-Profiles
-────────
+Built-in defaults:
 
-A profile is a saved configuration of the four lines. You can keep
-several profiles and switch between them. Only one profile is active
-at a time.
+  Position: PIC, SIC, AugCrew, Dual, Instructor
+  Category: Multi Pilot, Single Pilot SE, Single Pilot ME,
+            Helicopter, Glider
 
-  • Default – a built-in profile that matches the app's original
-    layout. It cannot be edited and cannot be deleted.
-  • New – creates a new profile.
-  • Duplicate – same as New.
-  • Rename – changes the name of the current profile.
-  • Delete – removes the current profile. You cannot delete the
-    profile that is currently active.
+Changes apply the next time you open the Leg Editor or the Opening
+Balance editor.
 
-Editing a Row
-─────────────
+11.3 Statistics Visibility
+──────────────────────────
 
-Each of the four rows shows a list of items. An item is either a field
-(a value taken from the leg) or a text (a literal string you type).
+Choose which statistics appear in the By Type view. This does not
+affect the Month/Year view.
 
-  • Add Field – opens a dialog to add a field.
-  • Add Text – opens a dialog to add a literal text.
-  • Move up, move down, delete – reorder or remove an item.
-  • Tap an item to edit it.
+11.4 Sun Calculator default altitude
+────────────────────────────────────
 
-The Preview Card
-────────────────
+Default altitude in feet for the Flight Sun Calculator (default
+37000).
 
-The preview card uses a fixed sample leg so you always see something
-meaningful. It updates every time you change a row.
+11.5 Leg Items
+──────────────
 
-Saving
-──────
+Customise the four lines of each leg card in the Leg List.
 
-  • Save commits the current profile and makes it the active one.
-  • If you try to leave the screen with unsaved changes, the app asks
-    whether to Save, Discard, or Cancel.
+From Preferences -> Leg Items:
+
+  * Profile selector.
+  * New / Duplicate / Rename / Delete.
+  * Four row editors.
+  * Live preview.
+  * Restore Default / Save.
+
+Profiles:
+  * Default - built-in, read-only, cannot be deleted.
+  * New, Duplicate, Rename, Delete. You cannot delete the active
+    profile.
+
+Editing a row:
+  * Add Field - insert a field from the leg.
+  * Add Text - insert a literal text.
+  * Move up, down, delete. Tap an item to edit it.
+
+The preview uses a fixed sample leg and updates on each change.
+
+Save commits and makes the profile active. Leaving with unsaved
+changes prompts Save / Discard / Cancel.
+
+11.6 Backup / Restore Settings
+──────────────────────────────
+
+See section 17.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 12. UPDATES & VERSION MANAGEMENT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The Updates screen checks for new versions of the app. When a new
-version is available, you can download and install it directly. The
-app uses a secure HTTPS connection to fetch version information.
+Reached from Settings -> App. Update.
 
-12.1. Checking Manually
-───────────────────────
+12.1 Manual checks
+──────────────────
 
-Tap Check for App Update at any time. The app contacts the update
-server and shows one of the following messages: no update available,
-invalid updates information, could not reach update server, or an
-update-available dialog.
+Tap Check for App Update. The app contacts the update server and shows
+one of: no update available, invalid updates information, could not
+reach update server, or an update-available prompt.
 
-Every manual check records the current date and time in the Last Check
-line at the bottom of the screen.
+Every manual check records the current date and time in the Last
+Check line.
 
-12.2. Automatic Checks
-──────────────────────
+12.2 Automatic checks
+─────────────────────
 
-The app can also check for updates on its own, in the background. Two
-switches at the top of the Updates screen control this:
+Two switches at the top:
 
-  • Automatic check for updates – master switch. When OFF, the app
-    never checks automatically. When ON (the default), automatic
-    checks are allowed.
-  • Check on every app start – only meaningful when the master switch
-    is ON. When ON, the app checks every time you open it. When OFF
-    (the default), the app checks at most once every 7 days.
+  * Automatic check for updates - master switch. When OFF, no
+    automatic check runs. When ON (default), automatic checks are
+    allowed.
+  * Check on every app start - only meaningful when the master
+    switch is ON. When ON, the app checks every time you open it.
+    When OFF (default), the app checks at most once every 7 days.
 
-12.3. The Last Check Line
-─────────────────────────
+12.3 Last Check
+───────────────
 
-At the bottom of the Updates screen, you will see either "Last check:
-never" or "Last check: dd.MM.yyyy HH:mm". The date is shown in UTC.
+"Last check: never" or "Last check: dd.MM.yyyy HH:mm" (UTC).
 
-12.4. When an Update Is Found
-─────────────────────────────
+12.4 When an update is found
+────────────────────────────
 
-Whether the update was found by an automatic or manual check,
-the flow is the same from the moment the update is confirmed:
+  1. The app prepares a verified backup of your logbook in the work
+     directory. If no work directory is set, a folder picker opens;
+     the backup and download resume once you pick.
+  2. If the backup cannot be verified, a warning dialog appears:
+     "Old database is not saved. Continue anyway?". Choose Continue
+     to proceed with the download anyway, or Cancel to stop.
+  3. An "Update Available" dialog appears with Download / Later.
+  4. Tap Download. The update is handed to your device's download
+     service. You can leave the app; the download continues in the
+     background with a system notification.
+  5. When the download finishes, tap the completed notification to
+     open the file. Your device's installer (or Files app) opens and
+     offers to install.
 
-      1. The app prepares a verified backup of your logbook in
-         your Work Directory. If no Work Directory is set, a
-         folder picker opens; the backup and download resume
-         once you pick. If the backup cannot be verified, the
-         update does not proceed.
-      2. A dialog appears with the title "Update Available".
-         Two buttons: Download and Later.
-      3. If you tap Download, the update is handed to your
-         device's download service. You can leave the app — the
-         download continues in the background, and a system
-         notification shows its progress.
-      4. When the download finishes, the system notification
-         changes to completed. Tap it to open the file. Your
-         device's installer (or Files app) opens and offers to
-         install the update.
+Tapping Later does nothing else. The next auto check respects the
+7-day throttle.
 
-    If you tap Later, nothing else happens. The next auto-check
-    will respect the 7-day throttle.
+12.5 The download
+─────────────────
 
+Updates are always downloaded to your device's Downloads folder and
+opened by the system when you tap the completed notification. You can
+also find the file in your Downloads folder or Files app.
 
-12.5. About the Download
-──────────────────────────
-
-    Updates are always downloaded to your device's Downloads
-    folder. The file is opened by the system when you tap the
-    completed notification. You can also find it in your
-    Downloads folder or Files app at any time.
-
-    The app does not download in the background on its own.
-    Downloads only start when you tap Download in the update
-    dialog.
+The app does not download in the background on its own. Downloads
+only start when you tap Download.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 13. OPENING BALANCE (PRIOR EXPERIENCE)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The Opening Balance records flight experience you accumulated before
-you started using this app. Its purpose is to make the totals shown in
-the Leg List, in Statistics, and in the PDF logbook reflect your full
-career, not just the flights you entered into the app.
+Records flight experience accumulated before you started using this
+app. Its purpose is to make the totals in the Leg List, Statistics and
+the PDF reflect your full career.
 
 The Opening Balance is never shown as a flight leg.
 
-13.1. How to Reach It
-  Settings → Opening Balance.
+13.1 Reaching it
+────────────────
 
-13.2. Two Ways to Enter Your Prior Experience
-  Detailed entry: one row per aircraft type, position, category, or
-  any grouping that makes sense to you.
+Tools -> Opening Balance (anterior flights).
 
-  Last-total-line entry: a single row holding the cumulative totals
-  printed on the last page of your paper logbook. Leave the type,
-  position and category empty in that row.
+13.2 Entering your prior experience
+───────────────────────────────────
 
-13.3. Adding a Row
-  From the list, tap Add. Fill in any of the fields you need. All
-  fields are optional.
+Two styles, which can coexist:
 
-13.4. What Fills Itself In
-  Block, Flight, IFR groups: when you enter a value and leave the
-  field, the missing value is calculated from the other two (Night
-  is the reference).
+  * Detailed - one row per aircraft type, position, category, or any
+    grouping that makes sense to you.
+  * Last-total-line - a single row holding the cumulative totals
+    printed on the last page of your paper logbook. Leave type,
+    position and category empty in that row.
 
-  Takeoff and Landing groups: same rule.
+Any number of rows is allowed. All rows are summed whenever the app
+needs a single figure.
 
-  Category and pilot-function times: when you enter a block total
-  and a category, the three Single-Pilot and Multi-Pilot fields are
-  filled in. When you enter a block total and a position, the four
-  Pilot Function fields are filled in. Recalculations replace any
-  value you typed earlier.
+13.3 Adding a row
+─────────────────
 
-13.5. Editing a Row
-  Tap any row to open it. Change any field, then Save. Tap Cancel to
-  discard changes. Tap Delete to remove the row.
+From the list, tap Add. All fields are optional.
 
-13.6. How the Opening Balance Affects the Rest of the App
-  • Leg List summary card: added to the three totals when the filter
-    is All.
-  • Statistics By Type: contributes to the matching position column,
-    or to a Prior column when the row has no position.
-  • Statistics By Month/Year: a Prior row shows the balance totals.
-  • PDF logbook: contributes to the running totals, never printed as
+13.4 Auto-fill
+──────────────
+
+Block, Flight and IFR groups (Total, Night, Day): entering two of the
+three calculates the third. Night is the reference. When all three
+already have values and you edit one, the reference is always Night.
+A calculated value of zero is stored empty. Negative results are left
+empty.
+
+Takeoff and Landing groups: same rule with Day, Night, Total.
+
+Category and pilot-function times:
+  * When you enter a Block Total and a Category, the three
+    single-pilot/multi-pilot fields are filled in.
+  * When you enter a Block Total and a Position, the four pilot-
+    function fields are filled in.
+  * Recalculations replace any value you typed earlier.
+
+13.5 Editing / deleting
+───────────────────────
+
+Tap a row to open it. Change any field and tap Save. Cancel discards.
+Delete removes the row.
+
+13.6 How the Opening Balance affects the app
+────────────────────────────────────────────
+
+  * Leg List summary card: added to the three time totals when the
+    filter is All.
+  * Statistics By Type: contributes to the matching position column,
+    or a Prior column when the row has no position.
+  * Statistics By Month/Year: a Prior row shows the balance totals.
+  * PDF logbook: contributes to the running totals, never printed as
     a leg row.
 
-13.7. Things to Keep in Mind
-  • The Opening Balance is part of a JSON backup. Restoring an old
-    backup (created before this feature) leaves it untouched.
-  • The Opening Balance is not part of CSV export or import.
-  • Delete All on the Backup screen removes legs only.
+13.7 Things to keep in mind
+───────────────────────────
+
+  * The Opening Balance is part of a JSON backup.
+  * Restoring an old backup (created before this feature) leaves your
+    current Opening Balance untouched.
+  * The Opening Balance is not part of CSV export or import.
+  * Delete All on the Backup screen clears the Opening Balance as
+    well. If you want to keep the balance across a Delete All, make
+    sure your JSON backup includes it (any current backup does) and
+    restore it afterwards.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-14. FILES AND DATA STORAGE
+14. FILES, DATA STORAGE & PRIVACY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-All data is stored locally on your device. No data is sent to any
-server. Your privacy is fully respected.
-
-14.1. Internal Storage
+14.1 Internal storage
 ─────────────────────
 
-    The app stores its private data in its internal storage
-    directory:
-      • logbook_database – SQLite database containing legs and
-        Opening Balance.
-      • airports.json – base airport database (created on first
-        airport-related use).
-      • airports_user.json – your airport modifications.
-      • airports.cache – serialized cache of the merged airport
-        database.
-      • pdf_signature.png – your signature image (if set).
+The app stores its private data in its internal storage directory:
 
-    Your Leg Items profiles and every other preference are
-    stored in the app's private preferences.
+  * logbook_database - SQLite database containing legs and Opening
+    Balance.
+  * airports.json - base airport database (created on first
+    airport-related use).
+  * airports_user.json - your airport modifications.
+  * airports.cache - cache of the merged airport database.
+  * pdf_signature.png - your signature image (if set).
 
-14.2. Work Directory and Export Files
-─────────────────────────────────────
-    A single folder, called the Work Directory, receives every
-    file the app creates for you:
-      • logbook_backup_*.json – logbook backups.
-      • logbook_export_*.csv – CSV exports.
-      • logbook_filtered_*.csv – CSV exports of a filter or search
-        result (Leg List export icon only).
-      • logbook_*.pdf – PDF exports.
-      • logbook_prefs_*.json – settings backups.
+Your Leg Items profiles and every other preference are stored in the
+app's private preferences.
 
-    The Work Directory is a subfolder named PilotLogbookFoss
-    inside the folder you pick. You pick the parent folder once.
-    The app keeps the 10 most recent logbook backups and deletes
-    older ones automatically; the other files are not rotated.
-
-    Airport database exports (section 7.3) and update APK downloads
-    go to your device's Downloads folder instead, and are not part
-    of the Work Directory.
-
-14.3. Clearing Data
+14.2 Work Directory
 ───────────────────
 
-The app provides functions to clear data. Each is separate:
+A single folder, called the Work Directory, receives every file the
+app creates for you:
 
-  • Backup → Delete All – deletes legs only.
-  • Airports → Clear User Modifications – deletes your airport
-    modifications.
-  • Airports → Delete Entire Database – deletes the whole airport
-    database.
-  • Settings → Opening Balance – delete rows one by one from the list.
+  * logbook_backup_*.json - logbook backups.
+  * logbook_export_*.csv - CSV exports of the full logbook.
+  * logbook_filtered_*.csv - CSV exports of a filtered list or
+    search result.
+  * logbook_*.pdf - PDF exports (All filter).
+  * logbook_filtered_*.pdf - PDF exports of a filtered list or
+    search result.
+  * logbook_prefs_*.json - settings backups.
+
+The Work Directory is a subfolder named PilotLogbookFoss inside the
+folder you pick. You pick the parent folder once. The app keeps the
+10 most recent logbook backups and deletes older ones automatically;
+the other files are not rotated.
+
+Airport database exports go to your device's Downloads folder, not
+the Work Directory. Update APK downloads also go to Downloads.
+
+14.3 Clearing data
+──────────────────
+
+Each function is separate:
+
+  * Tools -> Backup Logbook -> Delete All Logbook Datas - clears the
+    legs table and the Opening Balance.
+  * Tools -> Airports DB -> Clear User Modifications - removes your
+    airport modifications.
+  * Tools -> Airports DB -> Delete Entire Database - removes the
+    whole airport database.
+  * Tools -> Opening Balance - delete rows one by one from the list.
 
 Clearing the logbook does not remove your Leg Items profiles, your
-Opening Balance, or your update-check settings.
+update-check settings, or your preferences.
 
-14.4. First Launch
-───────────────────
-    On first launch, the app does not copy the airport database
-    yet, does not create a Work Directory, and does not create
-    any export or backup file. The airport database is copied
-    the first time an airport-related screen opens. The Work
-    Directory is created the first time you use a feature that
-    needs it (Backup, CSV, PDF, Updates, or Backup / Restore
-    Settings) and you pick a parent folder.
+14.4 First launch
+─────────────────
+
+On first launch, the app does not copy the airport database yet, does
+not create a Work Directory, and does not create any export or backup
+file. The airport database is copied the first time an airport-
+related screen opens. The Work Directory is created the first time
+you use a feature that needs it and you pick a parent folder.
+
+14.5 Privacy
+────────────
+
+All logbook data stays on your device. The app does not collect
+personal information, does not use analytics, does not track usage,
+and does not send any logbook data to any server.
+
+The app makes two outbound network operations, both under your
+control, and both of which send only a request without any personal
+data:
+
+  * Update check - the app contacts a public release information
+    endpoint to determine whether a newer version exists. The
+    request carries no personal data. It happens on Home at start,
+    subject to your preferences (section 12.2), and on the Updates
+    screen when you tap Check.
+
+  * Airport database download - the app contacts a public server for
+    a JSON file of airport data, and only when you tap Update
+    Airport DB on the Airports screen (section 7.2).
+
+No other outbound network operations exist.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 15. SUPPORT & TROUBLESHOOTING
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-15.1. Common Issues
-───────────────────
+15.1 Common issues
+──────────────────
 
-Logbook — input and saving
-  • Invalid input fields – if a field turns yellow, the format is
-    incorrect. Check section 4.4 and correct it.
-  • Instrument Approaches fills with 1 or clears unexpectedly – this
-    is by design. It is set to 1 when IFR Total is greater than zero
-    and Pilot Flying is ticked, but only if the field is currently
-    empty. It is cleared when either condition is not met.
-  • IFR fields do not update when I edit Flight Total or Flight Night
-    – IFR fields are only copied from flight time when the IFR
+Logbook - input and saving
+  * Invalid input fields - if a field turns yellow, the format is
+    incorrect. Check section 4.4 and correct.
+  * Instrument Approaches fills with 1 or clears unexpectedly - by
+    design. Set to 1 when IFR Total > 0 and Pilot Flying is checked,
+    and only if the field is currently empty. Cleared when either
+    condition is no longer met.
+  * IFR fields do not update when I edit Flight Total or Flight
+    Night - IFR fields are copied from flight time only when the IFR
     checkbox is ticked.
 
 Opening Balance
-  • The Prior row in Statistics Month/Year is not where I expected –
+  * The Prior row in Statistics Month/Year is not where I expected -
     its position depends on the earliest start date you entered. If
-    you did not enter a start date, the Prior row appears at the
-    bottom of the list.
-  • The Leg List summary card does not include my Opening Balance –
+    you did not enter one, the Prior row appears at the bottom.
+  * The Leg List summary card does not include my Opening Balance -
     the balance is only added when the filter is All.
-  • My Opening Balance is missing after restoring a backup – this is
-    by design for backups created before the feature existed. New
-    backups include the Opening Balance.
-  • My Opening Balance is still present after using Delete All on the
-    Backup screen – Delete All removes legs only. To remove the
-    Opening Balance, open Settings → Opening Balance and delete each
-    row individually.
-  • The first page's Total from previous page is not zero – this is
-    by design. If you have recorded an Opening Balance, it appears in
-    that row.
+  * My Opening Balance is missing after restoring a backup - if the
+    backup was created before this feature, its absence is by
+    design. Current backups include the Opening Balance.
+  * My Opening Balance is gone after Delete All - by design. Delete
+    All clears both the legs and the Opening Balance (section 8.3).
+  * The first page's Total from previous page is not zero - by
+    design. The Opening Balance appears in that row.
 
 Airports
-  • Airport not found – the airport may not be in the database.
+  * Airport not found - the airport may not be in the database.
     Update the database or add it manually.
 
 Backup and CSV
-  • Backup fails – check that you have granted storage permissions,
-    if required, and that the backup folder is accessible.
-  • CSV import blocked – if the app cannot create and verify a backup
-    of your current logbook before importing, the import will not
-    start.
-  • The CSV from the Leg List export icon does not look the same as
-    the one from the Export/Import screen – this is by design.
-    Export/Import always produces the fixed 39-column format with
-    ISO timestamps. Leg List produces a CSV whose format you control
-    in Settings → Export format → Format CSV. See section 9.3.
-  • My CSV has separate date and time columns – Format 3 is
-    selected. Switch to Format 2 (raw) in Settings → Export
-    format → Format CSV for a single column per timestamp, or use
-    Format 1 for the PDF-like 24-column layout.
-  • Legs with "isSimulator = true" are missing from my Leg List CSV
-    – the "Include simulator legs" checkbox is off. Turn it on in
-    Settings → Export format → Format CSV, or select Format 2 (raw),
-    which always includes simulator legs.
+  * Backup fails - check that the work directory is accessible. If
+    the operation was a restore, delete-all, CSV import or update,
+    a warning dialog lets you continue without the backup.
+  * CSV import blocked - if the app cannot create and verify a
+    backup of your current logbook before importing, a warning
+    dialog appears. Continue to import anyway or Cancel.
+  * The CSV from the Leg List export icon does not look the same as
+    the one from Tools -> Backup Logbook -> Export Logbook - by
+    design. Tools -> Backup Logbook always produces the raw
+    database format. The Leg List export format is set in
+    Settings -> PDF/csv export format -> Format CSV.
+  * My CSV has separate date and time columns - Format 3 is
+    selected. Switch to Format 2 (raw) for a single column per
+    timestamp, or use Format 1 for the PDF-like 24-column layout.
+  * Legs with isSimulator = true are missing from my Leg List CSV -
+    the "Include simulator legs" checkbox is off. Turn it on, or
+    select Format 2 (raw), which always includes them.
+  * Importing the same file twice gives me duplicates - import is
+    additive, not replacing. Use Delete All before re-importing.
 
 PDF
-  • PDF fonts look different from what I chose – if the font file is
-    unavailable, the app falls back to the built-in Sans-serif.
-    Reopen Format PDF and confirm your choice is still selected.
-  • Numbers do not line up perfectly in the PDF – choose Monospace
-    in Format PDF; the digits then occupy identical widths.
-  • Last N pages exported fewer or more pages than expected – the
-    number is the count of printed pages, not the count of flight
-    legs. If you enter a number greater than the total pages your
-    logbook currently fills, the whole logbook is printed.
-  • The first page's total from previous page is not zero – this is
-    by design. If you have recorded an Opening Balance, it appears
-    in that row.
-  • Export PDF from the Leg List produces a different PDF than
-    Export PDF from the Export/Import screen – this is by design.
-    When the current filter is All, the Leg List reuses the
-    Export/Import flow. When the filter is anything else, or when
-    you are on search results, a "filtered" PDF is produced. See
-    section 10.5.
-  • The filtered PDF has no certification sentence, no signature and
-    no owner name – by design; those elements belong to the standard
+  * PDF fonts look different from what I chose - if the font is
+    unavailable the app falls back to Sans-serif. Reopen Format PDF
+    and confirm the choice.
+  * Numbers do not line up perfectly - choose Monospace in Format
+    PDF.
+  * Last N pages exported a different number of pages than I asked -
+    N is the count of printed pages, not of flight legs. If N is
+    greater than the total pages, the whole logbook is printed.
+  * The first page's Total from previous page is not zero - by
+    design. The Opening Balance appears in that row.
+  * Export PDF from the Leg List produces a different PDF from
+    Tools -> Export PDF - by design. With filter = All, the Leg
+    List reuses the Tools flow. Any other filter, or a search
+    result, produces the "filtered" PDF (section 10.5).
+  * The filtered PDF has no certification, no signature and no
+    owner name - by design; those elements belong to the standard
     logbook PDF only.
-  • The filtered PDF ends with a "Total" row – it shows the sum of
+  * The filtered PDF ends with a Total row - it shows the sum of
     the duration and count columns across every filtered leg, not
-    just the legs on the last page.
+    just the last page.
 
 Search
-  • My search for a specific time returns legs on every date – this
-    is by design. A time-only timestamp condition compares the time
-    of day, ignoring the date.
-  • Not-equals includes legs whose field is empty. To exclude empty
-    fields, add a second condition for the same field with not-equals
-    and an empty value, and use AND logic.
+  * My search for a specific time returns legs on every date - by
+    design. A time-only timestamp condition compares the time of
+    day, ignoring the date.
+  * Not-equals includes legs whose field is empty. To exclude empty
+    fields, add a second condition for the same field with
+    not-equals and an empty value, and use AND.
 
 Statistics
-  • A statistic is missing from the By Type view – check that it is
-    ticked on Preferences → Statistics Visibility.
-  • The Legs count is lower than the number of legs I entered – the
+  * A statistic is missing from the By Type view - check that it is
+    ticked in Preferences -> Statistics Visibility.
+  * The Legs count is lower than the number of legs I entered - the
     count excludes simulator sessions by design.
-  • The Month/Year view shows the whole logbook even though I
-    filtered the Leg List – by design. Only By Type uses the Leg List
-    filter.
-  • There is a Prior row at the top or in the middle of the year list
-    – this is your Opening Balance. Its position is determined by the
-    earliest start date you entered for the balance.
+  * The Month/Year view shows the whole logbook even though I
+    filtered the Leg List - by design. Only By Type uses the Leg
+    List filter.
+  * There is a Prior row at the top or middle of the year list -
+    this is your Opening Balance. Its position depends on the
+    earliest start date you entered.
 
 Leg Items
-  • My Leg List still shows the old card layout after I saved a new
-    profile – the Leg List picks up the active profile the next time
-    it is opened.
-  • The Delete button on Leg Items shows "Can NOT Delete Active
-    Profile" – you cannot delete the profile currently in use. Switch
-    to a different profile first.
-  • I cannot edit the Default profile – by design.
-  • Position or Category suggestions do not include a value I added
-    in Custom Lists – changes to Custom Lists apply the next time you
-    open the Leg Editor or the Opening Balance editor.
+  * My Leg List still shows the old card layout after I saved a new
+    profile - the Leg List picks up the active profile the next
+    time it opens.
+  * The Delete button on Leg Items shows "Can NOT Delete Active
+    Profile" - you cannot delete the profile currently in use.
+    Switch to a different profile first.
+  * I cannot edit the Default profile - by design.
+  * Position or Category suggestions do not include a value I added
+    in Custom Lists - changes apply the next time you open the Leg
+    Editor or Opening Balance editor.
 
-Updates:
+Updates
+  * The app never checks for updates automatically - open Updates
+    and check that Automatic check for updates is ON.
+  * The app is not checking on every start - Check on every app
+    start may be OFF, or the 7-day timer has not expired.
+  * Last check does not change when I open the app - by design. An
+    automatic check that cannot reach the server does not update
+    the timestamp.
+  * The Update Available dialog reappears after rotation - by
+    design. The dialog is preserved across rotation.
+  * I tapped Download but nothing happened - the download service
+    did not accept the request. Retry. The file is not on your
+    device until the system notification shows progress.
+  * I tapped Download and closed the app - the download continues
+    in the background. Look at the system notification.
+  * My update installed automatically - it did not. The app never
+    installs silently. The system notification opens the file; you
+    must confirm in the system installer.
+  * A "Backup failed" dialog appeared during the update - the app
+    could not verify its logbook backup before the download. Tap
+    Continue to proceed anyway, or Cancel to stop.
 
-  • The app never checks for updates automatically — open
-    Updates and check that Automatic check for updates is ON.
-  • The app is not checking on every start — Check on every app
-    start may be OFF, or the 7-day timer has not expired yet.
-  • Last check does not change when I open the app — by design.
-    An automatic check that cannot reach the server does not
-    count.
-  • Update Available dialog reappears after I rotate my phone —
-    by design. The dialog is preserved across rotation.
-  • I tapped Download but nothing happened — the download
-    service did not accept the request. Retry. The file is not
-    on your device until the system notification shows
-    progress.
-  • I tapped Download and closed the app — the download
-    continues in the background. Look at the system
-    notification.
-  • My update installed automatically — it did not. The app
-    never installs silently. The system notification opens the
-    file; you must confirm the install in the system installer.
+15.2 Getting help
+─────────────────
 
-15.2. Getting Help
-──────────────────
+If you encounter any issues or have questions, refer to the online
+help or contact support at freedrafat@proton.me
 
-If you encounter any issues or have questions, please refer to the
-online help or contact support at freedrafat@proton.me
+15.3 Privacy
+────────────
 
-15.3. Privacy
-─────────────
-
-All data remains on your device. The app does not collect any personal
-information, nor does it send any data to external servers.
+See section 14.5.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 16. WORK DIRECTORY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  The Work Directory is where the app writes every logbook-
-  related file: JSON backups, CSV exports, PDF exports, and
-  settings backups. You choose it once, and the app remembers.
+The Work Directory is where the app writes every logbook-related file:
+JSON backups, CSV exports, PDF exports, and settings backups. You
+choose it once; the app remembers it.
 
-  How to set it
-    Open any of the following:
-      • Settings → Work Directory
-      • Settings → Backup → Backup Logbook
-      • Settings → Export/Import → Export CSV, Export PDF, or
-        Import CSV
-      • Preferences → Backup / Restore Settings → Save Settings
-        or Restore Settings
-      • Settings → App Update, if an update is found
+How to set it
+  Open any of the following and use its folder picker:
+    * Settings -> Work Directory
+    * Tools -> Backup Logbook (Backup, Restore, Export CSV, Import
+      CSV, Delete All)
+    * Tools -> Export PDF
+    * Preferences -> Backup / Restore Settings -> Save / Restore
+    * Settings -> App. Update, if an update is found
 
-    A single folder, called the Work Directory, receives every
-    file the app creates for you:
-      • logbook_backup_*.json – logbook backups.
-      • logbook_export_*.csv – CSV exports.
-      • logbook_*.pdf – PDF exports (All filter).
-      • logbook_filtered_*.pdf – PDF exports of a filter or search
-        result.
-      • logbook_prefs_*.json – settings backups.
+Files written there
+    * logbook_backup_*.json
+    * logbook_export_*.csv
+    * logbook_filtered_*.csv
+    * logbook_*.pdf
+    * logbook_filtered_*.pdf
+    * logbook_prefs_*.json
 
-  How to change it
-    Open Settings → Work Directory. The picker opens at your
-    current folder. Pick a new one. Files already written stay
-    in the old folder; new files go to the new one.
+How to change it
+  Settings -> Work Directory. The picker opens at your current folder.
+  Files already written stay in the old folder; new files go to the
+  new one.
 
-  What happens if the folder becomes unavailable
-    If the folder is deleted or its permission is revoked, the
-    next time you use a feature that needs it the app tells you
-    and asks you to pick it again. Files already written inside
-    it are not deleted by the app.
+What happens if the folder becomes unavailable
+  If the folder is deleted or its permission is revoked, the next time
+  you use a feature that needs it, the app tells you and asks you to
+  pick it again. Files already written inside it are not deleted by
+  the app.
 
-  What goes to Downloads instead
-    Airport database exports and, if you disable auto-install,
-    update APK downloads. These are one-off files that go to
-    your Downloads folder, not the Work Directory.
+What goes to Downloads instead
+  Airport database exports, and update APK downloads. These are one-
+  off files that go to your Downloads folder, not the Work Directory.
 
-── NEW §17 SETTINGS BACKUP / RESTORE ──
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+17. SETTINGS BACKUP / RESTORE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Settings Backup lets you save your preferences to a file and
-  restore them later, for example when you move to a new phone.
-  It is separate from the logbook backup.
+Settings Backup saves your preferences to a file and restores them
+later, for example when you move to a new phone. It is separate from
+the logbook backup (section 8).
 
-  What it saves
-    Update settings, default Leg Editor fields, custom suggest
-    lists, Leg Items card layout, PDF format settings, statistics
-    visibility, default Sun Calculator altitude, and your
-    signature image.
+What it saves
+  Update settings, default Leg Editor fields, custom suggest lists,
+  Leg Items card layout, PDF format settings, statistics visibility,
+  default Sun Calculator altitude, and your signature image.
 
-  What it does not save
-    Your flights (that is the logbook backup), your airport
-    database, your Work Directory choice, or your Opening
-    Balance.
+What it does not save
+  Your flights (that is the logbook backup), your airport database,
+  your Work Directory choice, or your Opening Balance.
 
-  Where the file goes
-    The Work Directory. Filename: logbook_prefs_<date>.json.
+Where the file goes
+  The Work Directory. Filename: logbook_prefs_<date>.json.
 
-  How to use it
-    1. On your old phone, open Preferences → Backup / Restore
-       Settings → Save Settings.
-    2. Copy the logbook_prefs_*.json file from the Work
-       Directory to your new phone's Work Directory (or to any
-       accessible location).
-    3. On your new phone, open Preferences → Backup / Restore
-       Settings → Restore Settings.
-    4. Confirm the dialog, pick the file, done.
+How to use it
+  1. On your old phone, open Preferences -> Backup / Restore
+     Settings -> Save Settings.
+  2. Copy the logbook_prefs_*.json file from the Work Directory to
+     your new phone's Work Directory (or any accessible location).
+  3. On the new phone, open Preferences -> Backup / Restore
+     Settings -> Restore Settings.
+  4. Confirm the dialog, pick the file, done.
 
-  Signature in the backup
-    Your signature image is stored inside the JSON file. On
-    restore it is written to the app's internal storage and set
-    as your current signature automatically.
+Signature in the backup
+  Your signature image is stored inside the JSON file. On restore it
+  is written to the app's internal storage and set as your current
+  signature automatically.
 
 ───────────────────────────────────────────────────────────────────────
-Thank you for using the Logbook & Flight Tools app. We hope it makes
-your flying and logging easier and more enjoyable!
+Thank you for using the Logbook & Flight Tools app.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

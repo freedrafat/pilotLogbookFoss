@@ -51,26 +51,15 @@ class SettingsActivity : BaseActivity() {
         refreshWorkDirectoryDisplay()
 
         // --- Button listeners ---
-        findViewById<Button>(R.id.btn_backup).setOnClickListener {
-            startActivity(Intent(this, BackupActivity::class.java))
-        }
+
         findViewById<Button>(R.id.btn_work_directory).setOnClickListener {
             workDirectoryPickerLauncher.launch(FileManager.workDirectoryPickerInitialUri(this))
-        }
-        findViewById<Button>(R.id.btn_export_import).setOnClickListener {
-            startActivity(Intent(this, ExportImportActivity::class.java))
         }
         findViewById<Button>(R.id.btn_preferences).setOnClickListener {
             startActivity(Intent(this, PreferencesActivity::class.java))
         }
-        findViewById<Button>(R.id.btn_airports).setOnClickListener {
-            startActivity(Intent(this, AirportsActivity::class.java))
-        }
         findViewById<Button>(R.id.btn_updates).setOnClickListener {
             startActivity(Intent(this, UpdatesActivity::class.java))
-        }
-        findViewById<Button>(R.id.btn_opening_balance).setOnClickListener {
-            startActivity(Intent(this, OpeningBalanceListActivity::class.java))
         }
         findViewById<Button>(R.id.btn_export_format).setOnClickListener {
             startActivity(Intent(this, SettingsExportFormatActivity::class.java))

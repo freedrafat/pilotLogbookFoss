@@ -152,70 +152,70 @@ object FileManager {
 
     // ---------- CSV ----------
 
-    fun serializeLegsToCsv(legs: List<Leg>): String {
-        val header = listOf(
-            "id", "position", "picName", "sicName", "jumpseat1", "jumpseat2",
-            "cabinCrew", "acRegistration", "acType", "flightNumber", "category",
-            "isSimulator", "icaoDeparture", "icaoDestination",
-            "offBlock", "takeoff", "landing", "onBlock", "sunrise", "sunset",
-            "blockTimeDay", "blockTimeNight", "blockTimeTotal",
-            "flightTimeDay", "flightTimeNight", "flightTimeTotal",
-            "simulatorTime",
-            "ifrDay", "ifrNight", "ifrTotal",
-            "numberToDay", "numberToNight", "numberToTotal",
-            "numberLdgDay", "numberLdgNight", "numberLdgTotal",
-            "numberInstrumentApproaches",
-            "isPilotFlying", "remarks"
-        )
-        val lines = mutableListOf<String>()
-        lines.add(header.joinToString(",") { it })
-
-        for (leg in legs) {
-            val row = listOf(
-                leg.id.toString(),
-                quote(leg.position),
-                quote(leg.picName),
-                quote(leg.sicName),
-                quote(leg.jumpseat1),
-                quote(leg.jumpseat2),
-                quote(leg.cabinCrew),
-                quote(leg.acRegistration),
-                quote(leg.acType),
-                quote(leg.flightNumber),
-                quote(leg.category),
-                if (leg.isSimulator == true) "true" else if (leg.isSimulator == false) "false" else "",
-                quote(leg.icaoDeparture),
-                quote(leg.icaoDestination),
-                formatTimestampIsoUtc(leg.offBlock),
-                formatTimestampIsoUtc(leg.takeoff),
-                formatTimestampIsoUtc(leg.landing),
-                formatTimestampIsoUtc(leg.onBlock),
-                formatTimestampIsoUtc(leg.sunrise),
-                formatTimestampIsoUtc(leg.sunset),
-                leg.blockTimeDay?.toString() ?: "",
-                leg.blockTimeNight?.toString() ?: "",
-                leg.blockTimeTotal?.toString() ?: "",
-                leg.flightTimeDay?.toString() ?: "",
-                leg.flightTimeNight?.toString() ?: "",
-                leg.flightTimeTotal?.toString() ?: "",
-                leg.simulatorTime?.toString() ?: "",
-                leg.ifrDay?.toString() ?: "",
-                leg.ifrNight?.toString() ?: "",
-                leg.ifrTotal?.toString() ?: "",
-                leg.numberToDay?.toString() ?: "",
-                leg.numberToNight?.toString() ?: "",
-                leg.numberToTotal?.toString() ?: "",
-                leg.numberLdgDay?.toString() ?: "",
-                leg.numberLdgNight?.toString() ?: "",
-                leg.numberLdgTotal?.toString() ?: "",
-                leg.numberInstrumentApproaches?.toString() ?: "",
-                if (leg.isPilotFlying == true) "true" else if (leg.isPilotFlying == false) "false" else "",
-                quote(leg.remarks)
-            )
-            lines.add(row.joinToString(","))
-        }
-        return lines.joinToString("\n")
-    }
+//    fun serializeLegsToCsv(legs: List<Leg>): String {
+//        val header = listOf(
+//            "id", "position", "picName", "sicName", "jumpseat1", "jumpseat2",
+//            "cabinCrew", "acRegistration", "acType", "flightNumber", "category",
+//            "isSimulator", "icaoDeparture", "icaoDestination",
+//            "offBlock", "takeoff", "landing", "onBlock", "sunrise", "sunset",
+//            "blockTimeDay", "blockTimeNight", "blockTimeTotal",
+//            "flightTimeDay", "flightTimeNight", "flightTimeTotal",
+//            "simulatorTime",
+//            "ifrDay", "ifrNight", "ifrTotal",
+//            "numberToDay", "numberToNight", "numberToTotal",
+//            "numberLdgDay", "numberLdgNight", "numberLdgTotal",
+//            "numberInstrumentApproaches",
+//            "isPilotFlying", "remarks"
+//        )
+//        val lines = mutableListOf<String>()
+//        lines.add(header.joinToString(",") { it })
+//
+//        for (leg in legs) {
+//            val row = listOf(
+//                leg.id.toString(),
+//                quote(leg.position),
+//                quote(leg.picName),
+//                quote(leg.sicName),
+//                quote(leg.jumpseat1),
+//                quote(leg.jumpseat2),
+//                quote(leg.cabinCrew),
+//                quote(leg.acRegistration),
+//                quote(leg.acType),
+//                quote(leg.flightNumber),
+//                quote(leg.category),
+//                if (leg.isSimulator == true) "true" else if (leg.isSimulator == false) "false" else "",
+//                quote(leg.icaoDeparture),
+//                quote(leg.icaoDestination),
+//                formatTimestampIsoUtc(leg.offBlock),
+//                formatTimestampIsoUtc(leg.takeoff),
+//                formatTimestampIsoUtc(leg.landing),
+//                formatTimestampIsoUtc(leg.onBlock),
+//                formatTimestampIsoUtc(leg.sunrise),
+//                formatTimestampIsoUtc(leg.sunset),
+//                leg.blockTimeDay?.toString() ?: "",
+//                leg.blockTimeNight?.toString() ?: "",
+//                leg.blockTimeTotal?.toString() ?: "",
+//                leg.flightTimeDay?.toString() ?: "",
+//                leg.flightTimeNight?.toString() ?: "",
+//                leg.flightTimeTotal?.toString() ?: "",
+//                leg.simulatorTime?.toString() ?: "",
+//                leg.ifrDay?.toString() ?: "",
+//                leg.ifrNight?.toString() ?: "",
+//                leg.ifrTotal?.toString() ?: "",
+//                leg.numberToDay?.toString() ?: "",
+//                leg.numberToNight?.toString() ?: "",
+//                leg.numberToTotal?.toString() ?: "",
+//                leg.numberLdgDay?.toString() ?: "",
+//                leg.numberLdgNight?.toString() ?: "",
+//                leg.numberLdgTotal?.toString() ?: "",
+//                leg.numberInstrumentApproaches?.toString() ?: "",
+//                if (leg.isPilotFlying == true) "true" else if (leg.isPilotFlying == false) "false" else "",
+//                quote(leg.remarks)
+//            )
+//            lines.add(row.joinToString(","))
+//        }
+//        return lines.joinToString("\n")
+//    }
 
     fun serializeLegsToCsv(config: CsvExportFormat, legs: List<Leg>): String {
         return when (config.formatType) {

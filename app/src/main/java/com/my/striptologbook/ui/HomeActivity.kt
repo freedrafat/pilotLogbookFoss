@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import com.my.striptologbook.LogbookApplication
@@ -27,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
-    private lateinit var viewModel: ExportImportViewModel
+//    private lateinit var viewModel: ExportImportViewModel
     private lateinit var txtAppVersion: TextView
     private lateinit var rowHomeOwner: View
     private lateinit var tvHomeOwnerValue: TextView
@@ -59,8 +58,8 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
             }
         }, 1000)
 
-        val app = application as LogbookApplication
-        viewModel = ExportImportViewModel(app.repository)
+//        val app = application as LogbookApplication
+//        viewModel = ExportImportViewModel(app.repository)
 
         // ---------------------------------------------------
 
@@ -87,9 +86,9 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
             startActivity(Intent(this, LegEditActivity::class.java))
         }
 
-        val btnFlightSun: Button = findViewById(R.id.btn_flight_sun)
-        btnFlightSun.setOnClickListener {
-            startActivity(Intent(this, FlightSunActivity::class.java))
+        val btnTools: Button = findViewById(R.id.btn_tools)
+        btnTools.setOnClickListener {
+            startActivity(Intent(this, ToolsActivity::class.java))
         }
 
         val btnSettings: Button = findViewById(R.id.btn_settings)
@@ -102,21 +101,21 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
         }
 
         // Observe ViewModel result
-        lifecycleScope.launch {
-            viewModel.result.collect { result ->
-                when (result) {
-                    is ExportImportResult.Success -> {
-                        Toast.makeText(this@HomeActivity, "Operation completed successfully", Toast.LENGTH_SHORT).show()
-                        viewModel.consumeResult()
-                    }
-                    is ExportImportResult.Error -> {
-                        Toast.makeText(this@HomeActivity, result.message, Toast.LENGTH_LONG).show()
-                        viewModel.consumeResult()
-                    }
-                    else -> {}
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.result.collect { result ->
+//                when (result) {
+//                    is ExportImportResult.Success -> {
+//                        Toast.makeText(this@HomeActivity, "Operation completed successfully", Toast.LENGTH_SHORT).show()
+//                        viewModel.consumeResult()
+//                    }
+//                    is ExportImportResult.Error -> {
+//                        Toast.makeText(this@HomeActivity, result.message, Toast.LENGTH_LONG).show()
+//                        viewModel.consumeResult()
+//                    }
+//                    else -> {}
+//                }
+//            }
+//        }
 
         // Back button
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {

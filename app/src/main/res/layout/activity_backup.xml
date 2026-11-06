@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
 
     <!-- Toolbar -->
     <include layout="@layout/view_app_toolbar" />
@@ -13,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoSizeTextType="uniform"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,15 +29,19 @@
 
     <LinearLayout
         style="@style/Card.Surface"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="6dp"
         android:layout_weight="1"
-        android:layout_marginTop="6dp">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <LinearLayout
+            style="@style/Card.Surface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <Button
@@ -51,11 +56,55 @@
                 android:layout_height="16dp" />
 
             <Button
-                android:id="@+id/btn_restore"
+                android:id="@+id/btn_export_csv"
+                style="@style/PrimaryButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Export Logbook (CSV)" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/Card.Surface"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_import_csv"
+                style="@style/PrimaryButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Import Legs (CSV)" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Legs will be added to existing DB" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <Button
+                android:id="@+id/btn_restore_json"
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Restore from Backup (JSON)" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="WARNING: ALL old DB will be lost" />
+
 
         </LinearLayout>
     </LinearLayout>
@@ -65,9 +114,16 @@
         style="@style/Card.Surface"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="30dp" >
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_work_directory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Work directory: Not set" />
 
         <Button
             android:id="@+id/btn_delete_all"
