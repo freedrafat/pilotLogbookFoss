@@ -37,7 +37,7 @@ import java.util.TimeZone
 import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import com.my.striptologbook.utils.ExportRangeDialogHelper
-import com.my.striptologbook.utils.WorkDirGateFlow
+import com.my.striptologbook.utils.WorkFolderGateFlow
 
 class LegListActivity : BaseActivity() {
 
@@ -59,7 +59,7 @@ class LegListActivity : BaseActivity() {
     private var isSearchMode = false
     private var customStart: Long? = null
     private var customEnd: Long? = null
-    private lateinit var workDirGate: WorkDirGateFlow
+    private lateinit var workDirGate: WorkFolderGateFlow
     private var toolbarTitle: String? = "Legs List"
     private var toolbarSearchTitle: String? = "Search Results"
 
@@ -120,7 +120,7 @@ class LegListActivity : BaseActivity() {
         viewModel = ViewModelProvider(this, factory)[LegViewModel::class.java]
         exportViewModel = ExportImportViewModel(app.repository)
 
-        workDirGate = WorkDirGateFlow(this)
+        workDirGate = WorkFolderGateFlow(this)
 
         // Intent extras
         searchQuery = intent.getStringExtra("searchQuery")

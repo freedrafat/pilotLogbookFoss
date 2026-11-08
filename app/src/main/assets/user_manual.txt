@@ -1,6 +1,6 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                         USER MANUAL
-            Logbook & Flight Tools - 20261105
+            Logbook & Flight Tools - 20261108
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Welcome to the Logbook & Flight Tools app. This manual covers every
@@ -18,14 +18,14 @@ TABLE OF CONTENTS
  6. Flight Sun Calculator
  7. Airport Database
  8. Backup & Restore (JSON and CSV)
- 9. PDF ICAO/EASA Logbook Export (Tools -> Export PDF)
+ 9. PDF Logbook Export (Tools -> Export PDF)
 10. Export from the Leg List (PDF and CSV)
 11. Preferences
 12. Updates & Version Management
 13. Opening Balance (Prior Experience)
 14. Files, Data Storage & Privacy
 15. Support & Troubleshooting
-16. Work Directory
+16. Work Folder
 17. Settings Backup / Restore
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -74,7 +74,7 @@ logbook, and is never shown as a flight.
 
 Several features save files: JSON backups, CSV exports, PDF exports,
 and settings backups. All go to a single folder on your device called
-the Work Directory. You choose it once; the app remembers it. See
+the Work Folder. You choose it once; the app remembers it. See
 section 16.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -105,17 +105,17 @@ The summary is refreshed every time you return to Home.
 
 Tools hosts the secondary features:
 
-  * Export PDF (ICAO/EASA Logbook) - see section 10.
+  * Export PDF (ICAO/EASA Logbook) - see section 9.
   * Sun Events - the Flight Sun Calculator (section 6).
   * Airports DB - the airport database (section 7).
   * Backup Logbook - the Backup screen, which holds JSON backup,
-    JSON restore, CSV export, CSV import, and Delete All
-    (sections 8).
+    JSON restore, CSV export, CSV import, and Delete All (sections 8
+    and 10).
   * Opening Balance (anterior flights) - prior experience (section
     13).
 
-The bottom of Tools shows the current Work Directory. Change it via
-Settings -> Work Directory.
+The bottom of Tools shows the current Work Folder. Change it via
+Settings -> Work Folder.
 
 3.3 Settings screen
 ───────────────────
@@ -123,24 +123,40 @@ Settings -> Work Directory.
 Settings hosts:
 
   * Preferences - Default Fields, Custom Lists, Statistics
-    Visibility, Sun Calculator Altitude, Leg Items, and Backup /
-    Restore Settings (section 11).
-  * PDF/csv export format - Format PDF and Format CSV (sections 9
-    and 10).
-  * Work Directory - the folder that receives every file the app
+    Visibility, Sun Calculator Altitude, Leg Items (section 11).
+  * PDF/csv export format - Format PDF and Format CSV (sections 10
+    and 9).
+  * Work Folder - the folder that receives every file the app
     writes (section 16).
+  * Backup / Restore Settings - save and restore preferences
+    (section 17).
   * App. Update - the Updates screen (section 12).
 
-3.4 Back navigation
+3.4 Work folder check on launch
+───────────────────────────────
+
+Each time you open Home, the app performs two checks in order:
+
+  1. If the automatic update check (section 12) finds a new version,
+     the "Update Available" prompt appears. Nothing else happens on
+     this launch.
+  2. Otherwise, if the Work Folder is not set or is no longer
+     accessible, the app opens the folder picker so you can choose
+     one. This is the same explanation dialog you would see if you
+     triggered a backup or an export without a folder set.
+
+If you cancel the picker, nothing happens. The next time you open
+Home, the check runs again. A folder that was merely unmounted for a
+moment (for example, an SD card with a loose contact that is pushed
+back in) is not forgotten: the app keeps its record of the folder and
+uses it again as soon as the card is accessible.
+
+3.5 Back navigation
 ───────────────────
 
 Every other screen has a Home button in the top-right of the top bar,
 which returns to Home. The Up arrow on the left returns to the
 previous screen.
-
-When the automatic update check (section 12) finds a new version, a
-dialog appears on Home asking whether to download. Tap Download to go
-to the Updates screen; tap Later to defer.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 4. LOGBOOK LEGS - ADDING & EDITING
@@ -191,7 +207,7 @@ to the Updates screen; tap Later to defer.
   * Flight Total from Takeoff and Landing.
   * Block Night and Flight Night use the most accurate method
     available. If the Night button was used, a sweep over all actual
-    sun events along the route is applied. Otherwise the static
+    sun events along the route is applied. Otherwise, the static
     day-by-day calculation is used.
   * Block Day = Total - Night. Same for Flight Day and IFR Day.
   * Checking Pilot Flying sets the takeoff and landing totals to 1
@@ -334,7 +350,7 @@ its own column.
 The Month/Year view always shows your whole logbook and always
 includes the Opening Balance.
 
-5.5 Customizing leg cards
+5.5 Customising leg cards
 ─────────────────────────
 
 Preferences -> Leg Items (section 11.5) determines what appears on
@@ -347,13 +363,13 @@ The export icon in the filter row offers two actions:
 
   * Export CSV - produces a CSV of the legs currently shown (filtered
     list, or search result). The format is the one saved in
-    Settings -> PDF/csv export format -> Format CSV (section 9.3).
+    Settings -> PDF/csv export format -> Format CSV (section 10.1).
     Filename: logbook_export_*.csv when the filter is All,
     logbook_filtered_*.csv otherwise.
 
   * Export PDF - when the filter is All, behaves exactly like Export
-    PDF from Tools (section 10.1). Otherwise produces a "filtered"
-    PDF that contains only the current legs (section 10.5).
+    PDF from Tools (section 9.1). Otherwise, produces a "filtered"
+    PDF that contains only the current legs (section 10.2).
     Filename: logbook_filtered_*.pdf.
 
 If the current filter or search produces no legs, the export is
@@ -395,14 +411,32 @@ and UTC time.
   * Both coordinates and time - known point at a known time.
   * Both coordinates, no time - the time is interpolated.
   * Time only - the position is interpolated along the great-circle
-    arc between surrounding known points.
+    arc between the surrounding known points.
   * Only one coordinate - the missing coordinate field is marked
     yellow. Correct it or clear the other before computing.
 
-Coordinate formats: decimal degrees (45.04), compact (4512),
-hemisphere plus degrees/minutes (N45 02.4). A leading minus sign is
-treated as South or West. A contradictory sign and hemisphere letter
-is rejected.
+Coordinate formats:
+
+  * Plain decimal degrees, any magnitude: 45, 45.5, -45.5, 45.04,
+    -23.65438, 7.567.
+  * Degrees + decimal minutes: "45 12" or "45 12.5" or "45°12.5".
+  * Degrees + minutes + seconds: "45 12 24" or "45 12 24.5" or
+    "45°12'24.5"".
+  * A space can stand in for the degree symbol or the minute mark,
+    with one space between D and M and two spaces between D, M and S.
+  * Decimal values are allowed only in the last group of a multipart form (minutes for D M, seconds for D M S), or in a plain
+    decimal number.
+
+Hemisphere letters N/S/E/W (either case) are accepted before the
+first digit or after the last digit, with or without spaces:
+"N45.5", "45.5s", "N 45.5", "45.5 W".
+
+A leading "-" is treated as South/West; a leading "+" is treated as
+North/East. A hemisphere letter that contradicts the sign is
+rejected. A minus sign after the hemisphere letter is rejected.
+
+Compact forms such as "45124" or "4512.4" are not accepted. Use the
+spaced forms or plain decimal.
 
 Time anchoring: every waypoint time is anchored to the take-off date.
 If the time is earlier in the day than take-off, one day is added. If
@@ -414,8 +448,27 @@ rearrange by time automatically and empty rows are removed.
 
 Remove a row with the X button on the right.
 
-6.4 Results
-───────────
+6.4 Temporary (auto-filled) values
+──────────────────────────────────
+
+When you focus out of a waypoint field and the row can be completed
+by the calculator, the app fills the missing coordinate and/or time
+and shows the field in a slightly different style. Values in that
+style are "temporary": they are the calculator's current best guess,
+not your own entry.
+
+If you change any waypoint field (coordinate or time) and leave it,
+all temporary values in the route are recalculated from the current
+anchors and times. You do not need to clear the field first. Your
+own typed values are always kept as-is; only temporary values are
+recalculated.
+
+To confirm a temporary value as your own, type into the field. The
+field reverts to the normal style and the value is no longer
+recalculated automatically.
+
+6.5 Computing the results
+─────────────────────────
 
 Tap Compute Sunrise / Sunset. The app determines the day/night status
 at take-off and landing, scans the route minute by minute, and
@@ -423,16 +476,31 @@ interpolates the exact time and position of each crossing.
 
 Results show:
 
+  * A segment-speed line at the top (see 6.6).
   * Events found, each with UTC time and position.
   * Day/night status at Off-Block, Takeoff, Landing and On-Block.
   * Static sunrise, sunset, astronomical dawn and dusk at the
     departure and arrival airports.
 
-Waypoint fields filled in by the calculator are shown in a slightly
-different style. Tap and leave such a field to confirm it as your
-own.
+6.6 Segment speeds
+──────────────────
 
-6.5 Applying results to a leg
+The first line of the results shows the average speed for each
+segment of the route, in knots, rounded to the nearest integer. One
+speed per segment:
+
+  * No waypoints: a single speed for the departure-to-arrival
+    segment, for example "450kt".
+  * One waypoint: two speeds, departure-to-waypoint and waypoint-to-
+    arrival, for example "452kt - 448kt".
+  * Several waypoints: one speed per segment between consecutive
+    points on the route, for example "345kt - 355kt - 331kt - 326kt".
+
+The speeds are a quick way to check that your waypoints are on the
+route. If one segment's speed is far from the others, a waypoint is
+probably placed or timed incorrectly.
+
+6.7 Applying results to a leg
 ─────────────────────────────
 
 When opened from the Leg Editor, Apply to Leg sends the events, the
@@ -440,7 +508,7 @@ static sunrise/sunset at both airports, and the day/night status back
 to the editor. The editor recalculates Block Night and Flight Night
 and the takeoff/landing counts.
 
-6.6 Save / Load / Clear
+6.8 Save / Load / Clear
 ───────────────────────
 
   * Save State stores the current inputs (airports, dates, times,
@@ -514,16 +582,19 @@ The Backup screen saves your logbook, in one of two formats:
   * CSV backup - Export Logbook (CSV). A human-readable backup of
     the legs you entered in this app. Contains every leg, in a
     format that can be opened and edited in any spreadsheet. It
-    does not contain the Opening Balance.
+    does not contain the Opening Balance. To back up both the legs
+    and the Opening Balance, use JSON.
 
-Both formats write their files into the Work Directory (section 16).
+Both formats write their files into the Work Folder (section 16).
 
 8.2 Creating a JSON backup
 ──────────────────────────
 
   1. Open Tools -> Backup Logbook.
-  2. If no work directory is set, the folder picker opens; after you
-     pick, the flow resumes automatically.
+  2. If no work folder is set, the intro dialog explains that a
+     PilotLogbookFoss folder will be created inside the folder you
+     choose. Tap Continue to open the picker. If you have set a
+     folder, but it is currently unreachable, the picker re-opens.
   3. Tap Backup Logbook (JSON).
   4. The app creates a JSON file, reads it back, and compares counts.
   5. The 10 most recent JSON backups are kept. Older ones are
@@ -545,10 +616,11 @@ cancel.
 ─────────────────────────
 
   1. Open Tools -> Backup Logbook.
-  2. If no work directory is set, the folder picker opens; after you
-     pick, the flow resumes automatically.
+  2. If no work folder is set, the picker opens (with the intro
+     dialog first). After you pick, the export continues
+     automatically.
   3. Tap Export Logbook (CSV).
-  4. The app writes a CSV file directly to the work directory.
+  4. The app writes a CSV file directly to the work folder.
 
 Contents:
 
@@ -560,10 +632,11 @@ Contents:
   * Booleans as "true", "false", or empty when null.
 
 The CSV is designed to be readable and editable in a spreadsheet.
-You can edit it, inspect the legs, adjust fields.
+You can open it, inspect the legs, adjust fields, and save it back.
 
 The CSV backup does not contain the Opening Balance (prior
-experience).
+experience). To back up both the legs and the Opening Balance, use
+the JSON backup (section 8.2).
 
 8.4 Restoring a JSON backup
 ───────────────────────────
@@ -573,11 +646,11 @@ old DB will be lost".
 
   1. Tap Restore from Backup (JSON).
   2. Confirm "This will replace ALL existing data...".
-  3. If no work directory is set, the folder picker opens; after you
-     pick, the flow resumes.
+  3. If no work folder is set, the picker opens (with the intro
+     dialog first). After you pick, the flow resumes.
   4. A verified backup of your current data runs first. If it cannot
      be verified, a warning dialog asks whether to continue.
-  5. A list of JSON backups in the work directory appears, newest
+  5. A list of JSON backups in the work folder appears, newest
      first. Pick one.
      If none are found, "No backups found" appears with a "Browse
      elsewhere" button.
@@ -597,12 +670,12 @@ existing DB".
   1. Tap Import Legs (CSV).
   2. A confirmation dialog appears: "Legs database will be altered.
      Continue?".
-  3. If no work directory is set, the folder picker opens; the
-     import resumes after you pick.
+  3. If no work folder is set, the picker opens (with the intro
+     dialog first). After you pick, the import resumes.
   4. A verified backup of your current data is created first. If it
      cannot be verified, a warning dialog asks whether to continue.
-  5. A list of CSV files in the work directory appears, newest
-     first. Pick one. "Browse elsewhere" opens a system file picker.
+  5. A list of CSV files in the work folder appears, newest first.
+     Pick one. "Browse elsewhere" opens a system file picker.
   6. The CSV Import screen opens. It shows the file name, the
      number of data rows, and one mapping dropdown per column.
   7. Files produced by this app are mapped automatically. Adjust
@@ -631,8 +704,9 @@ Opening Balance.
 ─────────────────────────────
 
   * JSON restore replaces legs and Opening Balance.
-  * If a JSON have no Opening Balance part, JSON restore replaces
-  legs only and leaves the Opening Balance untouched.
+  * JSON restore of an old backup (created before the Opening
+    Balance feature existed) replaces legs only and leaves the
+    Opening Balance untouched.
   * CSV import adds legs to the existing logbook. It never touches
     the Opening Balance.
 
@@ -643,19 +717,19 @@ Opening Balance.
 Landscape A4 printable logbook in the ICAO / EASA (AMC1 FCL.050)
 layout. This is the standard logbook PDF. It covers the whole logbook
 (or a chosen range), unlike the filtered PDF from the Leg List (see
-section 10.3).
+section 10.2).
 
 9.1 Exporting
 ─────────────
 
   1. Tap Export PDF (ICAO/EASA Logbook) on Tools.
-  2. If no work directory is set, the folder picker opens; after you
-     pick, the range dialog appears.
+  2. If no work folder is set, the picker opens (with the intro
+     dialog first). After you pick, the range dialog appears.
   3. Choose:
        * All - every leg.
        * From - To - legs whose Off-Block date falls in the range.
        * Last N pages - the last N printed pages.
-  4. Tap Generate. The PDF is written directly to the work directory.
+  4. Tap Generate. The PDF is written directly to the work folder.
      Filename: logbook_<date>.pdf. A toast confirms the export.
 
 9.2 What appears on each page
@@ -932,6 +1006,11 @@ Two switches at the top:
     switch is ON. When ON, the app checks every time you open it.
     When OFF (default), the app checks at most once every 7 days.
 
+If the automatic check finds a new version, the "Update Available"
+prompt appears on Home. If it does not, and the Work Folder is not
+set or not accessible, the app then opens the folder picker (see
+section 3.4).
+
 12.3 Last Check
 ───────────────
 
@@ -941,8 +1020,9 @@ Two switches at the top:
 ────────────────────────────
 
   1. The app prepares a verified backup of your logbook in the work
-     directory. If no work directory is set, a folder picker opens;
-     the backup and download resume once you pick.
+     folder. If no work folder is set, the picker opens (with the
+     intro dialog first). The backup and download resume once you
+     pick.
   2. If the backup cannot be verified, a warning dialog appears:
      "Old database is not saved. Continue anyway?". Choose Continue
      to proceed with the download anyway, or Cancel to stop.
@@ -1068,10 +1148,10 @@ The app stores its private data in its internal storage directory:
 Your Leg Items profiles and every other preference are stored in the
 app's private preferences.
 
-14.2 Work Directory
-───────────────────
+14.2 Work Folder
+────────────────
 
-A single folder, called the Work Directory, receives every file the
+A single folder, called the Work Folder, receives every file the
 app creates for you:
 
   * logbook_backup_*.json - logbook backups.
@@ -1083,13 +1163,15 @@ app creates for you:
     search result.
   * logbook_prefs_*.json - settings backups.
 
-The Work Directory is a subfolder named PilotLogbookFoss inside the
+The Work Folder is a subfolder named PilotLogbookFoss inside the
 folder you pick. You pick the parent folder once. The app keeps the
 10 most recent logbook backups and deletes older ones automatically;
 the other files are not rotated.
 
+See section 16 for details.
+
 Airport database exports go to your device's Downloads folder, not
-the Work Directory. Update APK downloads also go to Downloads.
+the Work Folder. Update APK downloads also go to Downloads.
 
 14.3 Clearing data
 ──────────────────
@@ -1111,10 +1193,14 @@ update-check settings, or your preferences.
 ─────────────────
 
 On first launch, the app does not copy the airport database yet, does
-not create a Work Directory, and does not create any export or backup
+not create a Work Folder, and does not create any export or backup
 file. The airport database is copied the first time an airport-
-related screen opens. The Work Directory is created the first time
-you use a feature that needs it and you pick a parent folder.
+related screen opens. The Work Folder is created the first time you
+use a feature that needs it and you pick a parent folder.
+
+If you launch Home with no Work Folder set, the app prompts you to
+pick one (section 3.4). You can cancel; the prompt reappears on the
+next Home launch.
 
 14.5 Privacy
 ────────────
@@ -1157,6 +1243,21 @@ Logbook - input and saving
     Night - IFR fields are copied from flight time only when the IFR
     checkbox is ticked.
 
+Flight Sun Calculator
+  * A coordinate I typed is rejected - check the accepted formats in
+    section 6.3. Plain decimals like 45.04 or -23.65438 are
+    accepted; compact forms like 45124 or 4512.4 are not.
+  * A waypoint position or time changes when I edit another
+    waypoint - by design. Auto-filled values (shown in a slightly
+    different style) are recalculated from the current anchors
+    whenever you leave any waypoint field. To keep a value, type
+    into the field; it becomes your own entry and is no longer
+    recalculated.
+  * The segment speed line looks wrong - one segment's speed is far
+    from the others. Check the waypoints around that segment. A
+    mistyped coordinate or time usually shows up as a segment speed
+    that is much higher or lower than the rest.
+
 Opening Balance
   * The Prior row in Statistics Month/Year is not where I expected -
     its position depends on the earliest start date you entered. If
@@ -1167,7 +1268,7 @@ Opening Balance
     backup was created before this feature, its absence is by
     design. Current backups include the Opening Balance.
   * My Opening Balance is gone after Delete All - by design. Delete
-    All clears both the legs and the Opening Balance (section 8.3).
+    All clears both the legs and the Opening Balance (section 8.6).
   * The first page's Total from previous page is not zero - by
     design. The Opening Balance appears in that row.
 
@@ -1176,7 +1277,7 @@ Airports
     Update the database or add it manually.
 
 Backup and CSV
-  * Backup fails - check that the work directory is accessible. If
+  * Backup fails - check that the work folder is accessible. If
     the operation was a restore, delete-all, CSV import or update,
     a warning dialog lets you continue without the backup.
   * CSV import blocked - if the app cannot create and verify a
@@ -1210,7 +1311,7 @@ PDF
   * Export PDF from the Leg List produces a different PDF from
     Tools -> Export PDF - by design. With filter = All, the Leg
     List reuses the Tools flow. Any other filter, or a search
-    result, produces the "filtered" PDF (section 10.5).
+    result, produces the "filtered" PDF (section 10.2).
   * The filtered PDF has no certification, no signature and no
     owner name - by design; those elements belong to the standard
     logbook PDF only.
@@ -1250,6 +1351,27 @@ Leg Items
     in Custom Lists - changes apply the next time you open the Leg
     Editor or Opening Balance editor.
 
+Work Folder
+  * I cannot pick the Downloads folder itself - by design. On
+    Android 11+, the system refuses to grant a whole-folder
+    permission on Downloads/ (and the root of internal storage).
+    Pick Documents, or a subfolder inside Downloads that you create
+    with your device's file manager.
+  * The folder I picked is not shown by its parent in the display -
+    the display now shows the full path, for example
+    Download/MyFolder/PilotLogbookFoss. If the folder is on an SD
+    card, the display starts with "Ext:" (for example
+    Ext:Download/MyFolder/PilotLogbookFoss). If the folder is on a
+    cloud provider, the display is just "Ext".
+  * I removed my SD card for a moment and the app forgot my folder -
+    it does not. The app keeps the folder path and uses it again as
+    soon as the card is accessible. You are only prompted to pick a
+    folder again while the folder is genuinely not reachable.
+  * The folder picker opened by itself on Home - by design. If the
+    Work Folder is not set or not accessible, Home prompts you to
+    pick one, after the update check. Cancel is fine; the prompt
+    reappears on the next Home launch.
+
 Updates
   * The app never checks for updates automatically - open Updates
     and check that Automatic check for updates is ON.
@@ -1284,44 +1406,95 @@ help or contact support at freedrafat@proton.me
 See section 14.5.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-16. WORK DIRECTORY
+16. WORK FOLDER
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-The Work Directory is where the app writes every logbook-related file:
+The Work Folder is where the app writes every logbook-related file:
 JSON backups, CSV exports, PDF exports, and settings backups. You
 choose it once; the app remembers it.
 
-How to set it
-  Open any of the following and use its folder picker:
-    * Settings -> Work Directory
-    * Tools -> Backup Logbook (Backup, Restore, Export CSV, Import
-      CSV, Delete All)
-    * Tools -> Export PDF
-    * Preferences -> Backup / Restore Settings -> Save / Restore
-    * Settings -> App. Update, if an update is found
+16.1 What gets created
+──────────────────────
 
-Files written there
-    * logbook_backup_*.json
-    * logbook_export_*.csv
-    * logbook_filtered_*.csv
-    * logbook_*.pdf
-    * logbook_filtered_*.pdf
-    * logbook_prefs_*.json
+You pick a parent folder. The app creates a folder named
+PilotLogbookFoss inside it. Every file the app writes goes into
+that PilotLogbookFoss folder, not into the folder you picked
+directly.
 
-How to change it
-  Settings -> Work Directory. The picker opens at your current folder.
-  Files already written stay in the old folder; new files go to the
-  new one.
+When you trigger the folder picker for the first time, a short
+dialog explains this before the system picker appears:
 
-What happens if the folder becomes unavailable
-  If the folder is deleted or its permission is revoked, the next time
-  you use a feature that needs it, the app tells you and asks you to
-  pick it again. Files already written inside it are not deleted by
-  the app.
+  "A folder named PilotLogbookFoss will be created inside the folder
+   you choose. This folder is required for backups, exports and
+   imports."
 
-What goes to Downloads instead
-  Airport database exports, and update APK downloads. These are one-
-  off files that go to your Downloads folder, not the Work Directory.
+Tap Continue to proceed, or cancel to skip. The same dialog appears
+whenever the picker opens, whether triggered from Home, from a
+Backup screen, or from Settings.
+
+16.2 Where the picker opens
+───────────────────────────
+
+  * If a Work Folder is already set, the picker opens at that
+    folder's parent, so you can navigate from where you were last.
+  * Otherwise, the picker opens at Documents.
+
+The Downloads folder itself cannot be selected as a Work Folder on
+Android 11+. If you want the Work Folder inside Downloads, first
+create a subfolder there with your device's file manager, then pick
+that subfolder.
+
+16.3 What the display shows
+───────────────────────────
+
+Four screens show the current Work Folder at the bottom of the
+screen: Backup, Tools, Settings, and Backup / Restore Settings. The
+display shows the full path:
+
+  * Primary storage - the parent path plus the PilotLogbookFoss
+    subfolder. Example:
+      Work folder: Download/MyFolder/PilotLogbookFoss
+      Work folder: Documents/PilotLogbookFoss
+
+  * SD card or USB storage - the path prefixed with "Ext:".
+    Example:
+      Work folder: Ext:Download/MyFolder/PilotLogbookFoss
+
+  * Cloud provider (Drive, etc.) - the display is just "Ext",
+    because the provider does not expose a readable path.
+
+  * No folder set - "Not set".
+  * Folder was set but is not currently reachable - "Unavailable".
+
+If you picked a folder that is itself named PilotLogbookFoss, the
+app uses it directly and does not create a second one. The display
+shows the full path to it without a repeated subfolder name.
+
+16.4 What happens if the folder becomes unavailable
+───────────────────────────────────────────────────
+
+The folder can become unavailable if it is deleted, if the permission
+is revoked, if the SD card is temporarily unmounted, or if the
+storage is detached.
+
+The app does NOT forget the Work Folder on a temporary loss. When an
+operation needs the folder and it is unreachable, the app warns you
+and prompts you to pick it again. If the folder comes back (for
+example, you push the SD card back in), the app uses it again with
+no action from you. The stored path is only replaced when you
+actually pick a new folder.
+
+Files already written inside the folder are never deleted by the
+app.
+
+16.5 What goes to Downloads instead
+───────────────────────────────────
+
+Two things do not go through the Work Folder:
+
+  * Airport database exports (Tools -> Airports DB -> Export
+    Airports) - saved to your device's Downloads folder.
+  * Update APK downloads - saved to your device's Downloads folder.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 17. SETTINGS BACKUP / RESTORE
@@ -1338,18 +1511,18 @@ What it saves
 
 What it does not save
   Your flights (that is the logbook backup), your airport database,
-  your Work Directory choice, or your Opening Balance.
+  your Work Folder choice, or your Opening Balance.
 
 Where the file goes
-  The Work Directory. Filename: logbook_prefs_<date>.json.
+  The Work Folder. Filename: logbook_prefs_<date>.json.
 
 How to use it
-  1. On your old phone, open Preferences -> Backup / Restore
-     Settings -> Save Settings.
-  2. Copy the logbook_prefs_*.json file from the Work Directory to
-     your new phone's Work Directory (or any accessible location).
-  3. On the new phone, open Preferences -> Backup / Restore
-     Settings -> Restore Settings.
+  1. On your old phone, open Settings -> Backup / Restore Settings
+     -> Save Settings.
+  2. Copy the logbook_prefs_*.json file from the Work Folder to
+     your new phone's Work Folder (or any accessible location).
+  3. On the new phone, open Settings -> Backup / Restore Settings
+     -> Restore Settings.
   4. Confirm the dialog, pick the file, done.
 
 Signature in the backup

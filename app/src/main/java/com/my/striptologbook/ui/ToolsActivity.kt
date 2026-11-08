@@ -14,14 +14,14 @@ import com.my.striptologbook.R
 import com.my.striptologbook.utils.ExportRangeDialogHelper
 import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
-import com.my.striptologbook.utils.WorkDirGateFlow
+import com.my.striptologbook.utils.WorkFolderGateFlow
 import kotlinx.coroutines.launch
 
 class ToolsActivity : BaseActivity() {
 
     private lateinit var exportViewModel: ExportImportViewModel
-    private lateinit var txtWorkDirectory: TextView
-    private lateinit var workDirGate: WorkDirGateFlow
+    private lateinit var txtWorkFolder: TextView
+    private lateinit var workDirGate: WorkFolderGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +34,13 @@ class ToolsActivity : BaseActivity() {
         supportActionBar?.title = "Tools"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        txtWorkDirectory = findViewById(R.id.txt_work_directory)
-        refreshWorkDirectoryDisplay()
+        txtWorkFolder = findViewById(R.id.txt_work_folder)
+        refreshWorkFolderDisplay()
 
         val app = application as LogbookApplication
         exportViewModel = ExportImportViewModel(app.repository)
 
-        workDirGate = WorkDirGateFlow(this)
+        workDirGate = WorkFolderGateFlow(this)
 
         findViewById<Button>(R.id.btn_export_pdf).setOnClickListener {
             workDirGate.runOrPick { folder -> doExportPdf(folder) }
@@ -61,11 +61,11 @@ class ToolsActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        refreshWorkDirectoryDisplay()
+        refreshWorkFolderDisplay()
     }
 
-    private fun refreshWorkDirectoryDisplay() {
-        txtWorkDirectory.text = "Work directory: ${FileManager.workDirectoryDisplayName(this)}"
+    private fun refreshWorkFolderDisplay() {
+        txtWorkFolder.text = "Work folder: ${FileManager.workFolderDisplayName(this)}"
     }
 
     private fun toastResult(result: ExportImportResult) {

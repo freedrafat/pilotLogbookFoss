@@ -19,6 +19,7 @@ import com.my.striptologbook.utils.UpdateInfo
 import com.my.striptologbook.utils.formatDuration
 import com.my.striptologbook.utils.getDateAtMidnight
 import com.my.striptologbook.utils.getTodayMidnight
+import com.my.striptologbook.utils.WorkFolderGateFlow
 import java.util.Calendar
 import java.util.TimeZone
 import kotlinx.coroutines.launch
@@ -35,10 +36,13 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
     private lateinit var tvHomeActualMonthValue: TextView
     private lateinit var tvHomeActualYearValue: TextView
     private lateinit var tvHomeTotalValue: TextView
+    private lateinit var workFolderGate: WorkFolderGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        workFolderGate = WorkFolderGateFlow(this)
 
         // -------- Status bar spacer ------------------------------
         InsetsHelper.applyStatusBarSpacer(findViewById(R.id.status_bar_spacer))
@@ -54,7 +58,10 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
         // maybeAutoCheckForUpdate().
         Handler(Looper.getMainLooper()).postDelayed({
             lifecycleScope.launch {
-                maybeAutoCheckForUpdate()
+                val updateDialogShown = maybeAutoCheckForUpdate()
+                if (!updateDialogShown) {
+                    workFolderGate.runOrPick(onReady = { })
+                }
             }
         }, 1000)
 
@@ -141,32 +148,41 @@ class HomeActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
      * Runs a silent automatic update check if the user's preferences and
      * the 7-day throttle (when applicable) allow it.
      *
-     * On UpdateAvailable / NoUpdateAvailable / InvalidResponse the timestamp
-     * is written (the server was reached). On NoResponse it is not.
+     * Returns true if the "Update Available" prompt was shown (the caller
+     * must not open any other dialog in that case). Returns false for
+     * every other outcome: auto-check disabled, throttled, or the check
+     * produced NoUpdateAvailable / InvalidResponse / NoResponse.
      *
-     * Only UpdateAvailable produces UI: the "Update Available" prompt is
-     * shown on top of Home. All other outcomes stay silent.
+     * Timestamp rule unchanged: written on UpdateAvailable,
+     * NoUpdateAvailable, InvalidResponse; left untouched on NoResponse.
      */
-    private suspend fun maybeAutoCheckForUpdate() {
+    private suspend fun maybeAutoCheckForUpdate(): Boolean {
         val prefs = PreferencesManager.getInstance(this)
 
-        if (!prefs.isAutoCheckUpdatesEnabled()) return
+        if (!prefs.isAutoCheckUpdatesEnabled()) return false
 
         val now = System.currentTimeMillis()
         if (!prefs.isCheckUpdatesEveryStartEnabled()) {
             val sevenDaysMs = 7L * 24 * 60 * 60 * 1000
             val last = prefs.getLastUpdateCheck()
-            if (last != 0L && now - last < sevenDaysMs) return
+            if (last != 0L && now - last < sevenDaysMs) return false
         }
 
-        when (val result = UpdateChecker.checkForUpdate(this)) {
+        return when (val result = UpdateChecker.checkForUpdate(this)) {
             is UpdateCheckResult.UpdateAvailable -> {
                 prefs.setLastUpdateCheck(now)
                 showUpdateAvailableDialog(result.info)
+                true
             }
-            is UpdateCheckResult.NoUpdateAvailable -> prefs.setLastUpdateCheck(now)
-            is UpdateCheckResult.InvalidResponse   -> prefs.setLastUpdateCheck(now)
-            is UpdateCheckResult.NoResponse        -> { /* leave timestamp as is */ }
+            is UpdateCheckResult.NoUpdateAvailable -> {
+                prefs.setLastUpdateCheck(now)
+                false
+            }
+            is UpdateCheckResult.InvalidResponse -> {
+                prefs.setLastUpdateCheck(now)
+                false
+            }
+            is UpdateCheckResult.NoResponse -> false
         }
     }
 

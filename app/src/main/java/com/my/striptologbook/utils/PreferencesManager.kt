@@ -24,7 +24,7 @@ class PreferencesManager private constructor(context: Context) {
         private const val KEY_LAST_AIRPORTS_DOWNLOAD = "last_airports_download"
 
         // Historical name: originally only for the Backup folder. Now serves
-        // as the "work directory" for all logbook-related file operations
+        // as the "work folder" for all logbook-related file operations
         // (backups, CSV, PDF, and future preferences/settings save+restore).
         // Rename was avoided to preserve existing user data.
         private const val KEY_WORK_FOLDER_URI = "backup_folder_uri"

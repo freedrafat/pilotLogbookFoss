@@ -19,15 +19,15 @@ android {
         applicationId = "com.my.striptologbook"
         minSdk = 29
         targetSdk = 36
-        versionCode = 12
-        versionName = "1.1.2"
+        versionCode = 13
+        versionName = "1.1.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-            // Append timestamp to versionName for debug builds only
-            versionNameSuffix = timestamp
+            // Append _timestamp to versionName for debug builds only
+            versionNameSuffix = "_$timestamp"
         }
         release {
             isMinifyEnabled = true
@@ -54,7 +54,7 @@ androidComponents {
     onVariants(selector().withBuildType("release")) { variant ->
         variant.outputs.forEach { output ->
             // versionName is a Property<String> on the output
-            val versionName = output.versionName.get()
+//            val versionName = output.versionName.get()
 
             if (output is com.android.build.api.variant.impl.VariantOutputImpl) {
 //                output.outputFileName.set("pilotLogbookFoss-${versionName}.apk")

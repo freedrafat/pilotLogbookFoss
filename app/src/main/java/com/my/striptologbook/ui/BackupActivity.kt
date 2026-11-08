@@ -23,7 +23,7 @@ import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.OpenFileIntentFactory
 import com.my.striptologbook.utils.VerifiedBackupFlow
-import com.my.striptologbook.utils.WorkDirGateFlow
+import com.my.striptologbook.utils.WorkFolderGateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,8 +31,8 @@ import kotlinx.coroutines.withContext
 class BackupActivity : BaseActivity() {
 
     private lateinit var viewModel: ExportImportViewModel
-    private lateinit var txtWorkDirectory: TextView
-    private lateinit var workDirGate: WorkDirGateFlow
+    private lateinit var txtWorkFolder: TextView
+    private lateinit var workFolderGate: WorkFolderGateFlow
 
     private companion object {
         private const val TAG = "BackupActivity"
@@ -97,35 +97,35 @@ class BackupActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // -------- Toolbar ------------
 
-        txtWorkDirectory = findViewById(R.id.txt_work_directory)
-        refreshWorkDirectoryDisplay()
+        txtWorkFolder = findViewById(R.id.txt_work_folder)
+        refreshWorkFolderDisplay()
 
         // ViewModel
         val app = application as LogbookApplication
         viewModel = ExportImportViewModel(app.repository)
 
-        // Work-directory gate
-        workDirGate = WorkDirGateFlow(this)
+        // Work-folder gate
+        workFolderGate = WorkFolderGateFlow(this)
 
         // Buttons
         findViewById<Button>(R.id.btn_backup_json).setOnClickListener { performBackup() }
         findViewById<Button>(R.id.btn_restore_json).setOnClickListener { showRestoreConfirmDialog() }
         findViewById<Button>(R.id.btn_delete_all).setOnClickListener { showDeleteAllConfirmDialog() }
         findViewById<Button>(R.id.btn_export_csv).setOnClickListener {
-            workDirGate.runOrPick { folder -> doExportCsv(folder) }
+            workFolderGate.runOrPick { folder -> doExportCsv(folder) }
         }
         findViewById<Button>(R.id.btn_import_csv).setOnClickListener {
-            workDirGate.runOrPick { folder -> doImportCsv(folder) }
+            workFolderGate.runOrPick { folder -> doImportCsv(folder) }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        refreshWorkDirectoryDisplay()
+        refreshWorkFolderDisplay()
     }
 
-    private fun refreshWorkDirectoryDisplay() {
-        txtWorkDirectory.text = "Work directory: ${FileManager.workDirectoryDisplayName(this)}"
+    private fun refreshWorkFolderDisplay() {
+        txtWorkFolder.text = "Work Folder: ${FileManager.workFolderDisplayName(this)}"
     }
 
     private fun toastResult(result: ExportImportResult) {
@@ -148,7 +148,7 @@ class BackupActivity : BaseActivity() {
     // ------------------------------------------------------------------------
 
     private fun performBackup() {
-        workDirGate.runOrPick { folder -> doBackup(folder) }
+        workFolderGate.runOrPick { folder -> doBackup(folder) }
     }
 
     private fun doBackup(folder: DocumentFile) {
@@ -206,7 +206,7 @@ class BackupActivity : BaseActivity() {
             .setTitle("Confirm Restore")
             .setMessage("This will replace ALL existing data with the backup. Continue?")
             .setPositiveButton("Continue") { _, _ ->
-                workDirGate.runOrPick { folder -> doBackupThenRestore(folder) }
+                workFolderGate.runOrPick { folder -> doBackupThenRestore(folder) }
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -230,7 +230,7 @@ class BackupActivity : BaseActivity() {
         if (jsonFiles.isEmpty()) {
             AlertDialog.Builder(this)
                 .setTitle("No backups found")
-                .setMessage("The work directory contains no JSON backups.")
+                .setMessage("The work folder contains no JSON backups.")
                 .setPositiveButton("Browse elsewhere") { _, _ -> launchExternalRestorePicker() }
                 .setNegativeButton("Cancel", null)
                 .show()
@@ -272,7 +272,7 @@ class BackupActivity : BaseActivity() {
             .setTitle("Delete All Data")
             .setMessage("Are you sure you want to delete ALL logbook entries? This action cannot be undone!")
             .setPositiveButton("Delete All") { _, _ ->
-                workDirGate.runOrPick { folder -> doBackupThenDeleteAll(folder) }
+                workFolderGate.runOrPick { folder -> doBackupThenDeleteAll(folder) }
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -317,7 +317,7 @@ class BackupActivity : BaseActivity() {
         if (csvFiles.isEmpty()) {
             AlertDialog.Builder(this)
                 .setTitle("No CSV files found")
-                .setMessage("The work directory contains no CSV files.")
+                .setMessage("The work folder contains no CSV files.")
                 .setPositiveButton("Browse elsewhere") { _, _ -> launchExternalCsvPicker() }
                 .setNegativeButton("Cancel", null)
                 .show()

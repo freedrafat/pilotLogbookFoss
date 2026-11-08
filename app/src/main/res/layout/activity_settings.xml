@@ -78,20 +78,20 @@
                 android:layout_height="16dp" />
 
             <Button
-                android:id="@+id/btn_work_directory"
+                android:id="@+id/btn_work_folder"
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Work Directory" />
+                android:text="Work Folder" />
 
             <TextView
-                android:id="@+id/txt_work_directory"
+                android:id="@+id/txt_work_folder"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
-                android:text="Work directory: Not set" />
+                android:text="Work Folder: Not set" />
 
         </LinearLayout>
     </ScrollView>

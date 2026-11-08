@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 
 import androidx.documentfile.provider.DocumentFile
 import com.my.striptologbook.utils.VerifiedBackupFlow
-import com.my.striptologbook.utils.WorkDirGateFlow
-import com.my.striptologbook.utils.WorkDirGateFlow.FailureReason
+import com.my.striptologbook.utils.WorkFolderGateFlow
+import com.my.striptologbook.utils.WorkFolderGateFlow.FailureReason
 
 class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
@@ -43,7 +43,7 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
     private var pendingUpdateInfo: UpdateInfo? = null
     private var autoTriggered: Boolean = false
-    private lateinit var workDirGate: WorkDirGateFlow
+    private lateinit var workDirGate: WorkFolderGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +71,7 @@ class UpdatesActivity : BaseActivity(), UpdateAvailableDialogFragment.Listener {
 
         txtAppVersion.text = "App version: ${getAppVersionName()}"
 
-        workDirGate = WorkDirGateFlow(this)
+        workDirGate = WorkFolderGateFlow(this)
 
         val prefs = PreferencesManager.getInstance(this)
 

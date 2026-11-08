@@ -22,13 +22,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 import com.my.striptologbook.utils.OpenFileIntentFactory
-import com.my.striptologbook.utils.WorkDirGateFlow
+import com.my.striptologbook.utils.WorkFolderGateFlow
 
 class SettingsBackupActivity : BaseActivity() {
 
-    private lateinit var txtWorkDirectory: TextView
+    private lateinit var txtWorkFolder: TextView
 
-    private lateinit var workDirGate: WorkDirGateFlow
+    private lateinit var workDirGate: WorkFolderGateFlow
 
     private val externalRestoreLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -63,9 +63,9 @@ class SettingsBackupActivity : BaseActivity() {
         supportActionBar?.title = "Backup / Restore Settings"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        txtWorkDirectory = findViewById(R.id.txt_work_directory)
-        refreshWorkDirectoryDisplay()
-        workDirGate = WorkDirGateFlow(this)
+        txtWorkFolder = findViewById(R.id.txt_work_folder)
+        refreshWorkFolderDisplay()
+        workDirGate = WorkFolderGateFlow(this)
 
         findViewById<Button>(R.id.btn_save_settings).setOnClickListener {
             workDirGate.runOrPick { folder -> doSave(folder) }
@@ -77,11 +77,11 @@ class SettingsBackupActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        refreshWorkDirectoryDisplay()
+        refreshWorkFolderDisplay()
     }
 
-    private fun refreshWorkDirectoryDisplay() {
-        txtWorkDirectory.text = "Work directory: ${FileManager.workDirectoryDisplayName(this)}"
+    private fun refreshWorkFolderDisplay() {
+        txtWorkFolder.text = "Work folder: ${FileManager.workFolderDisplayName(this)}"
     }
 
     private fun doSave(folder: DocumentFile) {
@@ -136,7 +136,7 @@ class SettingsBackupActivity : BaseActivity() {
         if (prefsFiles.isEmpty()) {
             AlertDialog.Builder(this)
                 .setTitle("No settings backups found")
-                .setMessage("The work directory contains no settings backup files.")
+                .setMessage("The work folder contains no settings backup files.")
                 .setPositiveButton("Browse elsewhere") { _, _ -> launchExternalRestorePicker() }
                 .setNegativeButton("Cancel", null)
                 .show()

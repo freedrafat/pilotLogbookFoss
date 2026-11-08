@@ -22,13 +22,13 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_work_directory"
+            android:id="@+id/txt_work_folder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
-            android:text="Work directory: Not set"
+            android:text="Work folder: Not set"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
 

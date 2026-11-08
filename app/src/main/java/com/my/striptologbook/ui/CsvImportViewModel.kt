@@ -167,6 +167,21 @@ private val APP_EXPORT_HEADER_TO_FIELD: Map<String, LegField> = mapOf(
     "remarks"                    to LegField.REMARKS
 )
 
+// Format 3 (FORMATTED) split-timestamp headers. Not present in the
+// legacy 39-column format or in RAW. In files produced by
+// CsvExportFormat.FORMATTED, `date` always holds the offBlock date
+// (serializeAsFormatted emits `formatDateWith(leg.offBlock, ...)` in
+// that column). The other four headers carry time-of-day only; the
+// per-row parser combines `date` + `offBlock_time` into the offBlock
+// timestamp, and uses `offBlock`'s date as the base for takeoff,
+// landing and onBlock.
+private val FORMAT3_SPLIT_HEADERS: Map<String, LegField> = mapOf(
+    "date"          to LegField.OFF_BLOCK_DATE_ONLY,
+    "offBlock_time" to LegField.OFF_BLOCK_TIME_ONLY,
+    "takeoff_time"  to LegField.TAKEOFF_TIME_ONLY,
+    "landing_time"  to LegField.LANDING_TIME_ONLY,
+    "onBlock_time"  to LegField.ON_BLOCK_TIME_ONLY
+)
 
 class CsvImportViewModel(
     private val repository: LegRepository
@@ -257,7 +272,9 @@ class CsvImportViewModel(
                 Log.d(TAG, "CSV parsed: headers=${data.headers.size}, rows=${data.rows.size}")
 
                 val initialMappings = data.headers.associateWith { header ->
-                    APP_EXPORT_HEADER_TO_FIELD[header] ?: LegField.IGNORE
+                    APP_EXPORT_HEADER_TO_FIELD[header]
+                        ?: FORMAT3_SPLIT_HEADERS[header]
+                        ?: LegField.IGNORE
                 }
 
                 _state.update {

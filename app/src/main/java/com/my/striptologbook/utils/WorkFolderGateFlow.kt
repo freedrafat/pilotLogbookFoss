@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 
-class WorkDirGateFlow(private val activity: ComponentActivity) {
+class WorkFolderGateFlow(private val activity: ComponentActivity) {
 
     enum class FailureReason {
         CANCELLED,
@@ -32,7 +32,7 @@ class WorkDirGateFlow(private val activity: ComponentActivity) {
             call.onError(FailureReason.CANCELLED)
             return@registerForActivityResult
         }
-        if (!FileManager.persistWorkDirectoryPermission(activity, uri)) {
+        if (!FileManager.persistWorkFolderPermission(activity, uri)) {
             Toast.makeText(
                 activity,
                 "Failed to persist permission. Please try again.",
@@ -41,12 +41,12 @@ class WorkDirGateFlow(private val activity: ComponentActivity) {
             call.onError(FailureReason.PERSIST_FAILED)
             return@registerForActivityResult
         }
-        when (val state = FileManager.resolveWorkDirectory(activity)) {
-            is WorkDirectoryState.Ready -> call.onReady(state.folder)
+        when (val state = FileManager.resolveWorkFolder(activity)) {
+            is WorkFolderState.Ready -> call.onReady(state.folder)
             else -> {
                 Toast.makeText(
                     activity,
-                    "Work directory not available.",
+                    "Work folder not available.",
                     Toast.LENGTH_LONG
                 ).show()
                 call.onError(FailureReason.RESOLVE_FAILED)
@@ -58,31 +58,30 @@ class WorkDirGateFlow(private val activity: ComponentActivity) {
         onError: (FailureReason) -> Unit = {},
         onReady: (DocumentFile) -> Unit
     ) {
-        when (val state = FileManager.resolveWorkDirectory(activity)) {
-            WorkDirectoryState.NotSet -> {
+        when (val state = FileManager.resolveWorkFolder(activity)) {
+            WorkFolderState.NotSet -> {
                 Toast.makeText(
                     activity,
-                    "Please select a work directory first",
+                    "Please select a work folder first",
                     Toast.LENGTH_SHORT
                 ).show()
                 showIntroDialog {
                     pending = PendingCall(onReady, onError)
-                    launcher.launch(FileManager.workDirectoryPickerInitialUri(activity))
+                    launcher.launch(FileManager.workFolderPickerInitialUri(activity))
                 }
             }
-            WorkDirectoryState.Invalid -> {
-                PreferencesManager.getInstance(activity).setBackupFolderUri(null)
+            WorkFolderState.Invalid -> {
                 Toast.makeText(
                     activity,
-                    "Work directory unavailable. Please select it again.",
+                    "Work folder unavailable. Please select it again.",
                     Toast.LENGTH_LONG
                 ).show()
                 showIntroDialog {
                     pending = PendingCall(onReady, onError)
-                    launcher.launch(FileManager.workDirectoryPickerInitialUri(activity))
+                    launcher.launch(FileManager.workFolderPickerInitialUri(activity))
                 }
             }
-            is WorkDirectoryState.Ready -> onReady(state.folder)
+            is WorkFolderState.Ready -> onReady(state.folder)
         }
     }
 
@@ -92,7 +91,7 @@ class WorkDirGateFlow(private val activity: ComponentActivity) {
     ) {
         showIntroDialog {
             pending = PendingCall(onReady, onError)
-            launcher.launch(FileManager.workDirectoryPickerInitialUri(activity))
+            launcher.launch(FileManager.workFolderPickerInitialUri(activity))
         }
     }
 

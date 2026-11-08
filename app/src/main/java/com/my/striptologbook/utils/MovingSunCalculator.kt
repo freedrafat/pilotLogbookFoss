@@ -56,7 +56,8 @@ object MovingSunriseCalculator {
         val sinDec = 0.39782 * sin(Math.toRadians(Lnorm))
         val dec = asin(sinDec)
 
-        val equationOfTimeDeg = Lnorm - RA_deg
+        val equationOfCenter = 1.916 * sin(Math.toRadians(M)) + 0.020 * sin(Math.toRadians(2 * M))
+        val equationOfTimeDeg = Lnorm - RA_deg - equationOfCenter
 
         // ⚠️ CRITICAL: MUST be "+ lonDeg", not "- lonDeg"
         val hourAngleDeg = (hourUTC - 12.0) * 15.0 + lonDeg + equationOfTimeDeg
@@ -417,7 +418,7 @@ object MovingSunriseCalculator {
         }
 
         val effectiveElevation = max(0.0, elevationMeters)
-        val elevationAdjustment = 0.0347 * sqrt(effectiveElevation)
+        val elevationAdjustment = 0.0322 * sqrt(effectiveElevation)
         val horizonElevation = -0.833 - elevationAdjustment
         val twilightElevation = ASTRONOMICAL_TWILIGHT_ELEVATION
 

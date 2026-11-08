@@ -10,13 +10,13 @@ import androidx.appcompat.widget.Toolbar
 import com.my.striptologbook.R
 import com.my.striptologbook.utils.FileManager
 import com.my.striptologbook.utils.InsetsHelper
-import com.my.striptologbook.utils.WorkDirGateFlow
+import com.my.striptologbook.utils.WorkFolderGateFlow
 
 class SettingsActivity : BaseActivity() {
 
-    private lateinit var txtWorkDirectory: TextView
+    private lateinit var txtWorkFolder: TextView
 
-    private lateinit var workDirGate: WorkDirGateFlow
+    private lateinit var workFolderGate: WorkFolderGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,20 +31,20 @@ class SettingsActivity : BaseActivity() {
         supportActionBar?.title = "Setting"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        txtWorkDirectory = findViewById(R.id.txt_work_directory)
-        refreshWorkDirectoryDisplay()
+        txtWorkFolder = findViewById(R.id.txt_work_folder)
+        refreshWorkFolderDisplay()
 
-        workDirGate = WorkDirGateFlow(this)
+        workFolderGate = WorkFolderGateFlow(this)
 
         // --- Button listeners ---
 
         findViewById<Button>(R.id.btn_settings_backup).setOnClickListener {
             startActivity(Intent(this, SettingsBackupActivity::class.java))
         }
-        findViewById<Button>(R.id.btn_work_directory).setOnClickListener {
-            workDirGate.pickFolder { _ ->
-                Toast.makeText(this, "Work directory set successfully", Toast.LENGTH_SHORT).show()
-                refreshWorkDirectoryDisplay()
+        findViewById<Button>(R.id.btn_work_folder).setOnClickListener {
+            workFolderGate.pickFolder { _ ->
+                Toast.makeText(this, "Work folder set successfully", Toast.LENGTH_SHORT).show()
+                refreshWorkFolderDisplay()
             }
         }
         findViewById<Button>(R.id.btn_preferences).setOnClickListener {
@@ -60,12 +60,12 @@ class SettingsActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        refreshWorkDirectoryDisplay()
+        refreshWorkFolderDisplay()
     }
 
-    private fun refreshWorkDirectoryDisplay() {
-        val name = FileManager.workDirectoryDisplayName(this)
-        txtWorkDirectory.text = "Work directory: $name"
+    private fun refreshWorkFolderDisplay() {
+        val name = FileManager.workFolderDisplayName(this)
+        txtWorkFolder.text = "Work folder: $name"
     }
 
     // --- Handle the back arrow ---

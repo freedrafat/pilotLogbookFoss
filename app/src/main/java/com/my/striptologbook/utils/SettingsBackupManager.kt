@@ -211,7 +211,7 @@ object SettingsBackupManager {
         p.autoCheckUpdates?.let { prefs.setAutoCheckUpdatesEnabled(it) }
         p.checkUpdatesEveryStart?.let { prefs.setCheckUpdatesEveryStartEnabled(it) }
         p.lastUpdateCheck?.let { prefs.setLastUpdateCheck(it) }
-        // backupFolderUri: skipped per Q8 (target's work directory is already set)
+        // backupFolderUri: skipped per Q8 (target's work folder is already set)
 
         p.defaultAltitude?.let { prefs.setDefaultAltitude(it) }
         p.defaultIsIfr?.let { prefs.setDefaultIsIfr(it) }

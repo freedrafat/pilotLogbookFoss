@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 import androidx.documentfile.provider.DocumentFile
 import com.my.striptologbook.utils.VerifiedBackupFlow
-import com.my.striptologbook.utils.WorkDirGateFlow
+import com.my.striptologbook.utils.WorkFolderGateFlow
 
 
 class CsvImportActivity : BaseActivity() {
@@ -34,7 +34,7 @@ class CsvImportActivity : BaseActivity() {
     private lateinit var rvMappings: RecyclerView
     private lateinit var btnImport: Button
     private lateinit var btnCancel: Button
-    private lateinit var workDirGate: WorkDirGateFlow
+    private lateinit var workDirGate: WorkFolderGateFlow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +73,7 @@ class CsvImportActivity : BaseActivity() {
             }
         )
         rvMappings.adapter = adapter
-        workDirGate = WorkDirGateFlow(this)
+        workDirGate = WorkFolderGateFlow(this)
 
         // Get ViewModel
         val app = application as LogbookApplication

@@ -374,8 +374,23 @@ fun parseDuration(input: String): Int? {
 
 
 // Parse any supported format to Double, or null if invalid.
-// A leading '-' or '+' is treated as a hemisphere sign (S/W or N/E).
-// Contradictions between a leading sign and a hemisphere letter are rejected.
+//
+// Accepted forms (rules per user spec 2026-11-08):
+//   • plain number (integer or decimal)     → whole number is degrees
+//   • D M / D°M            (1 separator)     → degrees + minutes
+//   • D M S / D°M'S"       (2 separators)    → degrees + minutes + seconds
+//
+//   " " may stand in for ° / ' / ", with one space between D/M
+//   and two spaces between D/M/S.
+//
+//   Decimals are allowed only in the last numeric group of a form
+//   (minutes for D M, seconds for D M S), or in a plain number.
+//
+//   A leading '-' or '+' is treated as a hemisphere sign (S/W or
+//   N/E). A hemisphere letter N/S/E/W (either case) is accepted
+//   strictly before the first digit or after the last digit.
+//   Contradictions between a leading sign and a hemisphere letter
+//   are rejected.
 fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
     if (input.isNullOrBlank()) return null
     var s = input.trim().uppercase()
@@ -385,36 +400,48 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
     if (s.startsWith('-') || s.startsWith('+')) {
         signChar = s[0]
         s = s.substring(1).trim()
-        // Reject multiple leading signs
         if (s.startsWith('-') || s.startsWith('+')) return null
     }
 
-    // 2. Extract hemisphere if present
+    // 2. Detect hemisphere letter (position not yet validated)
     var hem: Char? = null
-    for (ch in setOf('N','S','E','W')) {
-        if (s.contains(ch)) {
+    var hemIndex = -1
+    for (ch in setOf('N', 'S', 'E', 'W')) {
+        val idx = s.indexOf(ch)
+        if (idx >= 0) {
             hem = ch
-            s = s.replace(ch.toString(), "").trim()
+            hemIndex = idx
             break
         }
     }
 
-    // 3. Check contradiction between leading sign and hemisphere
+    // 3. A-3: hemisphere must be strictly before the first digit
+    //    or strictly after the last digit.
+    if (hem != null) {
+        val firstDigit = s.indexOfFirst { it.isDigit() }
+        val lastDigit = s.indexOfLast { it.isDigit() }
+        if (firstDigit < 0 || lastDigit < 0) return null
+        if (hemIndex > firstDigit && hemIndex < lastDigit) return null
+        s = s.replace(hem.toString(), "").trim()
+    }
+
+    // 4. Contradiction between leading sign and hemisphere
     if (signChar != null && hem != null) {
         val signIsNegative = signChar == '-'
-        val hemIsNegative = hem in setOf('S','W')
+        val hemIsNegative = hem in setOf('S', 'W')
         if (signIsNegative != hemIsNegative) return null
     }
 
-    // 4. If hemisphere present, remaining string must not start with a sign
+    // 5. If hemisphere was present, the remaining string must not
+    //    start with a sign.
     if (hem != null && (s.startsWith('-') || s.startsWith('+'))) return null
 
-    // 5. Replace comma with dot, collapse spaces
+    // 6. Normalize comma, collapse whitespace
     s = s.replace(',', '.').replace(Regex("\\s+"), " ").trim()
 
     var magnitude: Double? = null
 
-    // ----- 1. Try D°M.m or D M.m (space) -----
+    // ----- 1. D M / D°M (degrees integer, minutes may be decimal) -----
     val dmRegex = Regex("""^(\d+)\s*[°\s]\s*(\d+\.?\d*)$""")
     dmRegex.find(s)?.let {
         val deg = it.groupValues[1].toDoubleOrNull() ?: return null
@@ -422,7 +449,8 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
         magnitude = deg + min / 60.0
     }
 
-    // ----- 2. Try D°M'S" or D M S (space) -----
+    // ----- 2. D M S / D°M'S" (degrees and minutes integer,
+    //          seconds may be decimal) -----
     if (magnitude == null) {
         val dmsRegex = Regex("""^(\d+)\s*[°\s]\s*(\d+)\s*['\s]\s*(\d+\.?\d*)\s*["\s]?$""")
         dmsRegex.find(s)?.let {
@@ -433,41 +461,7 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
         }
     }
 
-    // ----- 3. Try compact with decimal point: DDMM.m or DDDMM.m -----
-    if (magnitude == null) {
-        val compactDotRegex = Regex("""^(\d{2,3})\.(\d+)$""")
-        compactDotRegex.find(s)?.let {
-            val degStr = it.groupValues[1]
-            val minStr = it.groupValues[2]
-            val deg = degStr.toDoubleOrNull() ?: return null
-            val min = minStr.toDoubleOrNull() ?: return null
-            magnitude = deg + min / 60.0
-        }
-    }
-
-    // ----- 4. Try compact without decimal: DDMMm or DDDMMm -----
-    if (magnitude == null && s.matches(Regex("^\\d+$"))) {
-        val len = s.length
-        val minLen = if (isLatitude) 3 else 4
-        if (len >= minLen) {
-            val degStr = if (isLatitude) s.take(2) else s.take(3)
-            val minStr = s.drop(degStr.length)
-            if (minStr.isNotEmpty()) {
-                var minutes: Double
-                if (minStr.length == 3) {
-                    val whole = minStr.take(2).toDoubleOrNull() ?: return null
-                    val tenths = minStr.last().toString().toDoubleOrNull() ?: 0.0
-                    minutes = whole + tenths / 10.0
-                } else {
-                    minutes = minStr.toDoubleOrNull() ?: return null
-                }
-                val deg = degStr.toDoubleOrNull() ?: return null
-                magnitude = deg + minutes / 60.0
-            }
-        }
-    }
-
-    // ----- 5. Finally, try plain decimal (signed) -----
+    // ----- 3. Plain decimal (whole number = degrees) -----
     if (magnitude == null) {
         s.toDoubleOrNull()?.let {
             magnitude = kotlin.math.abs(it)
@@ -476,7 +470,6 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
 
     if (magnitude == null) return null
 
-    // Apply sign from leading sign or hemisphere
     val isNegative = (signChar == '-') || (hem in setOf('S', 'W'))
     val result = if (isNegative) -magnitude else magnitude
 

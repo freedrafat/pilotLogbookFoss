@@ -783,14 +783,18 @@ class FlightSunActivity : AppCompatActivity() {
 
                 clearWarning(timeEdit)
 
-                // Sort + fill missing coordinates if every non-empty row has a user time
+// Sort only when every non-empty row has a non-temporary time,
+// matching the previous sort gate. The fill itself runs whenever
+// there is a route, because temporary times and coordinates are
+// treated as empty by buildRouteFromUi and will be refilled.
                 if (allNonEmptyRowsHaveUserTime()) {
                     sortRowsByTime()
-                    val route = buildRouteFromUi()
-                    if (route != null) {
-                        MovingSunriseCalculator.fillMissingCoordinates(route)
-                        applyRouteBackToUi(route)
-                    }
+                }
+                val route = buildRouteFromUi()
+                if (route != null) {
+                    MovingSunriseCalculator.fillMissingTimes(route)
+                    MovingSunriseCalculator.fillMissingCoordinates(route)
+                    applyRouteBackToUi(route)
                 }
             } else {
                 clearWarning(timeEdit)
@@ -905,7 +909,7 @@ class FlightSunActivity : AppCompatActivity() {
     // ----- Helper to compute horizon elevation from altitude (meters) -----
     private fun getHorizonElevation(elevationMeters: Double): Double {
         val effectiveElevation = maxOf(0.0, elevationMeters)
-        val elevationAdjustment = 0.0347 * kotlin.math.sqrt(effectiveElevation)
+        val elevationAdjustment = 0.0322 * kotlin.math.sqrt(effectiveElevation)
         return -0.833 - elevationAdjustment
     }
 
@@ -1034,6 +1038,7 @@ class FlightSunActivity : AppCompatActivity() {
                 )
                 val events = result.events
                 val filledRoute = result.filledWaypoints
+                val speedsStr = computeSegmentSpeeds(filledRoute)
 
                 if (Thread.interrupted()) throw InterruptedException()
 
@@ -1133,7 +1138,7 @@ class FlightSunActivity : AppCompatActivity() {
                         }
                     }
 
-                    displayResults(events, depIsDay, arrIsDay)
+                    displayResults(events, depIsDay, arrIsDay, speedsStr)
                     btnApplyToLeg.visibility = if (fromLegEdit) View.VISIBLE else View.GONE
                 }
 
@@ -1167,9 +1172,13 @@ class FlightSunActivity : AppCompatActivity() {
     private fun displayResults(
         events: List<MovingSunriseCalculator.SunEvent>,
         depIsDay: Boolean,
-        arrIsDay: Boolean
+        arrIsDay: Boolean,
+        speedsStr: String
     ) {
         val sb = StringBuilder()
+        if (speedsStr.isNotEmpty()) {
+            sb.append(speedsStr).append("\n\n")
+        }
         if (events.isEmpty()) {
             sb.append("No sun event occurred during this flight.\n\n")
         } else {
@@ -1188,7 +1197,7 @@ class FlightSunActivity : AppCompatActivity() {
         tvResults.text = sb.toString()
     }
 
-    // Helper to find sunrise/sunset (unchanged algorithm)
+    // Helper to find sunrise/sunset
     private fun findSunriseSunsetUsingMoving(
         latitude: Double,
         longitude: Double,
@@ -1197,7 +1206,7 @@ class FlightSunActivity : AppCompatActivity() {
         findSunrise: Boolean
     ): Date? {
         val effectiveElevation = maxOf(0.0, elevationMeters)
-        val elevationAdjustment = 0.0347 * kotlin.math.sqrt(effectiveElevation)
+        val elevationAdjustment = 0.0322 * kotlin.math.sqrt(effectiveElevation)
         val horizonElevation = -0.833 - elevationAdjustment
 
         val cal = dateCalendar.clone() as Calendar
@@ -1280,6 +1289,49 @@ class FlightSunActivity : AppCompatActivity() {
         return null
     }
 
+    // Builds the segment-speeds.
+    private fun computeSegmentSpeeds(route: List<Waypoint>): String {
+        val parts = mutableListOf<String>()
+        for (i in 0 until route.size - 1) {
+            val a = route[i]
+            val b = route[i + 1]
+
+            val lat1 = a.latitude ?: continue
+            val lon1 = a.longitude ?: continue
+            val lat2 = b.latitude ?: continue
+            val lon2 = b.longitude ?: continue
+            val t1 = a.timeUTC ?: continue
+            val t2 = b.timeUTC ?: continue
+
+            val dtMs = t2 - t1
+            if (dtMs <= 0L) continue
+
+            val distanceNm = greatCircleDistanceNm(lat1, lon1, lat2, lon2)
+            val hours = dtMs / 3_600_000.0
+            val speedKt = kotlin.math.round(distanceNm / hours).toInt()
+            parts.add("${speedKt}kt")
+        }
+        return parts.joinToString(" - ")
+    }
+
+    private fun greatCircleDistanceNm(
+        lat1: Double, lon1: Double,
+        lat2: Double, lon2: Double
+    ): Double {
+        val earthRadiusNm = 3440.065
+        val phi1 = Math.toRadians(lat1)
+        val phi2 = Math.toRadians(lat2)
+        val dPhi = Math.toRadians(lat2 - lat1)
+        val dLambda = Math.toRadians(lon2 - lon1)
+        val sinDPhi = kotlin.math.sin(dPhi / 2)
+        val sinDLambda = kotlin.math.sin(dLambda / 2)
+        val a = sinDPhi * sinDPhi +
+                kotlin.math.cos(phi1) * kotlin.math.cos(phi2) *
+                sinDLambda * sinDLambda
+        val c = 2 * kotlin.math.atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
+        return earthRadiusNm * c
+    }
+
     private fun getNonEmptyRows(): List<WaypointRowHolder> =
         waypointRows.filter {
             it.currentValidLat != null || it.currentValidLon != null || it.timeStr != null
@@ -1303,18 +1355,27 @@ class FlightSunActivity : AppCompatActivity() {
         route.add(Waypoint(depAirport.latitude, depAirport.longitude, depTs))
 
         for (holder in getNonEmptyRows()) {
-            val hasLat = holder.currentValidLat != null
-            val hasLon = holder.currentValidLon != null
+            // A coordinate or time that was autofilled (temporary) is treated as
+            // empty for the purposes of the fill, so it is recalculated from
+            // the current anchors and time. A coordinate the user typed
+            // (not temporary) is kept as-is.
+            val isTemporary = holder.isLatTemporary || holder.isLonTemporary
+            val lat = if (isTemporary) null else holder.currentValidLat
+            val lon = if (isTemporary) null else holder.currentValidLon
+
+            val hasLat = lat != null
+            val hasLon = lon != null
             if (hasLat != hasLon) return null
 
-            val time = holder.timeStr?.let { str ->
+// Temporary time is treated as empty for fill purposes
+            val time = if (holder.isTimeTemporary) null else holder.timeStr?.let { str ->
                 val minutes = str.toMinutesOrNull() ?: return@let null
                 val base = getDateAtMidnight(depTs)
                 var c = base + minutes * 60_000L
                 if (c < depTs) c += 24L * 60 * 60 * 1000
                 c
             }
-            route.add(Waypoint(holder.currentValidLat, holder.currentValidLon, time))
+            route.add(Waypoint(lat, lon, time))
         }
 
         route.add(Waypoint(arrAirport.latitude, arrAirport.longitude, arrTs))
@@ -1329,7 +1390,7 @@ class FlightSunActivity : AppCompatActivity() {
             val wp = filled.getOrNull(i) ?: continue
 
             val wpLat = wp.latitude
-            if (holder.currentValidLat == null && wpLat != null) {
+            if ((holder.currentValidLat == null || holder.isLatTemporary) && wpLat != null) {
                 holder.currentValidLat = wpLat
                 clearWarning(holder.latEdit)
                 holder.latEdit.setText(formatCoordinate(wpLat, true))
@@ -1338,7 +1399,7 @@ class FlightSunActivity : AppCompatActivity() {
             }
 
             val wpLon = wp.longitude
-            if (holder.currentValidLon == null && wpLon != null) {
+            if ((holder.currentValidLon == null || holder.isLonTemporary) && wpLon != null) {
                 holder.currentValidLon = wpLon
                 clearWarning(holder.lonEdit)
                 holder.lonEdit.setText(formatCoordinate(wpLon, false))
@@ -1347,7 +1408,7 @@ class FlightSunActivity : AppCompatActivity() {
             }
 
             val wpTime = wp.timeUTC
-            if (holder.timeStr == null && wpTime != null) {
+            if ((holder.timeStr == null || holder.isTimeTemporary) && wpTime != null) {
                 val timeStr = extractTimeOnly(wpTime)
                 holder.timeStr = timeStr
                 holder.timeEdit.setText(timeStr)

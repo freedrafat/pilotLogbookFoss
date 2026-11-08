@@ -26,25 +26,25 @@ import java.util.zip.CRC32
 
 
 /**
- * Result of resolving the work directory.
+ * Result of resolving the work folder.
  *
- * The work directory is a user-chosen SAF tree used for every
+ * The work folder is a user-chosen SAF tree used for every
  * logbook-related file: JSON backups/restores, CSV exports/imports,
  * PDF exports, and (planned) preferences/settings save+restore.
  *
  * The URI string is stored under the existing preference key
  * `backup_folder_uri`. The name is historical; the semantics have
- * widened to "work directory".
+ * widened to "work folder".
  */
-sealed class WorkDirectoryState {
+sealed class WorkFolderState {
     /** No folder has been set yet. */
-    object NotSet : WorkDirectoryState()
+    object NotSet : WorkFolderState()
 
     /** A folder was set, but is no longer accessible (deleted, permission revoked, etc.). */
-    object Invalid : WorkDirectoryState()
+    object Invalid : WorkFolderState()
 
     /** A folder is set and usable. */
-    data class Ready(val folder: DocumentFile) : WorkDirectoryState()
+    data class Ready(val folder: DocumentFile) : WorkFolderState()
 }
 
 
@@ -421,13 +421,13 @@ object FileManager {
         return "logbook_filtered_${dateStr}.csv"
     }
 
-// ---------- Work directory ----------
+// ---------- Work folder ----------
 
     /**
-     * Resolves the work directory.
+     * Resolves the work folder.
      *
      * The stored preference `backup_folder_uri` is the parent tree the
-     * user picked. The actual work directory is the subfolder
+     * user picked. The actual work folder is the subfolder
      * [SUBFOLDER_NAME] inside that tree. If the user picked a folder
      * already named [SUBFOLDER_NAME], that folder itself is used.
      *
@@ -438,23 +438,23 @@ object FileManager {
      *
      * This method may create the subfolder on first use. It never throws.
      */
-    fun resolveWorkDirectory(context: Context): WorkDirectoryState {
+    fun resolveWorkFolder(context: Context): WorkFolderState {
         val uriString = PreferencesManager.getInstance(context).getBackupFolderUri()
-            ?: return WorkDirectoryState.NotSet
+            ?: return WorkFolderState.NotSet
 
         val tree = try {
             DocumentFile.fromTreeUri(context, uriString.toUri())
         } catch (_: Exception) {
-            return WorkDirectoryState.Invalid
-        } ?: return WorkDirectoryState.Invalid
+            return WorkFolderState.Invalid
+        } ?: return WorkFolderState.Invalid
 
         if (!tree.exists() || !tree.isDirectory) {
-            return WorkDirectoryState.Invalid
+            return WorkFolderState.Invalid
         }
 
         // If the user picked the subfolder itself, use it directly.
         if (tree.name == SUBFOLDER_NAME) {
-            return WorkDirectoryState.Ready(tree)
+            return WorkFolderState.Ready(tree)
         }
 
         val subfolder = try {
@@ -464,21 +464,21 @@ object FileManager {
         }
 
         return if (subfolder != null && subfolder.exists() && subfolder.isDirectory) {
-            WorkDirectoryState.Ready(subfolder)
+            WorkFolderState.Ready(subfolder)
         } else {
             // Subfolder creation failed. Fall back to the picked tree.
-            WorkDirectoryState.Ready(tree)
+            WorkFolderState.Ready(tree)
         }
     }
 
     /**
      * Requests READ|WRITE access on the given tree URI, persists the grant,
-     * and stores the URI as the work directory parent.
+     * and stores the URI as the work folder parent.
      *
      * Returns true on success, false if the system refused the grant
      * (SecurityException) — in which case the preference is NOT updated.
      */
-    fun persistWorkDirectoryPermission(context: Context, uri: Uri): Boolean {
+    fun persistWorkFolderPermission(context: Context, uri: Uri): Boolean {
         return try {
             context.contentResolver.takePersistableUriPermission(
                 uri,
@@ -492,30 +492,64 @@ object FileManager {
     }
 
     /**
-     * Display-only helper: "parent/PilotLogbookFoss" for the stored parent,
-     * "PilotLogbookFoss" if the user picked that folder directly,
-     * "Unavailable" if the parent tree can no longer be opened,
-     * "Not set" if no folder has ever been picked.
+     * Display-only helper. Shows the full path of the work folder
+     * (the parent the user picked, plus PilotLogbookFoss unless the
+     * picked folder is already named PilotLogbookFoss).
+     *
+     * External-storage providers (primary + SD card) use the
+     * "volume:path" document-ID format, so the real path is recoverable:
+     *   • primary volume  → "Download/MyFolder/PilotLogbookFoss"
+     *   • non-primary    → "Ext:Download/MyFolder/PilotLogbookFoss"
+     * Other providers (Drive, cloud) return an opaque document ID with
+     * no readable path, so the display is just "Ext".
+     *
+     * "Not set"   — no work folder has ever been picked.
+     * "Unavailable" — a tree was set but cannot be opened.
+     * "Ext"       — a non-External-Storage provider was picked.
      */
-    fun workDirectoryDisplayName(context: Context): String {
+    fun workFolderDisplayName(context: Context): String {
         val uriString = PreferencesManager.getInstance(context).getBackupFolderUri()
             ?: return "Not set"
         return try {
-            val tree = DocumentFile.fromTreeUri(context, uriString.toUri())
+            val uri = uriString.toUri()
+            val tree = DocumentFile.fromTreeUri(context, uri)
             if (tree == null || !tree.exists() || !tree.isDirectory) {
-                "Unavailable"
-            } else {
-                val parentName = tree.name ?: "?"
-                if (parentName == SUBFOLDER_NAME) parentName
-                else "$parentName/$SUBFOLDER_NAME"
+                return "Unavailable"
             }
+
+            val isExternalStorage =
+                uri.authority == "com.android.externalstorage.documents"
+            val docId: String? = try {
+                DocumentsContract.getTreeDocumentId(uri)
+            } catch (_: Exception) {
+                null
+            }
+
+            if (!isExternalStorage || docId.isNullOrEmpty()) {
+                return "Ext"
+            }
+
+            val colonIdx = docId.indexOf(':')
+            if (colonIdx < 0) {
+                return "Ext"
+            }
+
+            val volume = docId.substring(0, colonIdx)
+            val path = docId.substring(colonIdx + 1)
+
+            val withSub = when {
+                path.isEmpty() -> SUBFOLDER_NAME
+                path.substringAfterLast('/') == SUBFOLDER_NAME -> path
+                else -> "$path/$SUBFOLDER_NAME"
+            }
+            return if (volume == "primary") withSub else "Ext:$withSub"
         } catch (_: Exception) {
             "Unavailable"
         }
     }
 
     /**
-     * Suggested initial URI for the work-directory picker.
+     * Suggested initial URI for the work-folder picker.
      *
      * If a folder is already set, opens the picker at that folder so the
      * user can navigate into or around it. Otherwise opens at Documents/,
@@ -525,7 +559,7 @@ object FileManager {
      * Returns null on any failure; the picker will then open at its
      * default location.
      */
-    fun workDirectoryPickerInitialUri(context: Context): Uri? {
+    fun workFolderPickerInitialUri(context: Context): Uri? {
         val current = PreferencesManager.getInstance(context).getBackupFolderUri()
         if (current != null) {
             return try {
@@ -548,10 +582,10 @@ object FileManager {
         }
     }
 
-    // ---------- Work directory write helpers ----------
+    // ---------- Work folder write helpers ----------
 
     /**
-     * Writes text to a new file in the given work directory and verifies
+     * Writes text to a new file in the given work folder and verifies
      * the written bytes by CRC32 read-back. Throws on any failure
      * (create, write, read-back, checksum mismatch). The partially-written
      * file is deleted before the exception propagates.
@@ -571,7 +605,7 @@ object FileManager {
     )
 
     /**
-     * Writes bytes to a new file in the given work directory and verifies
+     * Writes bytes to a new file in the given work folder and verifies
      * the written bytes by CRC32 read-back. See writeTextToWorkDir.
      */
     fun writeBytesToWorkDir(
