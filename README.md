@@ -6,7 +6,7 @@ pilots.
 *   Calculate precise day/night times along your route using the Flight Sun Calculator.
 *   Export PDF logbooks according to ICAO / EASA AMC1 FCL.050 standards.
 
-**All data is stored locally on your device. Nothing is sent to any server.**
+**All logbook data is stored locally on your device. No personal data is sent to any server.**
 
 ## ✨ Features
 
@@ -14,8 +14,15 @@ pilots.
 *   **Auto-Calculations:** Automatically calculates night/day times, block totals, and takeoff/landing counts based on sunrise/sunset and Pilot Flying status.
 *   **Flight Sun Calculator:** Computes moving sunrise and sunset events along your route, factoring in changing aircraft position and cruise altitude.
 *   **Opening Balance:** Input your prior flight experience to see accurate career totals in the app and PDF exports.
-*   **PDF Export:** Generate printable EASA-compliant logbook pages with customizable layouts and signatures.
-*   **Backup & Restore:** Built-in JSON backup system that verifies data integrity before saving. CSV import/export supported.
+*   **Airport Database:** Local IATA/ICAO database with autocomplete in the Leg Editor and Sun Calculator. Can be updated from the web, edited, and exported.
+*   **PDF Export:** Generate printable EASA-compliant logbook pages with customizable layouts and signatures. Export the full logbook from Tools, or a filtered PDF of the current filter or search result from the Leg List.
+*   **Backup (JSON and CSV):** Two backup formats, one purpose.
+    *   **JSON backup** contains the full logbook (legs and Opening Balance) and is restorable in one step.
+    *   **CSV backup** is a human-readable, spreadsheet-editable export of the legs, importable into an empty logbook.
+*   **CSV Export from Leg List:** Export the currently filtered or searched legs in a configurable CSV format, for reporting or sharing.
+*   **Verified Pre-Backup:** Restore, Delete All, CSV import, and update download all run a verified backup of the current database before touching it, and warn the user with a "Continue anyway?" dialog if the backup cannot be verified.
+*   **Work Directory:** Every export, backup, and import writes into a single user-chosen folder, remembered across sessions.
+*   **Settings Backup / Restore:** Save and restore your preferences (default fields, custom lists, PDF layout, statistics visibility, signature) as a JSON file, for device migration.
 *   **Customizable UI:** Choose what appears on your leg cards in the list view using the "Leg Items" feature.
 
 ## 🚀 Installation
@@ -30,7 +37,10 @@ For detailed instructions on how to use every feature of the app, please refer t
 
 ## 🛡️ Privacy Policy
 
-This application does not collect, transmit, or share any personal data. All logbook data, settings, and backups are stored entirely on your local device. The app only connects to the internet to check for application updates or to download the latest airport database.
+This application does not collect, transmit, or share any personal data. All logbook data, settings, and backups are stored entirely on your local device. The app performs only two outbound network operations, neither of which sends personal data:
+
+*   **Update check** — to determine whether a newer version exists.
+*   **Airport database download** — to fetch the latest airport JSON when you tap Update Airport DB.
 
 ## 🤝 Support
 
