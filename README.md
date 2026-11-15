@@ -1,9 +1,9 @@
 # Pilot Flight Logbook
 
-A privacy-focused, FOSS & fully local Android application designed for professional and private
-pilots.
+A privacy-focused, FOSS & fully local Android application designed for professional and private pilots.
 *   Record flight legs.
 *   Calculate precise day/night times along your route using the Flight Sun Calculator.
+*   Automatically correct and fill missing logbook data.
 *   Export PDF logbooks according to ICAO / EASA AMC1 FCL.050 standards.
 
 **All logbook data is stored locally on your device. No personal data is sent to any server.**
@@ -11,19 +11,20 @@ pilots.
 ## ✨ Features
 
 *   **Logbook Legs:** Record block time, flight time, IFR, simulator time, and crew details.
+*   **Legs Correction Engine:** A powerful batch tool to automatically fix and fill missing data. It features a before/after preview and uses custom rules for Takeoff/Landing offsets, IFR (Block/Flight), Real Night calculation, alternating Pilot Flying, and dedicated Simulator leg logic.
 *   **Auto-Calculations:** Automatically calculates night/day times, block totals, and takeoff/landing counts based on sunrise/sunset and Pilot Flying status.
-*   **Flight Sun Calculator:** Computes moving sunrise and sunset events along your route, factoring in changing aircraft position and cruise altitude.
+*   **Flight Sun Calculator:** Computes moving sunrise and sunset events along your route, factoring in changing aircraft position and cruise altitude. Supports plain decimal, DMS, and compact coordinate inputs.
 *   **Opening Balance:** Input your prior flight experience to see accurate career totals in the app and PDF exports.
 *   **Airport Database:** Local IATA/ICAO database with autocomplete in the Leg Editor and Sun Calculator. Can be updated from the web, edited, and exported.
-*   **PDF Export:** Generate printable EASA-compliant logbook pages with customizable layouts and signatures. Export the full logbook from Tools, or a filtered PDF of the current filter or search result from the Leg List.
-*   **Backup (JSON and CSV):** Two backup formats, one purpose.
+*   **PDF Export:** Generate printable EASA-compliant logbook pages with customizable layouts and signatures. Export the full logbook from Tools, or a filtered PDF of the current filter or search result from the Leg List. Positions like "Instructor" and "Examinator" are automatically aggregated into the correct PDF column.
+*   **Backup & Restore (JSON and CSV):** Two backup formats, one purpose.
     *   **JSON backup** contains the full logbook (legs and Opening Balance) and is restorable in one step.
-    *   **CSV backup** is a human-readable, spreadsheet-editable export of the legs, importable into an empty logbook.
+    *   **CSV backup** is a human-readable, spreadsheet-editable export of the legs. The importer supports auto-mapping from external tools like `stripToCalendar`, automatically detecting date formats (`dd/MM/yyyy`) and Simulator legs.
 *   **CSV Export from Leg List:** Export the currently filtered or searched legs in a configurable CSV format, for reporting or sharing.
-*   **Verified Pre-Backup:** Restore, Delete All, CSV import, and update download all run a verified backup of the current database before touching it, and warn the user with a "Continue anyway?" dialog if the backup cannot be verified.
+*   **Verified Pre-Backup:** Restore, Delete All, CSV import, correction application, and update download all run a verified backup of the current database before touching it, and warn the user with a "Continue anyway?" dialog if the backup cannot be verified.
 *   **Work Directory:** Every export, backup, and import writes into a single user-chosen folder, remembered across sessions.
 *   **Settings Backup / Restore:** Save and restore your preferences (default fields, custom lists, PDF layout, statistics visibility, signature) as a JSON file, for device migration.
-*   **Customizable UI:** Choose what appears on your leg cards in the list view using the "Leg Items" feature.
+*   **Customizable UI:** Choose what appears on your leg cards in the list view using the "Leg Items" feature. The Default Fields screen allows pre-filling A/C Type, Category, and Position (including Examinator).
 
 ## 🚀 Installation
 
