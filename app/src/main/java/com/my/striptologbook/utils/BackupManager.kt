@@ -17,7 +17,7 @@ object BackupManager {
 
     private const val TAG = "BackupManager"
     private const val MAX_BACKUPS_TO_KEEP = 10
-    private const val BACKUP_PREFIX = "logbook_backup_"
+    private const val BACKUP_PREFIX = "logbookFoss_allLogbook_"
     private const val BACKUP_SUFFIX = ".json"
 
     sealed class BackupResult {
@@ -32,7 +32,7 @@ object BackupManager {
         contentResolver: ContentResolver
     ): BackupResult {
 
-        val fileName = FileManager.suggestBackupFileName()
+        val fileName = FileManager.suggestAllLogbookJsonName()
 
         val file: DocumentFile = try {
             folder.createFile("application/json", fileName)

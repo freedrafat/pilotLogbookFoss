@@ -60,7 +60,7 @@
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Export Logbook (CSV)" />
+                android:text="Backup Logbook (CSV)" />
 
 
         </LinearLayout>
@@ -84,7 +84,7 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="start"
                 android:text="Legs will be added to existing DB" />
 
             <Space
@@ -96,14 +96,14 @@
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Restore from Backup (JSON)" />
+                android:text="Restore all from Backup (JSON)" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="WARNING: ALL old DB will be lost" />
+                android:layout_gravity="start"
+                android:text="ALL old DB will be lost" />
 
 
         </LinearLayout>

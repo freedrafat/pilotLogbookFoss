@@ -644,6 +644,24 @@ class CsvImportViewModel(
             }
 
             // ---------- Build the Leg object ----------
+            // simulatorTime is parsed first (order B): if the cell is
+            // malformed, parseDurationWithError throws and the row is
+            // skipped before isSimulator is decided.
+            val simulatorTimeValue = parseDurationWithError(
+                fieldValues[LegField.SIMULATOR_TIME],
+                LegField.SIMULATOR_TIME
+            )
+
+            // isSimulator: if the column is mapped, respect the mapping
+            // (true / false / null as today). If the column is not
+            // mapped, decide from simulatorTime: > 0 → true, else false.
+            val isSimulatorValue: Boolean? =
+                if (fieldValues.containsKey(LegField.IS_SIMULATOR)) {
+                    parseBooleanWithError(fieldValues[LegField.IS_SIMULATOR])
+                } else {
+                    simulatorTimeValue != null && simulatorTimeValue > 0
+                }
+
             val leg = Leg(
                 id = 0,
                 position = fieldValues[LegField.POSITION]?.ifEmpty { null },
@@ -677,8 +695,8 @@ class CsvImportViewModel(
                 flightTimeNight = parseDurationWithError(fieldValues[LegField.FLIGHT_TIME_NIGHT], LegField.FLIGHT_TIME_NIGHT),
                 flightTimeDay = parseDurationWithError(fieldValues[LegField.FLIGHT_TIME_DAY], LegField.FLIGHT_TIME_DAY),
 
-                isSimulator = parseBooleanWithError(fieldValues[LegField.IS_SIMULATOR]),
-                simulatorTime = parseDurationWithError(fieldValues[LegField.SIMULATOR_TIME], LegField.SIMULATOR_TIME),
+                isSimulator = isSimulatorValue,
+                simulatorTime = simulatorTimeValue,
 
                 ifrTotal = parseDurationWithError(fieldValues[LegField.IFR_TOTAL], LegField.IFR_TOTAL),
                 ifrNight = parseDurationWithError(fieldValues[LegField.IFR_NIGHT], LegField.IFR_NIGHT),
@@ -748,8 +766,10 @@ class CsvImportViewModel(
             "yyyy-MM-dd HH:mm",
             "yyyy-MM-dd'T'HH:mm",
             "dd.MM.yyyy HH:mm",
+            "dd/MM/yyyy HH:mm",
             "yyyy-MM-dd",
-            "dd.MM.yyyy"
+            "dd.MM.yyyy",
+            "dd/MM/yyyy"
         )
 
         for (pattern in utcFormats) {

@@ -114,6 +114,14 @@
             android:parentActivityName=".ui.PreferencesActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.LegsCorrectionPreferencesActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.PreferencesActivity" />
+        <activity
+            android:name=".ui.LegsCorrectionPreviewActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.LegListActivity" />
+        <activity
             android:name=".ui.SettingsBackupActivity"
             android:exported="false"
             android:parentActivityName=".ui.PreferencesActivity" />

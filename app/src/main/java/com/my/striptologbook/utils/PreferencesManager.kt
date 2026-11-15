@@ -3,7 +3,8 @@ package com.my.striptologbook.utils
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.my.striptologbook.data.PdfTemplates
+import com.my.striptologbook.data.LegsCorrectionConfig
+import kotlinx.serialization.json.Json
 
 class PreferencesManager private constructor(context: Context) {
 
@@ -45,6 +46,8 @@ class PreferencesManager private constructor(context: Context) {
         private const val KEY_DEFAULT_JUMPSEAT2            = "default_jumpseat2"
         private const val KEY_DEFAULT_CABIN_CREW           = "default_cabin_crew"
         private const val KEY_DEFAULT_AC_REGISTRATION      = "default_ac_registration"
+        private const val KEY_DEFAULT_AC_TYPE              = "default_ac_type"
+        private const val KEY_DEFAULT_CATEGORY             = "default_category"
         private const val KEY_DEFAULT_FLIGHT_NUMBER_PREFIX = "default_flight_number_prefix"
         private const val KEY_DEFAULT_ICAO_DEPARTURE       = "default_icao_departure"
         private const val KEY_DEFAULT_ICAO_DESTINATION     = "default_icao_destination"
@@ -64,12 +67,15 @@ class PreferencesManager private constructor(context: Context) {
         private const val KEY_CHECK_UPDATES_EVERY_START = "check_updates_every_start"
         private const val KEY_LAST_UPDATE_CHECK         = "last_update_check"
 
+        private const val KEY_LEGS_CORRECTION_CONFIG = "legs_correction_preferences"
+
         val DEFAULT_POSITION_LIST = listOf(
             "PIC",
             "SIC",
             "AugCrew",
             "Dual",
-            "Instructor"
+            "Instructor",
+            "Examinator"
         )
 
         val DEFAULT_CATEGORY_LIST = listOf(
@@ -79,9 +85,6 @@ class PreferencesManager private constructor(context: Context) {
             "Helicopter",
             "Glider"
         )
-
-        private const val KEY_PDF_TEMPLATE = "pdf_template"
-        private const val KEY_PDF_COLUMNS  = "pdf_columns"
 
         private const val KEY_PDF_ROWS_PER_PAGE  = "pdf_rows_per_page"
         private const val KEY_PDF_OWNER_NAME     = "pdf_owner_name"
@@ -222,6 +225,12 @@ class PreferencesManager private constructor(context: Context) {
     fun getDefaultAcRegistration(): String = prefs.getString(KEY_DEFAULT_AC_REGISTRATION, "") ?: ""
     fun setDefaultAcRegistration(value: String) { prefs.edit { putString(KEY_DEFAULT_AC_REGISTRATION, value) } }
 
+    fun getDefaultAcType(): String = prefs.getString(KEY_DEFAULT_AC_TYPE, "") ?: ""
+    fun setDefaultAcType(value: String) { prefs.edit { putString(KEY_DEFAULT_AC_TYPE, value) } }
+
+    fun getDefaultCategory(): String = prefs.getString(KEY_DEFAULT_CATEGORY, "") ?: ""
+    fun setDefaultCategory(value: String) { prefs.edit { putString(KEY_DEFAULT_CATEGORY, value) } }
+
     fun getDefaultFlightNumberPrefix(): String = prefs.getString(KEY_DEFAULT_FLIGHT_NUMBER_PREFIX, "") ?: ""
     fun setDefaultFlightNumberPrefix(value: String) { prefs.edit { putString(KEY_DEFAULT_FLIGHT_NUMBER_PREFIX, value) } }
 
@@ -236,6 +245,19 @@ class PreferencesManager private constructor(context: Context) {
 
     fun getDefaultOffBlockNow(): Boolean = prefs.getBoolean(KEY_DEFAULT_OFFBLOCK_NOW, false)
     fun setDefaultOffBlockNow(value: Boolean) { prefs.edit { putBoolean(KEY_DEFAULT_OFFBLOCK_NOW, value) } }
+
+    fun getLegsCorrectionConfig(): LegsCorrectionConfig {
+        val json = prefs.getString(KEY_LEGS_CORRECTION_CONFIG, null) ?: return LegsCorrectionConfig.DEFAULT
+        return try {
+            Json.decodeFromString(json)
+        } catch (e: Exception) {
+            LegsCorrectionConfig.DEFAULT
+        }
+    }
+
+    fun setLegsCorrectionConfig(config: LegsCorrectionConfig) {
+        prefs.edit {putString(KEY_LEGS_CORRECTION_CONFIG, Json.encodeToString(config))}
+    }
 
     fun getDefaultIsSimulator(): String {
         val v = prefs.getString(KEY_DEFAULT_IS_SIMULATOR, TRI_NONE) ?: TRI_NONE
@@ -339,18 +361,6 @@ class PreferencesManager private constructor(context: Context) {
         val time: String?
     )
 
-
-    fun getPdfTemplate(): String = prefs.getString(KEY_PDF_TEMPLATE, "ICAO") ?: "ICAO"
-    fun setPdfTemplate(template: String) { prefs.edit { putString(KEY_PDF_TEMPLATE, template) } }
-
-    fun getPdfColumns(): List<String> {
-        val raw = prefs.getString(KEY_PDF_COLUMNS, null) ?: return PdfTemplates.ICAO
-        return raw.split("|").filter { it.isNotEmpty() }
-    }
-    fun setPdfColumns(columns: List<String>) {
-        prefs.edit { putString(KEY_PDF_COLUMNS, columns.joinToString("|")) }
-    }
-
     fun getPdfRowsPerPage(): Int = prefs.getInt(KEY_PDF_ROWS_PER_PAGE, 18)
     fun setPdfRowsPerPage(value: Int) { prefs.edit { putInt(KEY_PDF_ROWS_PER_PAGE, value) } }
 
@@ -367,14 +377,14 @@ class PreferencesManager private constructor(context: Context) {
         val json = prefs.getString(KEY_PDF_LAYOUT_CONFIG, null)
             ?: return com.my.striptologbook.data.PdfLayoutConfig.DEFAULT
         return try {
-            kotlinx.serialization.json.Json.decodeFromString(json)
+            Json.decodeFromString(json)
         } catch (_: Exception) {
             com.my.striptologbook.data.PdfLayoutConfig.DEFAULT
         }
     }
 
     fun setPdfLayoutConfig(config: com.my.striptologbook.data.PdfLayoutConfig) {
-        val json = kotlinx.serialization.json.Json.encodeToString(config)
+        val json = Json.encodeToString(config)
         prefs.edit { putString(KEY_PDF_LAYOUT_CONFIG, json) }
     }
 
@@ -430,22 +440,16 @@ class PreferencesManager private constructor(context: Context) {
         val json = prefs.getString(KEY_CSV_EXPORT_FORMAT, null)
             ?: return com.my.striptologbook.data.CsvExportFormat.DEFAULT
         return try {
-            kotlinx.serialization.json.Json.decodeFromString(json)
+            Json.decodeFromString(json)
         } catch (_: Exception) {
             com.my.striptologbook.data.CsvExportFormat.DEFAULT
         }
     }
 
     fun setCsvExportFormat(config: com.my.striptologbook.data.CsvExportFormat) {
-        val json = kotlinx.serialization.json.Json.encodeToString(config)
+        val json = Json.encodeToString(config)
         prefs.edit { putString(KEY_CSV_EXPORT_FORMAT, json) }
     }
 
-    /**
-     * Convenience: returns the built-in Default profile, bypassing storage.
-     * Useful for the editor's "Restore Default" action and for tests.
-     */
-    fun getLegItemDefaultProfile(): com.my.striptologbook.data.LegProfile =
-        com.my.striptologbook.data.LegItemLayout.getDefaultProfile()
 
 }

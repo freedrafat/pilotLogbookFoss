@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="="
+            android:text="=="
             android:textSize="14sp" />
 
         <View
@@ -64,6 +64,15 @@
             android:layout_weight="1"
             android:text=">=" />
 
+
+        <Button
+            android:id="@+id/btn_all"
+            style="@style/SecondaryButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="All"
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- Middle Section -->

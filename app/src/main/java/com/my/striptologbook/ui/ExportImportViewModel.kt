@@ -66,7 +66,7 @@ class ExportImportViewModel(private val repository: LegRepository) : ViewModel()
             val fileName = if (useFilteredName) {
                 FileManager.suggestFilteredCsvFileName()
             } else {
-                FileManager.suggestExportFileName()
+                FileManager.suggestAllLogbookCsvName()
             }
             FileManager.writeTextToWorkDir(
                 contentResolver = contentResolver,

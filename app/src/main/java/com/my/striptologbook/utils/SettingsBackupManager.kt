@@ -12,9 +12,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 object SettingsBackupManager {
 
@@ -24,7 +21,7 @@ object SettingsBackupManager {
     }
 
     const val FORMAT_VERSION = 1
-    const val FILE_PREFIX = "logbook_prefs_"
+    const val FILE_PREFIX = "logbookFoss_prefs_"
     const val FILE_SUFFIX = ".json"
     private const val SIGNATURE_FILENAME = "pdf_signature.png"
 
@@ -73,7 +70,7 @@ object SettingsBackupManager {
     )
 
     fun suggestFileName(): String {
-        val dateStr = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
+        val dateStr = formatVersionDate(System.currentTimeMillis())
         return "$FILE_PREFIX$dateStr$FILE_SUFFIX"
     }
 

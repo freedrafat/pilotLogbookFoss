@@ -40,6 +40,10 @@ class LegRepository(
 
     suspend fun getAllLegsList(): List<Leg> = legDao.getAllLegsList()
 
+    suspend fun updateLegs(legs: List<Leg>) {
+        legDao.updateLegs(legs)
+    }
+
     // ---------------- Autosuggest ----------------
 
     suspend fun searchPosition(query: String): List<String> = legDao.searchPosition(query)

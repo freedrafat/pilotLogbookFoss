@@ -77,6 +77,12 @@
                     android:text="Instructor" />
 
                 <RadioButton
+                    android:id="@+id/rb_position_examinator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Examinator" />
+
+                <RadioButton
                     android:id="@+id/rb_position_custom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -368,6 +374,57 @@
                         style="@style/EditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- a/c Type & Category -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- a/c Type -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="a/c Type"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <AutoCompleteTextView
+                        android:id="@+id/act_default_ac_type"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="2"
+                        android:inputType="text"
+                        android:popupBackground="@color/dropdown_background"/>
+                </LinearLayout>
+
+                <View android:layout_width="8dp" android:layout_height="match_parent" />
+
+                <!-- Category -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Category"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Label" />
+                    <AutoCompleteTextView
+                        android:id="@+id/act_default_category"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
                         android:inputType="text"
                         android:popupBackground="@color/dropdown_background"/>
                 </LinearLayout>

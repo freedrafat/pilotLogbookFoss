@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:hint="Lat."
-        android:inputType="numberDecimal|numberSigned" />
+        android:inputType="numberDecimal|numberSigned"
+        android:digits="0123456789 .-°'&quot;"
+        android:imeOptions="actionDone" />
 
     <EditText
         android:id="@+id/et_waypoint_lon"
@@ -20,7 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:hint="Long."
-        android:inputType="numberDecimal|numberSigned" />
+        android:inputType="numberDecimal|numberSigned"
+        android:digits="0123456789 .-°'&quot;"
+        android:imeOptions="actionDone" />
 
     <EditText
         android:id="@+id/et_waypoint_time"
@@ -30,7 +34,8 @@
         android:clickable="true"
         android:focusable="true"
         android:hint="UTC"
-        android:inputType="time" />
+        android:inputType="time"
+        android:imeOptions="actionDone"/>
 
     <ImageButton
         android:id="@+id/btn_remove_waypoint"

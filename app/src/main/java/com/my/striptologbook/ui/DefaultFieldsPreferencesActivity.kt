@@ -17,6 +17,16 @@ import com.my.striptologbook.R
 import com.my.striptologbook.utils.InsetsHelper
 import com.my.striptologbook.utils.PreferencesManager
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
+import android.widget.AutoCompleteTextView
+import androidx.lifecycle.lifecycleScope
+import com.my.striptologbook.LogbookApplication
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
 class DefaultFieldsPreferencesActivity : BaseActivity() {
 
     private companion object {
@@ -52,6 +62,7 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
         val rbPositionSic = findViewById<RadioButton>(R.id.rb_position_sic)
         val rbPositionDual = findViewById<RadioButton>(R.id.rb_position_dual)
         val rbPositionInstructor = findViewById<RadioButton>(R.id.rb_position_instructor)
+        val rbPositionExaminator = findViewById<RadioButton>(R.id.rb_position_examinator)
         val rbPositionCustom = findViewById<RadioButton>(R.id.rb_position_custom)
         val etCustomPosition = findViewById<EditText>(R.id.et_custom_position)
 
@@ -62,6 +73,8 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
         val etDefaultJumpseat2 = findViewById<EditText>(R.id.et_default_jumpseat2)
         val etDefaultCabinCrew = findViewById<EditText>(R.id.et_default_cabin_crew)
         val etDefaultAcRegistration = findViewById<EditText>(R.id.et_default_ac_registration)
+        val actDefaultAcType = findViewById<AutoCompleteTextView>(R.id.act_default_ac_type)
+        val actDefaultCategory = findViewById<AutoCompleteTextView>(R.id.act_default_category)
         val etDefaultFlightNumberPrefix = findViewById<EditText>(R.id.et_default_flight_number_prefix)
         val etDefaultIcaoDeparture = findViewById<EditText>(R.id.et_default_icao_departure)
         val etDefaultIcaoDestination = findViewById<EditText>(R.id.et_default_icao_destination)
@@ -88,6 +101,7 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
             "SIC" -> rbPositionSic.isChecked = true
             "Dual" -> rbPositionDual.isChecked = true
             "Instructor" -> rbPositionInstructor.isChecked = true
+            "Examinator" -> rbPositionExaminator.isChecked = true
             else -> {
                 rbPositionCustom.isChecked = true
                 etCustomPosition.setText(storedPosition)
@@ -101,6 +115,8 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
         etDefaultJumpseat2.setText(preferencesManager.getDefaultJumpseat2())
         etDefaultCabinCrew.setText(preferencesManager.getDefaultCabinCrew())
         etDefaultAcRegistration.setText(preferencesManager.getDefaultAcRegistration())
+        actDefaultAcType.setText(preferencesManager.getDefaultAcType())
+        actDefaultCategory.setText(preferencesManager.getDefaultCategory())
         etDefaultFlightNumberPrefix.setText(preferencesManager.getDefaultFlightNumberPrefix())
         etDefaultIcaoDeparture.setText(preferencesManager.getDefaultIcaoDeparture())
         etDefaultIcaoDestination.setText(preferencesManager.getDefaultIcaoDestination())
@@ -120,6 +136,96 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
             etCustomPosition.visibility = if (rbPositionCustom.isChecked) View.VISIBLE else View.GONE
         }
 
+        // ---- Autosuggest Setup ----
+        val app = application as LogbookApplication
+        val fixedCategoryList = preferencesManager.getCustomCategoryList()
+
+        fun setupEnterKeyToClearFocus(editText: EditText) {
+            editText.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                    editText.clearFocus()
+                    true
+                } else false
+            }
+        }
+        setupEnterKeyToClearFocus(actDefaultAcType)
+        setupEnterKeyToClearFocus(actDefaultCategory)
+
+        fun setupAutoComplete(
+            autoComplete: AutoCompleteTextView,
+            suggestionFunction: suspend (String) -> List<String>,
+            fixedList: List<String>? = null
+        ) {
+            if (fixedList != null) {
+                autoComplete.setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus && autoComplete.text.isEmpty()) {
+                        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, fixedList)
+                        autoComplete.setAdapter(adapter)
+                        autoComplete.showDropDown()
+                    }
+                }
+            }
+
+            autoComplete.addTextChangedListener(object : TextWatcher {
+                private var lastQuery = ""
+                private var fetchJob: Job? = null
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val query = s.toString()
+                    if (!autoComplete.hasFocus()) return
+                    if (autoComplete.isPerformingCompletion) return
+
+                    if (fixedList != null && query.length < 2) {
+                        val filtered = if (query.isEmpty()) fixedList else fixedList.filter { it.contains(query, ignoreCase = true) }
+                        if (filtered.isNotEmpty()) {
+                            val adapter = ArrayAdapter(this@DefaultFieldsPreferencesActivity, android.R.layout.simple_dropdown_item_1line, filtered)
+                            autoComplete.setAdapter(adapter)
+                            autoComplete.showDropDown()
+                        } else {
+                            autoComplete.dismissDropDown()
+                        }
+                        return
+                    }
+
+                    if (query.length >= 2 && query != lastQuery) {
+                        lastQuery = query
+                        fetchJob?.cancel()
+                        fetchJob = lifecycleScope.launch {
+                            try {
+                                val suggestions = suggestionFunction(query)
+                                if (query != lastQuery) return@launch
+                                if (suggestions.isNotEmpty()) {
+                                    val adapter = ArrayAdapter(this@DefaultFieldsPreferencesActivity, android.R.layout.simple_dropdown_item_1line, suggestions)
+                                    autoComplete.setAdapter(adapter)
+                                    autoComplete.showDropDown()
+                                } else {
+                                    autoComplete.dismissDropDown()
+                                }
+                            } catch (e: CancellationException) {
+                                throw e
+                            } catch (e: Exception) {}
+                        }
+                    } else if (query.isEmpty()) {
+                        lastQuery = ""
+                        fetchJob?.cancel()
+                        autoComplete.dismissDropDown()
+                    }
+                }
+            })
+
+            autoComplete.setOnItemClickListener { adapterView, _, position, _ ->
+                val selected = adapterView.getItemAtPosition(position) as? String ?: return@setOnItemClickListener
+                autoComplete.setText(selected)
+                autoComplete.setSelection(selected.length)
+                autoComplete.clearFocus()
+                autoComplete.dismissDropDown()
+            }
+        }
+
+        setupAutoComplete(actDefaultAcType, { query -> app.repository.searchAcType(query) })
+        setupAutoComplete(actDefaultCategory, { query -> app.repository.searchCategory(query) }, fixedList = fixedCategoryList)
+
         // ---- Save ----
         findViewById<Button>(R.id.btn_save_default_fields).setOnClickListener {
             // Existing
@@ -133,6 +239,7 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
                 rbPositionSic.isChecked -> "SIC"
                 rbPositionDual.isChecked -> "Dual"
                 rbPositionInstructor.isChecked -> "Instructor"
+                rbPositionInstructor.isChecked -> "Examinator"
                 rbPositionCustom.isChecked -> etCustomPosition.text.toString()
                 else -> ""
             }
@@ -145,6 +252,8 @@ class DefaultFieldsPreferencesActivity : BaseActivity() {
             preferencesManager.setDefaultJumpseat2(etDefaultJumpseat2.text.toString())
             preferencesManager.setDefaultCabinCrew(etDefaultCabinCrew.text.toString())
             preferencesManager.setDefaultAcRegistration(etDefaultAcRegistration.text.toString())
+            preferencesManager.setDefaultAcType(actDefaultAcType.text.toString())
+            preferencesManager.setDefaultCategory(actDefaultCategory.text.toString())
             preferencesManager.setDefaultFlightNumberPrefix(etDefaultFlightNumberPrefix.text.toString())
             preferencesManager.setDefaultIcaoDeparture(etDefaultIcaoDeparture.text.toString())
             preferencesManager.setDefaultIcaoDestination(etDefaultIcaoDestination.text.toString())

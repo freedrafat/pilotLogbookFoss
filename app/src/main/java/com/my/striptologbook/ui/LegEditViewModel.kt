@@ -51,6 +51,8 @@ class LegEditViewModel(
             jumpseat2 = defaultFields.jumpseat2,
             cabinCrew = defaultFields.cabinCrew,
             acRegistration = defaultFields.acRegistration,
+            acType = defaultFields.acType,
+            category = defaultFields.category,
             flightNumber = defaultFields.flightNumberPrefix,
             icaoDeparture = defaultFields.icaoDeparture,
             icaoDestination = defaultFields.icaoDestination,

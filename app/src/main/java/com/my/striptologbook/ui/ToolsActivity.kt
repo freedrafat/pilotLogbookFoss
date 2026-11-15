@@ -51,6 +51,12 @@ class ToolsActivity : BaseActivity() {
         findViewById<Button>(R.id.btn_airports).setOnClickListener {
             startActivity(Intent(this, AirportsActivity::class.java))
         }
+        findViewById<Button>(R.id.btn_correct_legs).setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java).apply {
+                putExtra("isCorrectionMode", true)
+            }
+            startActivity(intent)
+        }
         findViewById<Button>(R.id.btn_backup).setOnClickListener {
             startActivity(Intent(this, BackupActivity::class.java))
         }

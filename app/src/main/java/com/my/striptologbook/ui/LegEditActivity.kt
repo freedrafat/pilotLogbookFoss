@@ -150,6 +150,8 @@ class LegEditActivity : BaseActivity() {
             jumpseat2 = prefs.getDefaultJumpseat2(),
             cabinCrew = prefs.getDefaultCabinCrew(),
             acRegistration = prefs.getDefaultAcRegistration(),
+            acType = prefs.getDefaultAcType(),
+            category = prefs.getDefaultCategory(),
             flightNumberPrefix = prefs.getDefaultFlightNumberPrefix(),
             icaoDeparture = prefs.getDefaultIcaoDeparture(),
             icaoDestination = prefs.getDefaultIcaoDestination(),

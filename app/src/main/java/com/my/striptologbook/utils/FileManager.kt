@@ -19,9 +19,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import java.io.InputStream
 import java.io.OutputStream
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import java.util.zip.CRC32
 
 
@@ -56,6 +53,7 @@ object FileManager {
     }
 
     private const val SUBFOLDER_NAME = "PilotLogbookFoss"
+    private const val FILE_PREFIX = "logbookFoss"
 
     /**
      * Combined backup payload, top-level object.
@@ -144,9 +142,9 @@ object FileManager {
         } ?: throw IllegalStateException("Unable to open input stream for URI: $uri")
     }
 
-    fun suggestBackupFileName(): String {
-        val dateStr = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
-        return "logbook_backup_${dateStr}.json"
+    fun suggestAllLogbookJsonName(): String {
+        val dateStr = formatVersionDate(System.currentTimeMillis())
+        return "${FILE_PREFIX}_allLogbook_${dateStr}.json"
     }
 
     // ---------- CSV ----------
@@ -401,24 +399,24 @@ object FileManager {
         return "\"$escaped\""
     }
 
-    fun suggestExportFileName(): String {
-        val dateStr = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
-        return "logbook_export_${dateStr}.csv"
+    fun suggestAllLogbookCsvName(): String {
+        val dateStr = formatVersionDate(System.currentTimeMillis())
+        return "${FILE_PREFIX}_allLogbook_${dateStr}.csv"
     }
 
     fun suggestPdfFileName(): String {
-        val dateStr = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
-        return "logbook_${dateStr}.pdf"
+        val dateStr = formatVersionDate(System.currentTimeMillis())
+        return "${FILE_PREFIX}_logbook_${dateStr}.pdf"
     }
 
     fun suggestFilteredPdfFileName(): String {
-        val dateStr = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
-        return "logbook_filtered_${dateStr}.pdf"
+        val dateStr = formatVersionDate(System.currentTimeMillis())
+        return "${FILE_PREFIX}_filteredLogbook_${dateStr}.pdf"
     }
 
     fun suggestFilteredCsvFileName(): String {
-        val dateStr = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
-        return "logbook_filtered_${dateStr}.csv"
+        val dateStr = formatVersionDate(System.currentTimeMillis())
+        return "${FILE_PREFIX}_filteredLogbook_${dateStr}.csv"
     }
 
 // ---------- Work folder ----------
@@ -647,10 +645,18 @@ object FileManager {
      * Lists files with the given extension (e.g. "csv") in the folder,
      * sorted by lastModified descending (most recent first).
      */
-    fun listWorkDirFilesByExtension(folder: DocumentFile, extension: String): List<DocumentFile> {
+    fun listWorkFolderFilesByExtension(
+        folder: DocumentFile,
+        extension: String,
+        prefix: String? = null
+    ): List<DocumentFile> {
         val ext = "." + extension.trimStart('.').lowercase()
         return folder.listFiles()
-            .filter { it.isFile && it.name?.lowercase()?.endsWith(ext) == true }
+            .filter {
+                it.isFile &&
+                        it.name?.lowercase()?.endsWith(ext) == true &&
+                        (prefix == null || it.name?.startsWith(prefix) == true)
+            }
             .sortedByDescending { it.lastModified() }
     }
 

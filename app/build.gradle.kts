@@ -19,8 +19,8 @@ android {
         applicationId = "com.my.striptologbook"
         minSdk = 29
         targetSdk = 36
-        versionCode = 13
-        versionName = "1.1.3"
+        versionCode = 14
+        versionName = "1.1.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -53,29 +53,12 @@ android {
 androidComponents {
     onVariants(selector().withBuildType("release")) { variant ->
         variant.outputs.forEach { output ->
-            // versionName is a Property<String> on the output
-//            val versionName = output.versionName.get()
-
             if (output is com.android.build.api.variant.impl.VariantOutputImpl) {
-//                output.outputFileName.set("pilotLogbookFoss-${versionName}.apk")
                 output.outputFileName.set("pilotLogbookFoss.apk")
             }
         }
     }
 }
-
-//androidComponents {
-//    onVariants { variant ->
-//        variant.outputs.forEach { output ->
-//            output.outputFileName.set(
-//                project.provider {
-//                        "pilotLogbookFoss_${timestamp}.apk"
-//                }
-//            )
-//        }
-//    }
-//}
-
 
 dependencies {
 

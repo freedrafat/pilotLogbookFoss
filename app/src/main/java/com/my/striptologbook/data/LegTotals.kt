@@ -96,6 +96,8 @@ data class LegTotals(
             val category = leg.category
             val position = leg.position
 
+            val instTime = if (block > 0) block else (leg.simulatorTime ?: 0)
+
             return LegTotals(
                 blockTimeDay    = leg.blockTimeDay    ?: 0,
                 blockTimeNight  = leg.blockTimeNight  ?: 0,
@@ -120,7 +122,7 @@ data class LegTotals(
                 pilotFunctionPicTime = if (position in setOf("PIC", "SPIC", "PICUS")) block else 0,
                 pilotFunctionSicTime = if (position == "SIC")        block else 0,
                 pilotFunctionDualTime = if (position == "Dual")      block else 0,
-                pilotFunctionInstructorTime = if (position == "Instructor") block else 0
+                pilotFunctionInstructorTime = if (position == "Instructor" || position == "Examinator") instTime else 0
             )
         }
     }

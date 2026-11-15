@@ -17,6 +17,9 @@ interface LegDao {
     suspend fun insertAll(legs: List<Leg>)   // for CSV import later, but added now
 
     @Update
+    suspend fun updateLegs(legs: List<Leg>)
+
+    @Update
     suspend fun updateLeg(leg: Leg)
 
     @Delete

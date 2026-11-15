@@ -161,14 +161,20 @@ fun formatDateUtc(timestamp: Long): String {
     return sdf.format(Date(timestamp))
 }
 
-// Parse a string like "20260721_1430" into a Date (UTC).
+// Parse a string like "20260721_143027" into a Date (UTC).
 fun parseVersionDate(version: String?): Date? {
     if (version == null) return null
     return try {
-        SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault()).parse(version)
+        SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).parse(version)
     } catch (@Suppress("unused") e: Exception) {
         null
     }
+}
+
+// Formats a timestamp as yyyyMMdd_HHmmss
+fun formatVersionDate(timestamp: Long): String {
+    val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
+    return sdf.format(Date(timestamp))
 }
 
 
@@ -373,24 +379,6 @@ fun parseDuration(input: String): Int? {
 }
 
 
-// Parse any supported format to Double, or null if invalid.
-//
-// Accepted forms (rules per user spec 2026-11-08):
-//   • plain number (integer or decimal)     → whole number is degrees
-//   • D M / D°M            (1 separator)     → degrees + minutes
-//   • D M S / D°M'S"       (2 separators)    → degrees + minutes + seconds
-//
-//   " " may stand in for ° / ' / ", with one space between D/M
-//   and two spaces between D/M/S.
-//
-//   Decimals are allowed only in the last numeric group of a form
-//   (minutes for D M, seconds for D M S), or in a plain number.
-//
-//   A leading '-' or '+' is treated as a hemisphere sign (S/W or
-//   N/E). A hemisphere letter N/S/E/W (either case) is accepted
-//   strictly before the first digit or after the last digit.
-//   Contradictions between a leading sign and a hemisphere letter
-//   are rejected.
 fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
     if (input.isNullOrBlank()) return null
     var s = input.trim().uppercase()
@@ -403,7 +391,7 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
         if (s.startsWith('-') || s.startsWith('+')) return null
     }
 
-    // 2. Detect hemisphere letter (position not yet validated)
+    // 2. Detect hemisphere letter
     var hem: Char? = null
     var hemIndex = -1
     for (ch in setOf('N', 'S', 'E', 'W')) {
@@ -415,8 +403,7 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
         }
     }
 
-    // 3. A-3: hemisphere must be strictly before the first digit
-    //    or strictly after the last digit.
+    // 3. Hemisphere position validation
     if (hem != null) {
         val firstDigit = s.indexOfFirst { it.isDigit() }
         val lastDigit = s.indexOfLast { it.isDigit() }
@@ -425,23 +412,21 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
         s = s.replace(hem.toString(), "").trim()
     }
 
-    // 4. Contradiction between leading sign and hemisphere
+    // 4. Sign / Hemisphere contradiction
     if (signChar != null && hem != null) {
         val signIsNegative = signChar == '-'
         val hemIsNegative = hem in setOf('S', 'W')
         if (signIsNegative != hemIsNegative) return null
     }
 
-    // 5. If hemisphere was present, the remaining string must not
-    //    start with a sign.
     if (hem != null && (s.startsWith('-') || s.startsWith('+'))) return null
 
-    // 6. Normalize comma, collapse whitespace
+    // 5. Normalize comma, collapse whitespace
     s = s.replace(',', '.').replace(Regex("\\s+"), " ").trim()
 
     var magnitude: Double? = null
 
-    // ----- 1. D M / D°M (degrees integer, minutes may be decimal) -----
+    // ----- 1. D M / D°M -----
     val dmRegex = Regex("""^(\d+)\s*[°\s]\s*(\d+\.?\d*)$""")
     dmRegex.find(s)?.let {
         val deg = it.groupValues[1].toDoubleOrNull() ?: return null
@@ -449,8 +434,7 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
         magnitude = deg + min / 60.0
     }
 
-    // ----- 2. D M S / D°M'S" (degrees and minutes integer,
-    //          seconds may be decimal) -----
+    // ----- 2. D M S / D°M'S" -----
     if (magnitude == null) {
         val dmsRegex = Regex("""^(\d+)\s*[°\s]\s*(\d+)\s*['\s]\s*(\d+\.?\d*)\s*["\s]?$""")
         dmsRegex.find(s)?.let {
@@ -461,7 +445,75 @@ fun parseCoordinate(input: String?, isLatitude: Boolean): Double? {
         }
     }
 
-    // ----- 3. Plain decimal (whole number = degrees) -----
+    // ----- 3. Compact numeric forms -----
+    if (magnitude == null) {
+        val sNoSign = s.removePrefix("-").removePrefix("+")
+        if (sNoSign.all { it.isDigit() || it == '.' }) {
+            if (isLatitude) {
+                // Lat: DDMMSS (6 digits), DDMM.m (5 digits), DDMM.m (with dot), DDMM S.d
+                val latDms = Regex("""^(\d{2})(\d{2})(\d{2})$""")
+                val latDm = Regex("""^(\d{2})(\d{2})(\d)$""")
+                val latDmDot = Regex("""^(\d{2})(\d{2}\.\d+)$""")
+                val latSecDot = Regex("""^(\d{2})(\d{2})(\d\.\d+)$""")
+
+                latDms.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    val sec = it.groupValues[3].toDouble()
+                    if (m < 60 && sec < 60) magnitude = d + m / 60.0 + sec / 3600.0
+                }
+                if (magnitude == null) latDm.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    val dm = it.groupValues[3].toDouble()
+                    if (m < 60) magnitude = d + (m + dm / 10.0) / 60.0
+                }
+                if (magnitude == null) latDmDot.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    if (m < 60) magnitude = d + m / 60.0
+                }
+                if (magnitude == null) latSecDot.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    val sec = it.groupValues[3].toDouble()
+                    if (m < 60 && sec < 60) magnitude = d + m / 60.0 + sec / 3600.0
+                }
+            } else {
+                // Lon: DDDMMSS (7 digits), DDDMM.m (6 digits), DDDMM.m (with dot), DDDMM S.d
+                val lonDms = Regex("""^(\d{3})(\d{2})(\d{2})$""")
+                val lonDm = Regex("""^(\d{3})(\d{2})(\d)$""")
+                val lonDmDot = Regex("""^(\d{3})(\d{2}\.\d+)$""")
+                val lonSecDot = Regex("""^(\d{3})(\d{2})(\d\.\d+)$""")
+
+                lonDms.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    val sec = it.groupValues[3].toDouble()
+                    if (m < 60 && sec < 60) magnitude = d + m / 60.0 + sec / 3600.0
+                }
+                if (magnitude == null) lonDm.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    val dm = it.groupValues[3].toDouble()
+                    if (m < 60) magnitude = d + (m + dm / 10.0) / 60.0
+                }
+                if (magnitude == null) lonDmDot.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    if (m < 60) magnitude = d + m / 60.0
+                }
+                if (magnitude == null) lonSecDot.find(sNoSign)?.let {
+                    val d = it.groupValues[1].toDouble()
+                    val m = it.groupValues[2].toDouble()
+                    val sec = it.groupValues[3].toDouble()
+                    if (m < 60 && sec < 60) magnitude = d + m / 60.0 + sec / 3600.0
+                }
+            }
+        }
+    }
+
+    // ----- 4. Plain decimal -----
     if (magnitude == null) {
         s.toDoubleOrNull()?.let {
             magnitude = kotlin.math.abs(it)

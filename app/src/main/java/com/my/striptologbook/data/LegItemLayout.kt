@@ -91,12 +91,14 @@ data class LegItemLayout(
                         sp,
                         LegRowItem.field("icaoDestination", "icao")
                     ),
-                    // Row 3: "BT/night: " blockTimeTotal(duration) " / " blockTimeNight(duration)
+                    // Row 3: "BT/night: " blockTimeTotal(duration) " / " blockTimeNight(duration) " " isPilotFlying
                     listOf(
-                        LegRowItem.literal("BT/night: "),
+                        LegRowItem.literal("BT: "),
                         LegRowItem.field("blockTimeTotal", "duration"),
-                        LegRowItem.literal(" / "),
-                        LegRowItem.field("blockTimeNight", "duration")
+                        LegRowItem.literal(" / Night: "),
+                        LegRowItem.field("blockTimeNight", "duration"),
+                        LegRowItem.literal(" "),
+                        LegRowItem.field("isPilotFlying")
                     ),
                     // Row 4: remarks
                     listOf(

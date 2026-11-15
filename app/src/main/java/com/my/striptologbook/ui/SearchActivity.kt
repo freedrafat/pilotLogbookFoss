@@ -90,6 +90,22 @@ class SearchActivity : BaseActivity() {
         btnSearch = findViewById(R.id.btn_search)
         tvConditionsTitle = findViewById(R.id.tv_conditions_title)
 
+        val isCorrectionMode = intent.getBooleanExtra("isCorrectionMode", false)
+        val btnAll = findViewById<Button>(R.id.btn_all)
+
+        if (isCorrectionMode) {
+            btnAll.visibility = View.VISIBLE
+            btnAll.setOnClickListener {
+                val intent = Intent(this, LegListActivity::class.java).apply {
+                    putExtra("isCorrectionMode", true)
+                    putExtra("showAllLegs", true)
+                }
+                startActivity(intent)
+            }
+        } else {
+            btnAll.visibility = View.GONE
+        }
+
         // Setup RecyclerView
         rvConditions.layoutManager = LinearLayoutManager(this)
         adapter = SearchConditionAdapter { condition ->
@@ -123,11 +139,15 @@ class SearchActivity : BaseActivity() {
             val logicOperator = viewModel.logicOperator.value
             val query = com.my.striptologbook.data.SearchQuery(conditions, logicOperator)
             val json = Json.encodeToString(query)
+
+            // Get the flag from the activity's intent BEFORE creating the new intent
+            val isCorrectionMode = intent.getBooleanExtra("isCorrectionMode", false)
+
             val intent = Intent(this, LegListActivity::class.java).apply {
                 putExtra("searchQuery", json)
+                putExtra("isCorrectionMode", isCorrectionMode)
             }
             startActivity(intent)
-//            finish()
         }
 
         // Observe ViewModel state

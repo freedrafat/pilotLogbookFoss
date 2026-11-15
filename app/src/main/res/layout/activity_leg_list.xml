@@ -39,7 +39,8 @@
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Export"
-                android:src="@android:drawable/ic_menu_save" />
+                android:src="@android:drawable/ic_menu_save"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/btn_search"
@@ -60,6 +61,28 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Statistics"
                 android:src="@android:drawable/ic_menu_view" />
+
+            <ImageButton
+                android:id="@+id/btn_correct"
+                style="@style/IconButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Correct Legs"
+                android:src="@android:drawable/ic_menu_edit"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btn_correction_settings"
+                style="@style/IconButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Correction Settings"
+                android:src="@android:drawable/ic_menu_preferences"
+                android:visibility="gone" />
 
         </LinearLayout>
 

@@ -226,7 +226,8 @@ class BackupActivity : BaseActivity() {
     }
 
     private fun doRestore(folder: DocumentFile) {
-        val jsonFiles = FileManager.listWorkDirFilesByExtension(folder, "json")
+        val jsonFiles = FileManager.listWorkFolderFilesByExtension(
+            folder, "json", "logbookFoss_allLogbook_")
         if (jsonFiles.isEmpty()) {
             AlertDialog.Builder(this)
                 .setTitle("No backups found")
@@ -313,7 +314,7 @@ class BackupActivity : BaseActivity() {
     }
 
     private fun doImportCsv(folder: DocumentFile) {
-        val csvFiles = FileManager.listWorkDirFilesByExtension(folder, "csv")
+        val csvFiles = FileManager.listWorkFolderFilesByExtension(folder, "csv")
         if (csvFiles.isEmpty()) {
             AlertDialog.Builder(this)
                 .setTitle("No CSV files found")

@@ -31,8 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center">
+        android:padding="16dp" >
 
         <Button
             android:id="@+id/btn_statistics_visibility"
@@ -76,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Leg Card Items" />
+
 
     </LinearLayout>
 </LinearLayout>

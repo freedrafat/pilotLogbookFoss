@@ -65,15 +65,24 @@ object LegRowRenderer {
     // ---------------------------------------------------------------- boolean
 
     /**
-     * Fixed rendering for the two Boolean fields on Leg. Null is treated
-     * as false (agreed in the design).
+     * Fixed rendering for the two Boolean fields on Leg.
+     * For isSimulator: null is treated as false.
+     * For isPilotFlying: null is empty, true is PF, false is PM.
      */
     private fun renderBoolean(fieldId: String?, value: Any?): String {
-        val b = value as? Boolean ?: false
         return when (fieldId) {
-            "isSimulator" -> if (b) "Simu." else ""
-            "isPilotFlying" -> if (b) "PF"    else "PM"
-            else          -> ""
+            "isSimulator" -> {
+                val b = value as? Boolean ?: false
+                if (b) "Simu." else ""
+            }
+            "isPilotFlying" -> {
+                when (value) {
+                    true -> "PF"
+                    false -> "PM"
+                    else -> "" // null
+                }
+            }
+            else -> ""
         }
     }
 

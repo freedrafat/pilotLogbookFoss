@@ -76,7 +76,7 @@ class LegListActivity : BaseActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = if (isSearchMode) toolbarSearchTitle else toolbarTitle
+//        supportActionBar?.title = if (isSearchMode) toolbarSearchTitle else toolbarTitle
 
         ViewCompat.setOnApplyWindowInsetsListener(spacer) { view, insets ->
             val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
@@ -124,19 +124,66 @@ class LegListActivity : BaseActivity() {
 
         // Intent extras
         searchQuery = intent.getStringExtra("searchQuery")
+        val showAllLegs = intent.getBooleanExtra("showAllLegs", false)
+        val isCorrectionMode = intent.getBooleanExtra("isCorrectionMode", false)
+
+        // Only enter search mode if there is an actual query
         isSearchMode = !searchQuery.isNullOrEmpty()
 
-        // Update UI for search mode
-        supportActionBar?.title = if (isSearchMode) toolbarSearchTitle else toolbarTitle
+        // Force the ViewModel to show all legs if requested
+        if (showAllLegs) {
+            viewModel.setFilter(FilterType.ALL)
+        }
+
+        // Set Title
+        supportActionBar?.title = when {
+            showAllLegs -> "All Legs"
+            isSearchMode -> toolbarSearchTitle
+            else -> toolbarTitle
+        }
+
+        // UI Visibility
         filterRow.visibility = View.VISIBLE
         if (isSearchMode) {
             btnFilter.visibility = View.GONE
             btnSearch.visibility = View.GONE
             btnStatistics.visibility = View.GONE
+
+            if (isCorrectionMode) {
+                btnExport.visibility = View.GONE
+                findViewById<ImageButton>(R.id.btn_correct).visibility = View.VISIBLE
+                findViewById<ImageButton>(R.id.btn_correct).setOnClickListener {
+                    showCorrectionOverrideDialog()
+                }
+                findViewById<ImageButton>(R.id.btn_correction_settings).visibility = View.VISIBLE
+                findViewById<ImageButton>(R.id.btn_correction_settings).setOnClickListener {
+                    startActivity(Intent(this, LegsCorrectionPreferencesActivity::class.java))
+                }
+            } else {
+                btnExport.visibility = View.VISIBLE
+            }
         } else {
+            // Normal Mode / Show All Legs Mode
             btnFilter.visibility = View.VISIBLE
-            btnSearch.visibility = View.VISIBLE
-            btnStatistics.visibility = View.VISIBLE
+
+            if (isCorrectionMode) {
+                btnSearch.visibility = View.GONE
+                btnStatistics.visibility = View.GONE
+                btnExport.visibility = View.GONE
+
+                findViewById<ImageButton>(R.id.btn_correct).visibility = View.VISIBLE
+                findViewById<ImageButton>(R.id.btn_correct).setOnClickListener {
+                    showCorrectionOverrideDialog()
+                }
+                findViewById<ImageButton>(R.id.btn_correction_settings).visibility = View.VISIBLE
+                findViewById<ImageButton>(R.id.btn_correction_settings).setOnClickListener {
+                    startActivity(Intent(this, LegsCorrectionPreferencesActivity::class.java))
+                }
+            } else {
+                btnSearch.visibility = View.VISIBLE
+                btnStatistics.visibility = View.VISIBLE
+                btnExport.visibility = View.VISIBLE
+            }
         }
 
         // Listeners
@@ -226,21 +273,46 @@ class LegListActivity : BaseActivity() {
     }
 
     private suspend fun updateList(allLegs: List<Leg>) {
-        if (isSearchMode && !searchQuery.isNullOrEmpty()) {
-            val query = try {
-                kotlinx.serialization.json.Json.decodeFromString<SearchQuery>(searchQuery!!)
-            } catch (_: Exception) {
-                null
-            }
-            val filtered = if (query != null) {
-                applySearch(allLegs, query)
+        if (isSearchMode) {
+            if (!searchQuery.isNullOrEmpty()) {
+                val query = try {
+                    kotlinx.serialization.json.Json.decodeFromString<SearchQuery>(searchQuery!!)
+                } catch (_: Exception) {
+                    null
+                }
+                val filtered = if (query != null) {
+                    applySearch(allLegs, query)
+                } else {
+                    allLegs
+                }
+                adapter.submitList(filtered)
+                currentLegs = filtered
+                updateSummary(filtered)
             } else {
-                allLegs
+                // Show all database legs
+                adapter.submitList(allLegs)
+                currentLegs = allLegs
+                updateSummary(allLegs)
             }
-            adapter.submitList(filtered)
-            currentLegs = filtered
-            updateSummary(filtered)
         }
+    }
+
+    private fun showCorrectionOverrideDialog() {
+        android.app.AlertDialog.Builder(this)
+            .setTitle("Correction Mode")
+            .setMessage("Do you want to override existing values? (No will only fill missing fields)")
+            .setPositiveButton("Yes (Override)") { _, _ -> launchCorrectionPreview(true) }
+            .setNegativeButton("No (Fill Missing)") { _, _ -> launchCorrectionPreview(false) }
+            .setNeutralButton("Cancel", null)
+            .show()
+    }
+
+    private fun launchCorrectionPreview(override: Boolean) {
+        val intent = Intent(this, LegsCorrectionPreviewActivity::class.java).apply {
+            putExtra("legIds", currentLegs.map { it.id }.toLongArray())
+            putExtra("overrideExisting", override)
+        }
+        startActivity(intent)
     }
 
     private fun applySearch(legs: List<Leg>, query: SearchQuery): List<Leg> {

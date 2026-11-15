@@ -91,7 +91,12 @@ object PdfGenerator {
             },
             SubCol("SIC") { l -> if (l.position == "SIC") fmtDur(l.blockTimeTotal) else "" },
             SubCol("Dual") { l -> if (l.position == "Dual") fmtDur(l.blockTimeTotal) else "" },
-            SubCol("Instructor") { l -> if (l.position == "Instructor") fmtDur(l.blockTimeTotal) else "" }
+            SubCol("Instructor") { l ->
+                if (l.position == "Instructor" || l.position == "Examinator") {
+                    val valToUse = if ((l.blockTimeTotal ?: 0) > 0) l.blockTimeTotal else l.simulatorTime
+                    fmtDur(valToUse)
+                } else ""
+            }
         )),
         ColGroup("FSTD", listOf(SubCol("Total") { fmtDur(it.simulatorTime) })),
         ColGroup("Remarks", listOf(SubCol("", Align.LEFT) { leg ->

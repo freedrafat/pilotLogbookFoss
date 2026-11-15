@@ -73,6 +73,17 @@
 
             <Space
                 android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <Button
+                android:id="@+id/btn_correct_legs"
+                style="@style/PrimaryButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correct Legs" />
+
+            <Space
+                android:layout_width="match_parent"
                 android:layout_height="32dp" />
 
 
@@ -81,7 +92,7 @@
                 style="@style/PrimaryButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Backup Logbook" />
+                android:text="Backup Logbook (CSV/PDF)" />
 
             <Space
                 android:layout_width="match_parent"
