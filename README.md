@@ -29,8 +29,6 @@ pilots.
 
 You can download the latest version of the application directly from the [Releases page](https://github.com/freedrafat/pilotLogbookFoss/releases/latest). 
 
-*Note: Since the APK is signed with a private developer key, you must uninstall any previous versions from other stores before installing an update from this repository.*
-
 ## 📖 User Manual
 
 For detailed instructions on how to use every feature of the app, please refer to the **[User Manual](app/src/main/assets/user_manual.txt)** included in this repository.
